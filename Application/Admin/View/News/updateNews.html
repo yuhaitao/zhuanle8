@@ -1,0 +1,115 @@
+<script type="text/javascript" src="__ROOT__/ueditor/ueditor.config.js"></script>
+<script type="text/javascript" src="__ROOT__/ueditor/ueditor.all.js"></script>
+
+<div class="fanbox_addnews">
+    <h3>编辑理财新闻</h3>
+    <form id="updatenews_form" action="{:U('Admin/News/saveNews')}" method="post">
+        <table width="90%" cellpadding="0" cellspacing="0" style="margin: 0 auto; position: relative; top: 10px;    font-size: 14px;" class="search_table">
+            <tr>
+                <input type="hidden" id="news_id" name="news_id" style="width:260px;" value="{$newsinfo.news_id}">
+                <td width="10%">&nbsp;&nbsp;&nbsp;新闻标题：&nbsp;</td>
+                <td><input type="text" id="news_title" name="news_title" style="width:260px;" value="{$newsinfo.news_name}">
+                    <div class="news_error"></div>
+                </td>
+            </tr>
+            <tr>
+                <td width="10%">&nbsp;&nbsp;&nbsp;头条：&nbsp;</td>
+                <td>&nbsp;&nbsp;&nbsp;{$newsinfo.is_headline}
+                    
+                </td>
+            </tr>
+            <tr>
+                <td width="10%">&nbsp;&nbsp;&nbsp;要闻：&nbsp;</td>
+                <td>&nbsp;&nbsp;&nbsp;{$newsinfo.is_hot}
+                </td>
+            </tr>
+            <tr>
+                <td width="10%">&nbsp;&nbsp;&nbsp;置顶：&nbsp;</td>
+                <td>&nbsp;&nbsp;&nbsp;{$newsinfo.is_top}
+                </td>
+            </tr>
+            <tr>
+                <td width="10%">&nbsp;&nbsp;&nbsp;首页显示：&nbsp;</td>
+                <td>&nbsp;&nbsp;&nbsp;{$newsinfo.is_home}
+                </td>
+            </tr>
+            <tr>
+                <td width="10%">&nbsp;&nbsp;&nbsp;新闻描述：&nbsp;</td>
+                <td><textarea id="news_describe" name="news_describe" style="width: 450px; float:left;" class="textarea">{$newsinfo.news_description}</textarea>
+                <div class="classify"><span>&nbsp;&nbsp;&nbsp;文章类别：&nbsp;</span>
+                    <select name="news_classify" style="width: 90px;margin-top: 8px;font-size: 12px;">
+                      {$fenlei}
+                    </select>
+                </div>
+                </td>
+            </tr>
+            <tr>
+                <td width="10%">&nbsp;&nbsp;&nbsp;新闻内容：&nbsp;</td>
+                <td width="90%">
+                <script id="news_brief" name="news_brief" type="text/plain"> 
+                    {$content}
+                </script>
+                </td>
+            </tr>
+            <tr> 
+                <td width="10%">&nbsp;&nbsp;&nbsp;新闻图片：&nbsp; </td>
+                <td><a href="javascript:;" class="file"><i class="upload_img glyphicon glyphicon-picture"></i>选择文件 <input type="file" name="news_img" id="news_img" value="">
+                    </a>
+                    <div class="news_tags"><span>&nbsp;&nbsp;&nbsp;文章标签：&nbsp;</span>
+                        <input type="text" id="news_tags" name="news_tags" style="width:260px;" value="{$tags}">
+                        &nbsp;&nbsp;&nbsp;(&nbsp;标签之间用英文逗号隔开&nbsp;)
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td height="80px">&nbsp;</td>
+                <td style="text-align: right;">
+                <input type="submit" style="float:none;" class="btn" value="提交"> 
+                <input type="button" style="float:none;" class="btn" value="取消" onclick="$.fancybox.close();"></td>
+            </tr>
+        </table>
+    </form>
+</div>
+<script type="text/javascript">
+        var news_brief = UE.getEditor('news_brief',{
+            autoHeightEnabled: false,
+            initialFrameHeight:130
+        });
+</script>
+<script type="text/javascript" src="__PUBLIC__/static/jquery.form.js"></script>
+<script type="text/javascript">
+$(function(){
+    $('#updatenews_form').ajaxForm({
+        beforeSubmit: validate,
+        success: function(msg){
+        
+            if(msg == 1){
+                top.layer.alert('修改成功',function(){
+                    $.fancybox.close();
+                    top.rightContent.window.reload_News();
+                    top.layer.closeAll();
+                });
+            }else{
+                layer.alert('修改失败', {
+                    closeBtn: 0 ,
+                  });
+            }
+        }
+    }); 
+});
+function validate() {
+   var news_brief = UE.getEditor('news_brief');
+   var content = news_brief.getContent();
+   if($('#news_title').val() == '' ||$('#news_title').val()== null){
+        $('.news_error').css('display','block');
+        $('.news_error').html('<i class="glyphicon glyphicon-exclamation-sign"></i>填写新闻标题');
+
+        return false;
+   }
+   if(content.length <= 0){
+        layer.alert('请填写完整数据！');
+        return false;
+   } 
+}
+
+</script>

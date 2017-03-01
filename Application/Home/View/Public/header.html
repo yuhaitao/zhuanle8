@@ -1,0 +1,94 @@
+<body>
+<div class="xfkf">
+    <div class="fjys">
+    <div class="fjys_01">在线客服</div>
+    
+    <div class="fjys_02">
+        <div class="fjys_01_left"></div>
+        <div class="fjys_01_right">
+        	<!-- <a href="http://wpa.qq.com/msgrd?v=3&uin=4009698280&site=qq&menu=yes">客服一号</a> -->
+        	<a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=906800426&site=qq&menu=yes">客服一号</a>
+        </div>
+    </div>
+   
+    <div class="fjys_02">
+        <div class="fjys_01_left"></div>
+        <div class="fjys_01_right">
+	        <a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=1138693225&site=qq&menu=yes">客服二号</a>
+        </div>
+    </div>
+    
+    <!-- <div class="fjys_02">
+        <div class="fjys_01_left"></div>
+        <div class="fjys_01_right">
+        	WPA Button Begin
+			<script charset="utf-8" type="text/javascript" src="http://wpa.b.qq.com/cgi/wpa.php?key=XzkzODA3ODI5OF80NTU4ODBfNDAwOTY5ODI4MF8"></script>
+			WPA Button End
+        </div>
+    </div> -->
+    
+    <div class="fjys_02">
+        <div class="fjys_01_left"></div>
+        <div class="fjys_01_right">
+        	<a target="_blank" href="//shang.qq.com/wpa/qunwpa?idkey=59e2cc87b2374004b24bdfd791c722ff3b60de0a1398baefcaace97f7bf5fa15"><img border="0" src="//pub.idqqimg.com/wpa/images/group.png" alt="赚乐扒交流群" title="赚乐扒交流群"></a>
+        </div>
+    </div>
+   </div>
+    <a href="javascript:void(0)" id="kefulist"> <img src="__PUBLIC__/images/newimages/tb01.png" width="64" height="64"></a>
+    <a href="javascript:void(0)" id="qrcodelist">
+        <div class="xfkf_01"><img src="__PUBLIC__/images/newimages/ermtb.jpg" width="182" height="182"> </div>
+        <img src="__PUBLIC__/images/newimages/tb02.png" width="64" height="64">
+    </a>
+    <a href="#" id="top"><img src="__PUBLIC__/images/newimages/tb03.png" width="64" height="64"> </a>
+</div>
+<script>
+   $("#kefulist").mouseover(function () {
+				$(".fjys").css("display","block");
+   });
+     $(".fjys").mouseover(function () {
+				    $(this).css("display","block");
+               });
+   $("#kefulist").mouseout(function () {
+	         
+				$(".fjys").css("display","none");
+   });
+   $("#qrcodelist").mouseover(function () {
+				   $(".fjys").css("display","none");
+               });	
+</script>
+
+<!---------------赚乐扒首页头部开始------------------>
+<div class="jflsy_top" id="tops">
+    <div class="jflsy_top_bk">
+        <div class="jflsy_top_bk_hy">您好！欢迎来到赚乐扒官方网站！</div>
+        <div class="jflsy_top_bk_dl">
+            <if condition="$cur_user['mobile'] gt 0 ">
+					<span class="dl_wdl">您好！<a href="__APP__/userinfo/accountView.html">{$cur_user.nick_name}</a></span>
+					<span class="dl_dlk"><a href="__APP__/login/quit.html">退出</a></span>
+					<else /> 
+            <span class="dl_wdl">你还没有登录！</span>
+            <span class="dl_dlk"><a href="__APP__/login/login.html">登录</a> | <a href="__APP__/login/reg.html">注册</a></span>
+            </if>
+        </div>
+        <div class="jflsy_top_bk_zxdh">咨询热线：{$website.telephonr}</div>
+    </div>
+</div>
+<!---------------赚乐扒首页头部结束------------------>
+<!---------------赚乐扒首页导航开始------------------>
+<div class="jflsy_dh">
+    <div class="flsy_dh_bk">
+        <div class="flsy_dh_logo"><a href="https://www.zhuanle8.com"><img src="{$webInfo.website_logo}" style="width: 400px;"></a> </div>
+        <div class="flsy_dh_zhong">
+            <a href="__APP__/">网站首页</a>
+            <a href="__APP__/#product">投资返利</a>
+            <a href="__APP__/news.html">新闻资讯</a>
+            <a href="__APP__/doorReg/help.html">新手指引</a>
+        </div>
+        <div class="flsy_dh_wdzh">
+            <div class="flsy_dh_wdzh_left"><img src="__PUBLIC__/images/newimages/ren.png" width="42" height="42"> </div>
+            <div class="flsy_dh_wdzh_right"><a href="__APP__/userinfo/accountView.html">我的账号</a></div>
+        </div>
+    </div>
+</div>
+<!---------------赚乐扒首页导航结束------------------>
+

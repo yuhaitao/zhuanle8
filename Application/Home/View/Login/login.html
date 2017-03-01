@@ -1,0 +1,74 @@
+<include file="Public/head" />
+<include file="Public/header" />
+<!---------------赚乐扒内容页面位置开始------------------>
+<div class="jflnr_wz">
+    <div class="jflnr_wz_tb"><img src="__PUBLIC__/images/newimages/wztb.png" width="45" height="45"> </div>
+    <div class="jflnr_wz_nr">位置：<a href="__APP__/">首页</a> > <a href="__APP__/login/login.html">登录</a> </div>
+</div>
+<!---------------赚乐扒内容页面位置结束------------------>
+<!---------------赚乐扒内容标题开始------------------>
+<div class="jflnr_bt">登录</div>
+<!---------------赚乐扒内容标题结束------------------>
+<!---------------赚乐扒登录页面内容开始------------------>
+<div class="jfldl_nr">
+    <div class="jfldl_nr_bk">
+        <div class="jfldl_nr_bk_top">登录 SIGN IN</div>
+        <div id="validateid"></div>
+        <div class="jfldl_nr_bk_top01">
+            <div class="jflsy_db_top_left_01_tb"><img src="__PUBLIC__/images/newimages/suo.png" width="63" height="58"> </div>
+            <div class="jflsy_db_top_left_01_wz"><input type="text" id="loginuser" name="loginuser" placeholder="输入您的电话"></div>
+        </div>
+        <div class="jfldl_nr_bk_top01">
+            <div class="jflsy_db_top_left_01_tb"><img src="__PUBLIC__/images/newimages/yaoshi.png" width="63" height="58"> </div>
+            <div class="jflsy_db_top_left_01_wz"><input type="password" id="loginpwd" name="loginpwd" placeholder="请输入正确的密码"></div>
+        </div>
+        
+        <div class="jfldl_nr_bk_an">
+            <a href="javascript:void(0);" onclick="login();" id="loginbtn">提交</a>
+        </div>
+        <div class="jfldl_nr_bk_zc">
+            <span class="dlysdb_left"><a href="__APP__/login/reg.html">免费注册</a> </span>
+            <span class="dlysdb_right"><a href="__APP__/login/passwords.html">忘记密码</a> </span>
+        </div>
+    </div>
+</div>
+<!---------------赚乐扒登录页面内容结束------------------>
+
+<script type="text/javascript">
+function login(){
+	var input_user = $('#loginuser').val();
+	var input_pwd = $('#loginpwd').val();
+	var rule = /^1[34578]\d{9}$/;
+
+	var params = $('input').serialize();
+
+	if(input_user == '' || input_user == null){
+		$('#validateid').append("<div class='icon error'>请输入用户名！<div>");
+		return false;
+	}
+	if(!(rule.test(input_user))){
+		$('#validateid').append("<div class='icon error'>请输入正确的手机号码！<div>");
+		return false;
+	}	
+	if(input_pwd == '' || input_pwd == null){
+		$('#validateid').append("<div class='icon error'>请输入密码！<div>");
+		return false;
+	}
+	$.ajax({
+		type: 'post',
+		url:App+'/check_login',
+		dataType :'json',
+		async:true,
+		data:params,
+		success:function(msg){
+			if(msg == 0){
+				window.location.href="__APP__/userinfo/accountView.html"; 
+			}else{
+			 	$('#validateid').append("<div class='icon error'>"+msg+"<div>");
+			}
+		}
+
+	});
+}
+</script>
+<include file="Public/footer" />

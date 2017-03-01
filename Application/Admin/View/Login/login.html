@@ -1,0 +1,61 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<include file="Public/head" />
+</head>
+<body class="a_bg">
+	<div class="a_login clearfix">
+		<div class="a_login_l">
+			<form action="__URL__/login" method="POST">
+				<div class="login_error"></div>
+				<div class="login_p"><em>账户</em><input type="text" name="USER_NAME" class="form-control" placeholder="手机号"></div>
+				<div class="login_p"><em>密码</em><input type="password" name="PASSWORD" class="form-control" placeholder="请输入密码"></div>
+				<div class="login_p"><em>验证码</em><input type="text" name="verify" class="form-control" style="width:125px;"> <img class="verifyimg reloadverify" alt="点击切换" src="{:U('verify')}" style="cursor:pointer;"></div>
+				<div class="login_p"><input type="submit" value="登录" class="confirm" ></div>
+			</form>
+		</div>
+		<div class="a_login_r">
+			<div style="height: 55px">
+	            <a href="http://www.caiqi.com">
+	                <img src="__PUBLIC__/images/top_logo.png" height="52" alt="">
+	            </a>
+			</div>
+			<br>
+	        <p>理财返利第一站!<br>网贷返利,p2p返利,国内首家金融返利平台!</p>
+		</div>
+	</div>
+	<div id="footer">
+            <div class="copyright">版权所有：网金（北京）科技有限公司 © CopyRight 2014-2016 www.caiqi.com .All Rights Reserved. 京ICP备15000058号-10</div>
+        </div>
+</body>
+<script type="text/javascript">
+
+	    $("form").submit(function(){
+
+    		var self = $(this);
+    		$.post(self.attr("action"), self.serialize(), success, "json");
+    		return false;
+
+    		function success(data){
+    			if(data.status){
+    				window.location.href = data.url;
+    			} else {
+    				self.find(".login_error").html("<em class='glyphicon glyphicon-remove-circle'><i>"+data.info+"</i></em>")
+    				//刷新验证码
+    				$(".reloadverify").click();
+    			}
+    		}
+    	});
+    	
+			$(function(){
+				var verifyimg = $(".verifyimg").attr("src");
+	            $(".reloadverify").click(function(){
+	                if( verifyimg.indexOf('?')>0){
+	                    $(".verifyimg").attr("src", verifyimg+'&random='+Math.random());
+	                }else{
+	                    $(".verifyimg").attr("src", verifyimg.replace(/\?.*$/,'')+'?'+Math.random());
+	                }
+	            });
+		});
+	</script>
+</html>

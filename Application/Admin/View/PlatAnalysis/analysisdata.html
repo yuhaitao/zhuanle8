@@ -1,0 +1,83 @@
+<include file="Public/head" />
+<div class="lbs_nav"><include file="Public/breadcrumbs"/></div>
+<div class="fanbox_website">
+    <form id="website_form" action="{:U('Admin/PlatAnalysis/saveAnalysis')}" method="post">
+        <table width="100%" cellpadding="0" cellspacing="0" class="weisite_table">
+            <tr>
+                <td style="text-align: left;" colspan=5>
+                <input type="submit" style="float:none;" class="btn" value="提交"/> 
+                </td>
+            </tr>
+            <tr>
+                <td width="17%" align="right">为投资人多赚金额基数：</td>
+                <td width="23%">
+                    <input type="text" id="total_user_earn" class="input2" name="total_user_earn" value="{$analysisData.total_user_earn}"/>(元)
+                </td>
+                <td width="16%" align="right">安全运营基础天数：</td>
+                <td width="20%">
+                    <input type="text" class="input2" id="base_total_days" name="base_total_days" value="{$analysisData.base_total_days}"/>(天)
+                </td>
+                
+            </tr>
+            <tr>
+            
+            <td width="17%" align="right">总投资金额基数：</td>
+                <td width="23%">
+                    <input type="text" id="total_invest" class="input2" name="total_invest" value="{$analysisData.total_invest}"/>(元)
+                </td>
+                <td width="16%" align="right">注册人数基数：</td>
+                <td width="20%">
+                    <input type="text" class="input2" id="user_count" name="user_count" value="{$analysisData.user_count}"/>(个)
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<script type="text/javascript" src="__PUBLIC__/static/jquery.form.js"></script>
+<script type="text/javascript">
+$(function(){
+    $('#website_form').ajaxForm({
+        beforeSubmit: validate,
+        success: function(msg){
+            if(msg == 1){
+                top.layer.alert('添加成功！',function(){
+                    location.reload();
+                    top.layer.closeAll();
+                });
+            }else{
+                top.layer.alert('添加失败', {
+                    closeBtn: 0 ,
+                  });
+            }
+        }
+    }); 
+});
+function validate() {
+	var total_user_earn=$("#total_user_earn").val();
+	if (!total_user_earn) {
+		top.layer.msg('为投资人多赚钱数不可为空',{icon: 2,time: 2000});
+	  	return false;
+	}else if (total_user_earn<=0) {
+		top.layer.msg('为投资人多赚钱数不可为0或负数',{icon: 2,time: 2000});
+	  	return false;
+	}
+	
+	var total_invest=$("#total_invest").val();
+	if (!total_invest) {
+		top.layer.msg('总投资金额基数不可为空',{icon: 2,time: 2000});
+	  	return false;
+	}else if (total_invest<=0) {
+		top.layer.msg('总投资金额基数不可为0或负数',{icon: 2,time: 2000});
+	  	return false;
+	}
+	
+	var base_total_days=$("#base_total_days").val();
+	if (!base_total_days) {
+		top.layer.msg('安全运营基础天数不可为空',{icon: 2,time: 2000});
+	  	return false;
+	}else if (base_total_days<0) {
+		top.layer.msg('安全运营基础天数不可为负数',{icon: 2,time: 2000});
+	  	return false;
+	}
+}
+</script>

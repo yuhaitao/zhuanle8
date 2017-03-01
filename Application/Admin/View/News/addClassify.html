@@ -1,0 +1,79 @@
+<div class="fanbox_classify">
+    <h3>添加新闻分类</h3>
+    <form id="addClassify_form" action="{:U('Admin/News/saveClassify')}" method="post">
+        <table width="90%" cellpadding="0" cellspacing="0" style="margin: 0 auto; position: relative; top: 10px;    font-size: 14px;" class="search_table">
+            <tr>
+                <td width="20%">&nbsp;&nbsp;&nbsp;分类名称：&nbsp;</td>
+                <td><input type="text" id="classify_name" name="classify_name" style="width:260px;" value="">
+                    <div class="news_error"></div>
+                </td>
+            </tr>
+            <tr>
+                <td width="20%">&nbsp;&nbsp;&nbsp;分类序号：&nbsp;</td>
+                <td><input type="text" id="order_num" name="order_num" style="width:260px;" value="">
+                </td>
+            </tr>
+            <tr>
+                <td width="20%">&nbsp;&nbsp;&nbsp;分类标题：&nbsp;</td>
+                <td><input type="text" id="classify_title" name="classify_title" style="width:260px;" value="">
+                </td>
+            </tr>
+            <tr>
+                <td width="20%">&nbsp;&nbsp;&nbsp;分类标识：&nbsp;</td>
+                <td><input type="text" id="classify_tag" name="classify_tag" style="width:260px;" value="">
+                </td>
+            </tr>
+            <tr>
+                <td height="80px">&nbsp;</td>
+                <td style="text-align: right;">
+                <input type="submit" style="float:none;" class="btn" value="提交"> 
+                <input type="button" style="float:none;" class="btn" value="取消" onclick="$.fancybox.close();"></td>
+            </tr>
+        </table>
+    </form>
+</div>
+<script type="text/javascript" src="__PUBLIC__/static/jquery.form.js"></script>
+<script type="text/javascript">
+$(function(){
+    $('#addClassify_form').ajaxForm({
+        beforeSubmit: validate,
+        success: function(msg){
+            console.log(msg);
+            if(msg == "1"){
+                top.layer.alert('添加成功',function(){
+                    $.fancybox.close();
+                    top.rightContent.window.reload_classifyList();
+                    top.layer.closeAll();
+                });
+            }else{
+                layer.alert(msg, {
+                    closeBtn: 0 ,
+                  });
+            }
+        }
+    }); 
+});
+function validate() {
+   var classify_name=$("#classify_name").val();
+   if (classify_name=="") {
+        top.layer.alert('请填写分类名称！');
+        return false;
+   }
+   var order_num=$("#order_num").val();
+   if (isNaN(order_num)) {
+        layer.alert('请填写分类序号！');
+        return false;
+   }
+   var class_title = $('#classify_title').val();
+   if(class_title == ""){
+        top.layer.alert('请填写分类标题！');
+        return false;
+   }
+   var class_tag = $('#classify_tag').val();
+   if(class_title == ""){
+        top.layer.alert('请填写分类标识！');
+        return false;
+   }
+}
+
+</script>

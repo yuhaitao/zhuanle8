@@ -1,0 +1,111 @@
+html #layui_layer_skinespressostylecss {
+  display: none;
+  position: absolute;
+  width: 1989px;
+}
+body .layer-ext-espresso {
+  border: 6px solid rgba(51, 102, 153, 0.4);
+  background: #f8f8f8;
+}
+body .layer-ext-espresso .layui-layer-padding {
+  padding: 27px 20px 22px 75px;
+}
+body .layer-ext-espresso .layui-layer-title {
+  border-bottom: 1px solid #eee;
+  font-size: 14px;
+  color: #fff;
+  background-color: #528bbc;
+  padding: 0;
+  text-indent: 1em;
+  font-family: "Microsoft YaHei", "微软雅黑", "SimHei", "黑体";
+  height: 30px;
+  line-height: 30px;
+}
+body .layer-ext-espresso .layui-layer-close {
+  background: url(close.png);
+  width: 20px;
+  height: 20px;
+  top: -28px;
+  -webkit-transition: all 0.3s ease 0s;
+          transition: all 0.3s ease 0s;
+  right: -28px;
+}
+
+body .layer-ext-espresso .layui-layer-content .layui-layer-ico {
+  width: 48px;
+  height: 48px;
+}
+body .layer-ext-espresso .layui-layer-content .layui-layer-ico.layui-layer-ico0 {
+  background: url("icon.png") 0 0;
+  background-repeat: no-repeat;
+}
+body .layer-ext-espresso .layui-layer-content .layui-layer-ico.layui-layer-ico1 {
+  background: url("icon.png") -52px 0;
+  background-repeat: no-repeat;
+}
+body .layer-ext-espresso .layui-layer-content .layui-layer-ico.layui-layer-ico2 {
+  background: url("icon.png") -52px 0;
+  background-repeat: no-repeat;
+}
+body .layer-ext-espresso .layui-layer-content .layui-layer-ico.layui-layer-ico3 {
+  background: url("icon.png") -156px 0;
+  background-repeat: no-repeat;
+}
+body .layer-ext-espresso .layui-layer-content .layui-layer-ico.layui-layer-ico4 {
+  background: url("icon.png") -210px 0;
+  background-repeat: no-repeat;
+}
+body .layer-ext-espresso .layui-layer-content .layui-layer-ico.layui-layer-ico5 {
+  background: url("icon.png") -261px 0;
+  background-repeat: no-repeat;
+}
+body .layer-ext-espresso .layui-layer-content .layui-layer-ico.layui-layer-ico6 {
+  background: url("icon.png") -314px 0;
+  background-repeat: no-repeat;
+}
+body .layer-ext-espresso .layui-layer-content .layui-layer-ico.layui-layer-ico7 {
+  background: url("icon.png") -367px 0;
+  background-repeat: no-repeat;
+}
+body .layer-ext-espresso .layui-layer-content .layui-layer-ico.layui-layer-ico8 {
+  background: url("icon.png") -419px 0;
+  background-repeat: no-repeat;
+}
+body .layer-ext-espresso .layui-layer-content .layui-layer-ico.layui-layer-ico9 {
+  background: url("icon.png") -471px 0;
+  background-repeat: no-repeat;
+}
+body .layer-ext-espresso .layui-layer-content .layui-layer-ico.layui-layer-ico10 {
+  background: url("icon.png") -524px 0;
+  background-repeat: no-repeat;
+}
+body .layer-ext-espresso .layui-layer-content .layui-layer-ico.layui-layer-ico11 {
+  background: url("icon.png") -576px 0;
+  background-repeat: no-repeat;
+}
+body .layer-ext-espresso .layui-layer-content .layui-layer-ico.layui-layer-ico12 {
+  background: url("icon.png") -629px 0;
+  background-repeat: no-repeat;
+}
+body .layer-ext-espresso .layui-layer-content .layui-layer-ico.layui-layer-ico13 {
+  background: url("icon.png") -681px 0;
+  background-repeat: no-repeat;
+}
+body .layer-ext-espresso .layui-layer-btn {
+  text-align: right;
+  padding-right: 5px;
+}
+body .layer-ext-espresso .layui-layer-btn .layui-layer-btn0 {
+  background: #528bbc;
+  height: 30px;
+  line-height: 30px;
+  padding: 0 20px;
+  font-size: 14px;
+}
+body .layer-ext-espresso .layui-layer-btn .layui-layer-btn1 {
+  background: #528bbc;
+  height: 30px;
+  line-height: 30px;
+  padding: 0 20px;
+  font-size: 14px;
+}

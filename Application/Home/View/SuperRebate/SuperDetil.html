@@ -1,0 +1,230 @@
+<include file="Public/head" />
+<include file="Public/header" />
+<script type="text/javascript">
+	timer(864000);
+</script>
+<!--超级返利大背投-->
+	<div class="Super mb30">
+		<div class="Super_top">
+			<div class="St1"></div>
+			<div class="St2"></div>
+			<div class="St3"></div>
+			<div class="St4">
+				<div class="St4_main"><h3>赚乐扒加息<i>{$superdetail.cq_rate|number_format = 1}%</i>起  起投金额<i>{$superdetail.start_invest_amount|intval}</i>元</h3></div>
+			</div>
+			<div class="St5">
+				<div class="St5_main">
+					<h2>第35期开始时间：</h2>
+					<div class="time-item">
+						<strong id="day_show">00</strong>
+						<strong id="hour_show">00</strong>
+						<strong id="minute_show">00</strong>
+						<strong id="second_show">00</strong>
+					</div><!--倒计时模块-->
+				</div>
+			</div>
+			<div class="St6"></div>
+		</div>
+		<div class="Super_main clearfix">
+			<!---->
+				<div class="_det_left">
+					<div class="_det_left_top text_three">
+						{$superdetail.target_name|getSubstr = 0,30}
+						<input type="hidden" name="redInfo" id="redInfo_id" value="">
+						<span class="_det_left_top_span text_four" id="spanId"></span><span class="touzi_tip">每投资1000元送10元红包</span>
+					</div>
+					<div class="_det_left_data1">
+						<table cellspadding="0" cellspacing="0">
+							<tbody><tr class="text_five">
+								<td><span class="text_six">{$superdetail.annual_income_rate|number_format = 1}</span>%</td>
+								<td class="text_six td_cen">+</td>
+								<td><span class="text_six">{$superdetail.cq_rate|number_format = 1}</span>%</td>
+								<td class="text_six td_cen">=</td>
+								<td><span class="text_six">{$superdetail.unit_rate|number_format = 1}</span>%</td>
+
+								<td></td>
+								<td class="text_one">{$time}</td>
+								<td></td>
+								<td class="text_one"><span class="text_seven">{$superdetail.start_invest_amount|intval}</span>元</td>
+							</tr>
+							<tr class="text_two">
+								<td>平台年化</td>
+								<td></td>
+								<td>赚乐扒加息</td>
+								<td></td>
+								<td>综合年化</td>
+								<td></td>
+								<td>投标期限</td>
+								<td></td>
+								<td>起投金额</td>
+							</tr>
+						</tbody></table>
+					</div>
+					<div class="_det_left_data2">
+						<table cellspadding="0" cellspacing="0">
+							<tbody>
+							<tr class="text_two">
+								<td>保障方式：<span class="text_one">{$guarantee} </span>
+								</td>
+								<td class="td_cen" style="text-align: left;">计息方式： <span class="text_one"> {$interest} </span>
+								</td>
+								<td class="td_right">投标限额：<span class="text_one">{$superdetail.end_invest_amount|intval}元</span></td>
+							</tr>
+							<tr class="text_two">
+								<td>还款方式： <span class="text_one"> {$repayment} </span>
+								</td>
+								<td style="text-align: left;" class="td_cen">标的总额：<span class="text_one">{$superdetail.product_sum}万元</span></td>
+								<td class="td_right">
+									<!-- 再判断该用户投资该标是否已经超过投资上限，如果已经超过不能投资，没有超过可投资-->
+									<div class="td_right_div"><a class="btn_a3 btn_bg2 _right" onclick="gotoThirdPurchase();" href="javascript:void(0);">立即投资</a>
+									</div>
+								</td>
+							</tr>
+						</tbody></table>
+					</div>
+					<div class="_det_left_data3">
+						<table cellspadding="0" cellspacing="0">
+							<tbody><tr class="">
+								<td><span class="_det_left_data3_span text_eight">请认真仔细查看注意事项：</span></td>
+							</tr>
+							<tr class="text_nine">
+								<td>1、为了确保您的投资有返利，首次注册理财平台时，请保持手机号码、身份信息和赚乐扒一致（注册信息错误，不可获得返利）。</td>
+							</tr>
+							<tr class="text_nine">
+								<td>2、跳转后投资人必须核查标的信息是否正确，投错标的或超出标的限额部分不计算返利。</td>
+							</tr>
+						</tbody></table>
+					</div>
+				</div>
+				<div class="_det_right">
+					<dl>
+						<dd>
+							<img src="__PUBLIC__/images/home/activity2.png" />
+						</dd>
+						<dt class="text_two">平台名称：<span class="text_one">{$superdetail.shortname}</span></dt>
+						<dt class="text_two"><div class="_left">平台网址：</div>
+							<div class="_left _website">
+								<span>{$superdetail.platform_site}</span>
+							</div>
+						</dt>
+						<dt class="text_two">注册资金：<span class="text_one">{$superdetail.register_money}万元</span></dt>
+						<dt class="text_two">上线时间：<span class="text_one">{$superdetail.online_time}</span></dt>
+						<dt class="text_two">所在地区：
+							<span class="text_one"> {$address} </span>
+						</dt>
+					</dl>
+				</div>
+			<!---->
+			
+		</div>
+		<!--下期预告-->
+			<div class="det_next mt20">
+				<div class="next_tig"><img src="__PUBLIC__/images/superRebate/next_qi.png" /></div>
+				<div class="det_next_nr clearfix">
+					<ul>
+						<li class="next_img"><img src="__PUBLIC__/images/superRebate/youli.png" alt="有利网" /></li>
+						<li class="next_title"><h3>第36期-有利网</h3></li>
+						<li>
+							<span class="text_ten">平台年化</span>
+							<span class="text_shiyi mt3">1<i class="text_shier">？</i>.00%</span>
+						</li>
+						<li class="ml75">
+							<span class="text_ten">赚乐扒加息</span>
+							<span class="text_shiyi mt3">1<i class="text_shier">？</i>.00%</span>
+						</li>
+						<li class="ml75">
+							<span class="text_ten">综合年化</span>
+							<span class="text_shiyi mt3"><i class="text_shier">？</i>5.00%</span>
+						</li>
+						<li class="ml75">
+							<span class="text_ten">投资期限</span>
+							<span class="mt3"><em class="text_shiyi">3</em>个月</span>
+						</li>
+						<li style="float: right;margin-top: 10px;">
+							<a href="#" class="btn_bg4 btn_a4">敬请期待</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		<!--下期预告结束-->
+		<!--超级返利规则-->
+			<div class="Super_role mt20">
+				<h3>超级返利规则</h3>
+				<p>1、注册说明：必须是通过赚乐扒 <em>【马上注册】</em>的用户。平台老用户不能参加返利；</p>
+				<p>2、投资说明：投资有返利的标的是【1个月标 日日盈】【二月标 月月盈】，标的只允许【首投】（第一次投资标的），复投、续投无效。</p>
+				<p>3、投资申报：用户投资成功需要在个人中心-我的投资-<em>【投资申报】</em>-填写投资记录。</p>
+				<p>4、返利提现：满标后赚乐扒与平台对账，确认投资人数据无误后，将返利发放给用户，次日用户可以申请提现。</p>
+			</div>
+		<!--超级返利规则结束-->
+		<!--往期回顾-->
+			<div class="Super_past mt20">
+				<div class="past_list">
+					<div class="hd clearfix">
+						<h3>往期回顾</h3>
+						<a class="icon next"></a>
+						<a class="icon prev"></a>
+						<!-- <ul class="num"><li>1</li><li>2</li><li>3</li></ul> -->
+						<!-- <span class="pageState"></span> -->
+					</div>
+					<div class="bd">
+						<ul>
+							<li>
+								<div class="infoList_img"><img src="__PUBLIC__/images/superRebate/youli.png" /></div>
+								<div class="past_nr">
+									<div class="past_title"><a class="" href="#">第34期—有利网</a></div>
+									<div class="past_tig clearfix">
+										<span><em class="fz12">平台年化</em><em><i class="text_shier">10.00</i>%</em></span>
+										<span><em class="fz12">赚乐扒加息</em><em><i class="text_shier">15.00</i>%</em></span>
+										<span><em class="fz12">综合年化</em><em><i class="text_shier">10.00</i>%</em></span>
+										<span><em class="fz12">投资期限</em><em><i class="text_shier">3</i>个月</em></span>
+									</div>
+								</div>
+							</li>
+							<li>
+								<div class="infoList_img"><img src="__PUBLIC__/images/superRebate/youli.png" /></div>
+								<div class="past_nr">
+									<div class="past_title"><a class="" href="#">第34期—有利网</a></div>
+									<div class="past_tig clearfix">
+										<span><em class="fz12">平台年化</em><em><i class="text_shier">10.00</i>%</em></span>
+										<span><em class="fz12">赚乐扒加息</em><em><i class="text_shier">15.00</i>%</em></span>
+										<span><em class="fz12">综合年化</em><em><i class="text_shier">10.00</i>%</em></span>
+										<span><em class="fz12">投资期限</em><em><i class="text_shier">3</i>个月</em></span>
+									</div>
+								</div>
+							</li>
+							<li>
+								<div class="infoList_img"><img src="__PUBLIC__/images/superRebate/youli.png" /></div>
+								<div class="past_nr">
+									<div class="past_title"><a class="" href="#">第34期—有利网</a></div>
+									<div class="past_tig clearfix">
+										<span><em class="fz12">平台年化</em><em><i class="text_shier">10.00</i>%</em></span>
+										<span><em class="fz12">赚乐扒加息</em><em><i class="text_shier">15.00</i>%</em></span>
+										<span><em class="fz12">综合年化</em><em><i class="text_shier">10.00</i>%</em></span>
+										<span><em class="fz12">投资期限</em><em><i class="text_shier">3</i>个月</em></span>
+									</div>
+								</div>
+							</li>
+							<li>
+								<div class="infoList_img"><img src="__PUBLIC__/images/superRebate/youli.png" /></div>
+								<div class="past_nr">
+									<div class="past_title"><a class="" href="#">第34期—有利网</a></div>
+									<div class="past_tig clearfix">
+										<span><em class="fz12">平台年化</em><em><i class="text_shier">10.00</i>%</em></span>
+										<span><em class="fz12">赚乐扒加息</em><em><i class="text_shier">15.00</i>%</em></span>
+										<span><em class="fz12">综合年化</em><em><i class="text_shier">10.00</i>%</em></span>
+										<span><em class="fz12">投资期限</em><em><i class="text_shier">3</i>个月</em></span>
+									</div>
+								</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<script type="text/javascript">
+			 jQuery(".past_list").slide({titCell:".hd ul",mainCell:".bd ul",autoPage:true,effect:"left",autoPlay:false,scroll:2,vis:2,trigger:"click"});
+			</script>
+		<!--往期回顾结束-->
+	</div>
+<!--超级返利大背投结束-->
+
+<include file ="Public/footer" />

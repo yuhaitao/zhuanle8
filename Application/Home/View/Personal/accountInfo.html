@@ -1,0 +1,790 @@
+<include file="Public/head"/>
+<!-- 头部 -->
+<include file="Public/header"/>
+<link href="__PUBLIC__/css/cropbox.css" rel="stylesheet"/>
+<script type="text/javascript" src="__PUBLIC__/static/cropbox.js"></script>
+<!-- /头部 -->
+<script type="text/javascript">
+	$(function(){
+		//账户信息
+		$("#nickNameli").hide();
+		$("#userpasswordli").hide();
+		$("#tradePasli").hide();
+		$("#userAddressli").hide();
+		$("#editImageDiv").hide();
+
+		var targ = GetQueryString('targ');
+		console.log(targ);
+		if( targ == 'email'){
+			$("#userEmailli").show();
+		}else{
+			$("#userEmailli").hide();
+		}
+
+		if( targ == 'auth'){
+			$("#userRenzhengli").show();
+		}else{
+			$("#userRenzhengli").hide();
+		}
+
+
+	});
+	//获取url 参数
+	function GetQueryString(name)
+	{
+	     var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+	     var r = window.location.search.substr(1).match(reg);
+	     if(r!=null)return  unescape(r[2]); return null;
+	}
+	//显示隐藏DIV
+	function accoutHideDiv(id){
+		if(!(id=="nickNameli")){
+			$("#nickNameli").fadeOut();
+		}
+		if(!(id=="userpasswordli")){
+			$("#userpasswordli").fadeOut();
+		}
+		if(!(id=="userEmailli")){
+			$("#userEmailli").fadeOut();
+		}
+		if(!(id=="userRenzhengli")){
+			$("#userRenzhengli").fadeOut();
+		}
+		if(!(id=="tradePasli")){
+			$("#tradePasli").fadeOut();
+		}
+		if(!(id=="userAddressli")){
+			$("#userAddressli").fadeOut();
+		}
+	  	$("#"+id).fadeToggle();
+	}
+	//隐藏DIV
+	function accoutShowDiv(id){
+	   $("#"+id).fadeOut();
+	}
+
+
+</script>
+<!---------------赚乐扒内容页面位置开始------------------>
+<div class="jflnr_wz">
+    <div class="jflnr_wz_tb"><img src="__PUBLIC__/images/newimages/wztb.png" width="45" height="45"> </div>
+    <div class="jflnr_wz_nr">位置：<a href="__ROOT__/">首页</a> > 账户信息 </div>
+</div>
+<!---------------赚乐扒内容页面位置结束------------------>
+
+
+<!---------------赚乐扒个人中心账户总阅开始------------------>
+<div class="jflgrzx_zhzy">
+    <div class="jflgrzx_zhzy_left">
+         <include file="Public/person_left"/>
+    </div>
+    <div class="jflgrzx_zhzy_right">
+       
+        <div class="zhxx_nr">
+           <div class="right_main">
+				<div class="right_top">
+					<ul class="right_top_ul ">
+						<li class="right_top_li2"><a class="text_twenty" href="javascript:void(0);" onclick="selectAccountInfoType(1,this);">账户信息</a></li>
+						<li class="right_top_li"><a class="text_nineteen" href="javascript:void(0);" onclick="selectAccountInfoType(2,this);">修改头像</a></li>   
+                        <div class="clear"></div>
+					</ul>
+				</div>
+				<div id="accountDiv" style="display: block;">
+					<div class="zhxx_02">温馨提示：亲爱的会员，为保障获得赚乐扒年化收益，请保证身份信息真实有效，并与第三方平台注册信息保持一致，敬请谅解！</div>
+					<div class="list_user">
+						<table cellspacing="0" cellspadding="0" width="100%">
+							<tbody>
+							<tr>
+								<if condition="$personal.nick eq 0">
+									<td class="user_y text_one" width="130px"><i class="icon-exclamation-sign fz16 mr12 color900"></i>用户名</td>
+									<td class="text_tthi" width="630px"></td>
+								<else /> 
+									<td class="user_y text_one" width="130px"><i class="icon-ok-sign fz16 mr12 color009"></i>用户名</td>
+									<td class="text_tthi" width="630px">{$personal.nick_name}</td>
+								</if>
+								<td><a href="javascript:void(0);" onclick="accoutHideDiv('nickNameli');" class="a14" width="140px">修改</a></td>
+							</tr>
+							<tr id="nickNameli" class="change_bg" style="display: none;">
+								<td colspan="3" class="change_tdSp">
+									<table>
+										<tbody>
+										<tr>
+											<if condition="$personal.nick eq 0">
+											<td class="user_y text_one" width="100px"><i class="icon-exclamation-sign fz16 mr12 color900"></i>用户名</td>
+											<else />
+											<td class="user_y text_one" width="100px"><i class="icon-ok-sign fz16 mr12 color009"></i>用户名</td>
+											</if>
+											<td colspan="4" width="450px;">
+												<input id="accountEditNickName" class="_input text_two" placeholder="输入新的用户名">
+											</td>
+										</tr>
+										<tr>
+											<td></td>
+											<td width="125px"></td>
+											<td width="110px">
+												<div class="btn_a"><a href="javascript:void(0);" onclick="accoutShowDiv('nickNameli');" class="a15">取消</a></div>
+											</td>
+											<td width="110px">
+												<div class="btn_a"><a href="javascript:void(0);" onclick="saveNickName();" class="a16">确定</a></div>
+											</td>
+											<td width="105px"></td>
+										</tr>
+									</tbody></table>
+								</td>
+							</tr>
+							<tr>
+								<td class="user_y text_one"><i class="icon-ok-sign fz16 mr12 color009"></i>登录密码</td>
+								<td class="text_tthi">******</td>
+								<td><a href="javascript:void(0);" onclick="accoutHideDiv('userpasswordli');" class="a14">修改</a></td>
+							</tr>
+							<tr id="userpasswordli" class="change_bg" style="display: none;">
+								<td colspan="3" class="change_tdSp">
+									<table>
+										<tbody><tr>
+											<td class="user_y text_one" width="150px"><i class="icon-ok-sign fz16 mr12 color009"></i>登录密码</td>
+											<td colspan="4" width="450px;">
+												<input id="oldPassword1" class="_input text_two" type="password" placeholder="输入原有密码（字母/数字/特殊字符/8-16位）">
+											</td>
+										</tr>
+										<tr>
+											<td class="" width="100px"></td>
+											<td colspan="4" width="450px;">
+												<input id="newPassWord1" class="_input text_two" type="password" placeholder="输入新密码（字母/数字/特殊字符/8-16位）">
+											</td>
+										</tr>
+										<tr>
+											<td class="" width="100px"></td>
+											<td colspan="4" width="450px;">
+												<input id="newNextPassWord1" class="_input text_two" type="password" placeholder="再次输入新密码（字母/数字/特殊字符/8-16位）">
+											</td>
+										</tr>
+										<tr>
+											<td></td>
+											<td width="125px"></td>
+											<td width="110px">
+												<div class="btn_a"><a href="javascript:void(0);" onclick="accoutShowDiv('userpasswordli');" class="a15">取消</a></div>
+											</td>
+											<td width="110px">
+												<div class="btn_a"><a href="javascript:void(0);" onclick="savePassWord('1');" class="a16">确定</a></div>
+											</td>
+											<td width="105px"></td>
+										</tr>
+									</tbody></table>
+								</td>
+							</tr>
+							<tr>
+								<td class="user_y text_one"><i class="icon-ok-sign fz16 mr12 color009"></i>手机</td>
+								<td class="text_tthi">{$personal.mobile}</td>
+								<td><a href="javascript:void(0);" class="a14">已绑定</a></td>
+							</tr>
+							<tr>
+								<if condition="$personal.trade_password eq 0">
+								<td class="user_y text_one"><i class="icon-exclamation-sign fz16 mr12 color900"></i>交易密码</td>
+								<td class="text_tthi"></td>
+								<else/>
+								<td class="user_y text_one"><i class="icon-ok-sign fz16 mr12 color009"></i>交易密码</td>
+								<td class="text_tthi">******</td>
+								</if>
+								<td>
+								<a href="javascript:void(0);" onclick="accoutHideDiv('tradePasli');" class="a14">修改</a>
+									&nbsp;&nbsp;
+								<a target="_blank" href="__APP__/user/gotoTradePWD.html" class="a14">找回</a>
+								</td>
+							</tr>
+							<tr id="tradePasli" class="change_bg" style="display: none;">
+								<td colspan="3" class="change_tdSp">
+									<table>
+										<tbody>
+										<if condition="$personal.trade_password eq 0">
+											<tr>
+											<td class="user_y text_one" width="150px"><i class="icon-exclamation-sign fz16 mr12 color900"></i>交易密码</td>
+											<td colspan="4" width="450px;">
+												<input id="newPassWord2" class="_input text_two" type="password" placeholder="输入新密码（字母/数字/特殊字符/8-16位）">
+											</td>
+											</tr>
+										<else />
+										<tr>
+										<td class="user_y text_one" width="150px"><i class="icon-ok-sign fz16 mr12 color009"></i></i>交易密码</td>
+										<td colspan="4" width="450px;">
+												<input id="oldPassword2" class="_input text_two" type="password" placeholder="输入原有密码（字母/数字/特殊字符/8-16位）">
+											</td>
+										</tr>
+										<tr>
+											<td class="" width="100px"></td>
+											<td colspan="4" width="450px;">
+												<input id="newPassWord2" class="_input text_two" type="password" placeholder="输入新密码（字母/数字/特殊字符/8-16位）">
+											</td>
+										</tr>
+										</if>
+										<tr>
+											<td class="" width="100px"></td>
+											<td colspan="4" width="450px;">
+												<input id="newNextPassWord2" class="_input text_two" type="password" placeholder="再次输入新密码（字母/数字/特殊字符/8-16位）">
+											</td>
+										</tr>
+										<tr>
+											<td></td>
+											<td width="125px"></td>
+											<td width="110px">
+												<div class="btn_a"><a href="javascript:void(0);" onclick="accoutShowDiv('tradePasli');" class="a15">取消</a></div>
+											</td>
+											<td width="110px">
+												<div class="btn_a"><a href="javascript:void(0);" onclick="savePassWord('2');" class="a16">确定</a></div>
+											</td>
+											<td width="105px"></td>
+										</tr>
+									</tbody></table>
+								</td>
+							</tr>
+							<tr>
+								<if condition="$personal.email eq 0">
+								<td class="user_y text_one"><i class="icon-exclamation-sign fz16 mr12 color900"></i>邮箱</td>
+								<td class="text_tthi">绑定邮箱后，您可及时了解交易情况及赚乐扒最新动态。</td>
+								<td><a href="javascript:void(0);" onclick="accoutHideDiv('userEmailli');" class="a14">绑定</a>
+								<else />
+								<td class="user_y text_one"><i class="icon-ok-sign fz16 mr12 color009"></i>邮箱</td>
+								<td class="text_tthi">{$personal.email}</td>
+								<td><a href="javascript:void(0);" onclick="accoutHideDiv('userEmailli');" class="a14">已绑定</a></td></if>
+							</tr>
+							<tr id="userEmailli" class="change_bg" style="display: none;">
+								<td colspan="3" class="change_tdSp">
+									<table>
+										<tbody>
+										<tr>
+											<if condition="$personal.email eq 0">
+											<td class="user_y text_one"><i class="icon-exclamation-sign fz16 mr12 color900"></i>邮箱</td>
+											<else />
+											<td class="user_y text_one"><i class="icon-ok-sign fz16 mr12 color009"></i>邮箱</td>
+											</if>
+											<td colspan="4" width="450px;">
+												<input id="emails" class="_input text_two" placeholder="输入新的邮箱">
+											</td>
+										</tr>
+										<tr>
+											<td></td>
+											<td width="125px"></td>
+											<td width="110px">
+												<div class="btn_a"><a href="javascript:void(0);" onclick="accoutShowDiv('userEmailli');" class="a15">取消</a></div>
+											</td>
+											<td width="110px">
+												<div class="btn_a"><a href="javascript:void(0);" onclick="saveEmails();" class="a16">确定</a></div>
+											</td>
+											<td width="105px"></td>
+										</tr>
+									</tbody></table>
+								</td>
+							</tr>
+							<tr>
+								<if condition="$personal.identity eq 0">
+								<td class="user_y text_one"><i class="icon-exclamation-sign fz16 mr12 color900"></i>实名认证</td>
+								<td class="text_tthi">	保障账户安全、绑定银行卡申请提现姓名一致，请您务必填写真实有效证件</td>
+								<td><a href="javascript:void(0);" onclick="accoutHideDiv('userRenzhengli');" class="a14">认证</a></td>
+								<else />
+								<td class="user_y text_one"><i class="icon-ok-sign fz16 mr12 color009"></i>实名认证</td>
+								<td class="text_tthi">{$personal.realname}</td>
+								<td><a href="javascript:void(0);" class="a14">已认证</a></td>
+								</if>
+							</tr>
+							<tr id="userRenzhengli" class="change_bg">
+							<td colspan="3" class="change_tdSp">
+								<table>
+									<tbody><tr>
+										<if condition="$personal.identity eq 0">
+										<td class="user_y text_one" width="150px"><i class="icon-exclamation-sign fz16 mr12 color900"></i>实名认证</td>
+										<else />
+										<td class="user_y text_one" width="150px"><i class="icon-ok-sign fz16 mr12 color009"></i></i>实名认证</td>
+										</if>
+										<td colspan="4" width="450px;">
+											<input id="acccertification" class="_input text_two" placeholder="输入真实姓名">
+										</td>
+									</tr>
+									<tr>
+										<td class="" width="100px"></td>
+										<td colspan="4" width="450px;">
+											<input id="acccertification1" class="_input text_two" placeholder="输入身份证号码">
+										</td>
+									</tr>
+									<tr>
+										<td></td>
+										<td width="125px"></td>
+										<td width="110px">
+											<div class="btn_a"><a href="javascript:void(0);" onclick="accoutShowDiv('userRenzhengli');" class="a15">取消</a></div>
+										</td>
+										<td width="110px">
+											<div class="btn_a"><a href="javascript:void(0);" onclick="certification();" class="a16">确定</a></div>
+										</td>
+										<td width="105px"></td>
+									</tr>
+								</tbody></table>
+							</td>
+							</tr>
+							<tr>
+								<if condition="$personal.place eq 0">
+								<td class="user_y text_one"><i class="icon-exclamation-sign fz16 mr12 color900"></i>联系地址</td>
+								<td class="text_tthi">	用于给会员邮寄礼品，请填写真实地址</td>
+								<td><a href="javascript:void(0);" onclick="accoutHideDiv('userAddressli');" class="a14">认证</a></td>
+								<else />
+								<td class="user_y text_one"><i class="icon-ok-sign fz16 mr12 color009"></i>联系地址</td>
+								<td class="text_tthi">{$personal.address}</td>
+								<td><a href="javascript:void(0);" onclick="accoutHideDiv('userAddressli');" class="a14">已认证</a></td>
+								</if>
+							</tr>
+							<tr id="userAddressli" class="change_bg" style="display: none;">
+								<td colspan="3" class="change_tdSp">
+									<table>
+										<tbody><tr>
+											<if condition="$personal.place eq 0">
+											<td class="user_y text_one" width="150px"><i class="icon-exclamation-sign fz16 mr12 color900"></i>联系地址</td>
+											<else />
+											<td class="user_y text_one" width="150px"><i class="icon-ok-sign fz16 mr12 color009"></i></i>联系地址</td>
+											</if>
+											<td colspan="4" width="450px;">
+												<input id="address" class="_input text_two" placeholder="请如实填写联系地址">
+											</td>
+										</tr>
+										<tr>
+											<td></td>
+											<td width="125px"></td>
+											<td width="110px">
+												<div class="btn_a"><a href="javascript:void(0);" onclick="accoutShowDiv('userAddressli');" class="a15">取消</a></div>
+											</td>
+											<td width="110px">
+												<div class="btn_a"><a href="javascript:void(0);" onclick="saveAddress();" class="a16">确定</a></div>
+											</td>
+											<td width="105px"></td>
+										</tr>
+									</tbody></table>
+								</td>
+							</tr>
+						</tbody></table>
+					</div>
+				</div>
+				<div id="editImageDiv" style="display: none;">
+					<div class="container">
+						  <div class="imageBox">
+							    <div class="thumbBox"></div>
+							    <div class="spinner" style=""></div>
+						  </div>
+						  <div class="action"> 
+							    <div class="new-contentarea tc"> 
+							    	<a href="javascript:void(0)" class="upload-img">
+							      		<label for="upload-file">请先选择图片...</label>
+							      	</a>
+							      	<input type="file" class="" name="upload-file" id="upload-file">
+							    </div>
+							    <input type="button" id="btnCrop" class="Btnsty_peyton2" value="保存">
+							    <input type="button" id="btnZoomIn" class="Btnsty_peyton" value="+">
+							    <input type="button" id="btnZoomOut" class="Btnsty_peyton" value="-">
+						  </div>
+						  <div class="cropped"></div>
+					</div>
+				</div>
+			</div>
+        </div>
+    </div>
+    <div class="line"></div>
+</div>
+<!---------------赚乐扒个人中心账户总阅结束------------------>
+
+	<script type="text/javascript">
+	$(function(){
+		changeClss();
+	});
+	function changeClss(){
+		var jspname = 'accountInfo';
+		if(jspname!=null&&jspname!=''){
+			$("#"+jspname).attr("class","text_twenty");
+		}
+	}
+	function changeDivContext(obj,name,url){
+		openwin_self(url);
+	}
+	//DIV 切换
+	function selectAccountInfoType(type,obj){
+    $(".right_top_ul li").attr('class', 'right_top_li');
+	    $(".right_top_ul li a").attr('class', 'text_nineteen');
+		if(type==1){
+			$("#accountDiv").show();
+			$("#editImageDiv").hide();
+		}else if(type=2){
+		 	$("#accountDiv").hide();
+			$("#editImageDiv").show();
+		}
+		obj.parentNode.className="right_top_li2";
+		obj.className="text_twenty";
+	}
+
+
+	//修改用户名
+	function saveNickName(){
+		var nick_name=$("#accountEditNickName").val();
+		$.ajax({
+		  	type:'post',
+		  	url:App+'/saveNickName',
+		  	dataType:'json',
+		  	async:true,
+		  	data:{nick_name:nick_name},
+		  	success:function(data){
+		  		if(data == 1){
+		  			top.layer.msg('修改成功！',{icon: 1,time: 1000});
+		  			location=location;
+		  		}else{
+		  			top.layer.alert('修改失败！',{icon: 2,time: 1000});
+		  		}
+		  	}
+		});
+	}
+	//修改密码
+	function savePassWord (t) {
+		var t_pwd={$personal.trade_password};
+		if (t=="1") {
+			var oldPwd=$("#oldPassword1").val();
+			var newPwd=$("#newPassWord1").val();
+			var newPword=$("#newNextPassWord1").val();
+		}else{
+			if (t_pwd=="1") {
+				var oldPwd=$("#oldPassword2").val();
+				var newPwd=$("#newPassWord2").val();
+				var newPword=$("#newNextPassWord2").val();
+			}else{
+				var oldPwd=-1;
+				var newPwd=$("#newPassWord2").val();
+				var newPword=$("#newNextPassWord2").val();
+			}
+			
+			
+		}
+		if(oldPwd > 0){
+			if (oldPwd.length < 8) {
+				top.layer.alert('原有密码不足8位',{icon: 2,time: 1000});
+				return false;
+			}
+		}
+		if (newPwd.length < 8) {
+			top.layer.alert('新密码不足8位',{icon: 2,time: 1500});
+			return false;
+		}
+		if (newPwd!=newPword) {
+			top.layer.alert('两次输入密码不同',{icon: 2,time: 1000});
+			return false;
+		}
+		$.ajax({
+		  	type:'post',
+		  	url:App+'/savePassWord.html',
+		  	dataType:'json',
+		  	async:true,
+		  	data:{oldPwd:oldPwd,newPwd:newPwd,type:t},
+		  	success:function(data){
+		  		console.log(data);
+		  		if(data == 1){
+		  			top.layer.msg('修改成功！',{icon: 1,time: 1000});
+		  			location=location;
+		  		}else{
+		  			top.layer.alert(data,{icon: 2,time: 1000});
+		  		}
+		  	}
+		});
+	}
+	//保存邮箱
+	function saveEmails () {
+		var email=$("#emails").val();
+		var myreg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
+		if(!myreg.test(email)){
+			top.layer.alert('输入的邮箱不正确',{icon: 2,time: 1000});
+			return false;
+		}else{
+			$.ajax({
+			  	type:'post',
+			  	url:App+'/saveEmail',
+			  	dataType:'json',
+			  	async:true,
+			  	data:{email:email},
+			  	success:function(data){
+			  		if(data == 1){
+			  			top.layer.msg('修改成功！',{icon: 1,time: 1000});
+			  			location=location;
+			  		}else{
+			  			top.layer.alert(data,{icon: 2,time: 1000});
+			  		}
+			  	}
+			});
+		}
+	}
+	//修改地址
+	function saveAddress () {
+		var address=$("#address").val();
+		if (address.length < 2) {
+			top.layer.alert("请输入地址",{icon: 2,time: 3000});
+		}
+		$.ajax({
+		  	type:'post',
+		  	url:App+'/saveAddress',
+		  	dataType:'json',
+		  	async:true,
+		  	data:{address:address},
+		  	success:function(data){
+		  		if(data == 1){
+		  			top.layer.msg('认证成功！',{icon: 1,time: 1000});
+		  			location=location;
+		  		}else{
+		  			top.layer.alert(data,{icon: 2,time: 3000});
+		  		}
+		  	}
+		});
+	}
+	//实名认证
+	function certification () {
+		var acccertification=$("#acccertification").val();
+		if (acccertification.length < 2) {
+			top.layer.alert("请输入正确姓名",{icon: 2,time: 2000});
+			return false;
+		}
+		var acccertification1=$("#acccertification1").val();
+		if(checkCard() === false){
+			return false;
+		}
+		$.ajax({
+		  	type:'post',
+		  	url:App+'/saveRealname',
+		  	dataType:'json',
+		  	async:true,
+		  	data:{realname:acccertification,card:acccertification1},
+		  	success:function(data){
+		  		if(data == 1){
+		  			top.layer.msg('认证成功！',{icon: 1,time: 1000});
+		  			location=location;
+		  		}else{
+		  			top.layer.alert("认证失败",{icon: 2,time: 1000});
+		  		}
+		  	}
+		});
+
+	}
+var vcity={ 11:"北京",12:"天津",13:"河北",14:"山西",15:"内蒙古",
+            21:"辽宁",22:"吉林",23:"黑龙江",31:"上海",32:"江苏",
+            33:"浙江",34:"安徽",35:"福建",36:"江西",37:"山东",41:"河南",
+            42:"湖北",43:"湖南",44:"广东",45:"广西",46:"海南",50:"重庆",
+            51:"四川",52:"贵州",53:"云南",54:"西藏",61:"陕西",62:"甘肃",
+            63:"青海",64:"宁夏",65:"新疆",71:"台湾",81:"香港",82:"澳门",91:"国外"
+           };
+checkCard = function()
+{
+    var card = $("#acccertification1").val();
+    //是否为空
+    if(card === '')
+    {
+        top.layer.alert("身份证号不能为空",{icon: 2,time: 1000});
+        return false;
+    }
+    //校验长度，类型
+    if(isCardNo(card) === false)
+    {
+        top.layer.alert("身份证号码不正确",{icon: 2,time: 1000});
+        return false;
+    }
+    //检查省份
+    if(checkProvince(card) === false)
+    {
+        top.layer.alert("身份证号码不正确",{icon: 2,time: 1000});
+        return false;
+    }
+    //校验生日
+    if(checkBirthday(card) === false)
+    {
+        top.layer.alert("身份证号码不正确",{icon: 2,time: 1000});
+        return false;
+    }
+    //检验位的检测
+    if(checkParity(card) === false)
+    {
+        top.layer.alert("身份证号码不正确",{icon: 2,time: 1000});
+        return false;
+    }
+    return true;
+};
+
+
+//检查号码是否符合规范，包括长度，类型
+isCardNo = function(card)
+{
+    //身份证号码为15位或者18位，15位时全为数字，18位前17位为数字，最后一位是校验位，可能为数字或字符X
+    var reg = /(^\d{15}$)|(^\d{17}(\d|X)$)/;
+    if(reg.test(card) === false)
+    {
+        return false;
+    }
+
+    return true;
+};
+
+//取身份证前两位,校验省份
+checkProvince = function(card)
+{
+    var province = card.substr(0,2);
+    if(vcity[province] == undefined)
+    {
+        return false;
+    }
+    return true;
+};
+
+//检查生日是否正确
+checkBirthday = function(card)
+{
+    var len = card.length;
+    //身份证15位时，次序为省（3位）市（3位）年（2位）月（2位）日（2位）校验位（3位），皆为数字
+    if(len == '15')
+    {
+        var re_fifteen = /^(\d{6})(\d{2})(\d{2})(\d{2})(\d{3})$/; 
+        var arr_data = card.match(re_fifteen);
+        var year = arr_data[2];
+        var month = arr_data[3];
+        var day = arr_data[4];
+        var birthday = new Date('19'+year+'/'+month+'/'+day);
+        return verifyBirthday('19'+year,month,day,birthday);
+    }
+    //身份证18位时，次序为省（3位）市（3位）年（4位）月（2位）日（2位）校验位（4位），校验位末尾可能为X
+    if(len == '18')
+    {
+        var re_eighteen = /^(\d{6})(\d{4})(\d{2})(\d{2})(\d{3})([0-9]|X)$/;
+        var arr_data = card.match(re_eighteen);
+        var year = arr_data[2];
+        var month = arr_data[3];
+        var day = arr_data[4];
+        var birthday = new Date(year+'/'+month+'/'+day);
+        return verifyBirthday(year,month,day,birthday);
+    }
+    return false;
+};
+
+//校验日期
+verifyBirthday = function(year,month,day,birthday)
+{
+    var now = new Date();
+    var now_year = now.getFullYear();
+    //年月日是否合理
+    if(birthday.getFullYear() == year && (birthday.getMonth() + 1) == month && birthday.getDate() == day)
+    {
+        //判断年份的范围（3岁到100岁之间)
+        var time = now_year - year;
+        if(time >= 3 && time <= 100)
+        {
+            return true;
+        }
+        return false;
+    }
+    return false;
+};
+
+//校验位的检测
+checkParity = function(card)
+{
+    //15位转18位
+    card = changeFivteenToEighteen(card);
+    var len = card.length;
+    if(len == '18')
+    {
+        var arrInt = new Array(7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2); 
+        var arrCh = new Array('1', '0', 'X', '9', '8', '7', '6', '5', '4', '3', '2'); 
+        var cardTemp = 0, i, valnum; 
+        for(i = 0; i < 17; i ++) 
+        { 
+            cardTemp += card.substr(i, 1) * arrInt[i]; 
+        } 
+        valnum = arrCh[cardTemp % 11]; 
+        if (valnum == card.substr(17, 1)) 
+        {
+            return true;
+        }
+        return false;
+    }
+    return false;
+};
+
+//15位转18位身份证号
+changeFivteenToEighteen = function(card)
+{
+    if(card.length == '15')
+    {
+        var arrInt = new Array(7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2); 
+        var arrCh = new Array('1', '0', 'X', '9', '8', '7', '6', '5', '4', '3', '2'); 
+        var cardTemp = 0, i;   
+        card = card.substr(0, 6) + '19' + card.substr(6, card.length - 6);
+        for(i = 0; i < 17; i ++) 
+        { 
+            cardTemp += card.substr(i, 1) * arrInt[i]; 
+        } 
+        card += arrCh[cardTemp % 11]; 
+        return card;
+    }
+    return card;
+};
+
+	</script>
+<script type="text/javascript">
+ 
+$(window).load(function() {
+	//$('#btnCrop').click();$("#idName").css("cssText","background-color:red!important");
+	
+	//$(".imageBox").css("cssText","background-position:88px 88px!important");$(".imageBox").css("cssText","background-size:222px 222px!important");
+	var options =
+	{
+		thumbBox: '.thumbBox',
+		spinner: '.spinner',
+		imgSrc: ''
+	}
+	var cropper = $('.imageBox').cropbox(options);
+	var img="";
+	$('#upload-file').on('change', function(){
+		var reader = new FileReader();
+		reader.onload = function(e) {
+			options.imgSrc = e.target.result;
+			cropper = $('.imageBox').cropbox(options);
+			getImg();
+		}
+		reader.readAsDataURL(this.files[0]);
+		this.files = [];
+		//getImg();
+	})
+	$('#btnCrop').on('click', function(){
+		var image = cropper.getDataURL();
+		$.ajax({
+		  	type:'post',
+		  	url:App+'/saveIcon',
+		  	dataType:'json',
+		  	async:true,
+		  	data:{image:image},
+		  	success:function(data){
+		  		
+		  		if(data == 1){
+		  			top.layer.msg('上传成功！',{icon: 1,time: 1000});
+		  			location=location;
+		  		}else{
+		  			top.layer.alert(data,{icon: 2,time: 3000});
+		  		}
+		  	}
+		});
+	})
+	function getImg(){
+		img = cropper.getDataURL();
+		$('.cropped').html('');
+		$('.cropped').append('<img src="'+img+'" align="absmiddle" style="width:180px;margin-top:4px;border-radius:180px;box-shadow:0px 0px 12px #7E7E7E;"><p>180px*180px</p>');
+		$('.cropped').append('<img src="'+img+'" align="absmiddle" style="width:128px;margin-top:4px;border-radius:128px;box-shadow:0px 0px 12px #7E7E7E;"><p>128px*128px</p>');
+		$('.cropped').append('<img src="'+img+'" align="absmiddle" style="width:64px;margin-top:4px;border-radius:64px;box-shadow:0px 0px 12px #7E7E7E;" ><p>64px*64px</p>');
+		}
+		
+	$(".imageBox").on("mouseup",function(){
+ 		getImg();
+  	});
+		
+		
+	$('#btnZoomIn').on('click', function(){
+		cropper.zoomIn();
+	})
+	$('#btnZoomOut').on('click', function(){
+		cropper.zoomOut();
+	})
+});
+</script>
+<!-- /底部 -->
+<include file = "Public/footer" />

@@ -1,0 +1,73 @@
+<div class="fanbox_bill">
+    <h3>审核</h3>
+    <table width="100%" cellpadding="0" cellspacing="0" class="post_table">
+        <tr>
+            <td>投资平台：{$list.plat_shortname}</td>
+            <td>平台用户名：{$list.user_name}</td>
+        </tr>
+        <tr>
+            <td>投资标名称：{$list.target_name}</td>
+            <td>平台手机号：{$list.mobile}</td>
+        </tr>
+        <tr>
+            <td>投资金额：{$list.invest_amount}</td>
+            <td>投标时间：{$list.invest_time}</td>
+        </tr>
+    </table>
+    <form id="declare_invest_form" action="{:U('Admin/InvestDeclare/save_declare')}" method="post">
+        <table width="100%" cellpadding="0" cellspacing="0" class="post_table">
+            <tr>
+                <td width="20%" align="right">审核状态&nbsp;&nbsp;</td>
+                <td>
+                    <input name="invest_id" id="invest_id" type="hidden" value='{$list.invest_repair_id}'/>
+                    <label><input name="check_type" type="radio" value="3" />审核通过 </label> 
+                    <label><input name="check_type" type="radio" value="4" />审核失败 </label> 
+                </td>
+            </tr>
+            <tr>
+                <td width="20%" align="right">备注&nbsp;&nbsp;</td>
+                <td>
+                    <textarea id='check_remark' name='check_remark'></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td height="60">&nbsp;</td>
+                <td style="text-align: right;">
+                <input type="submit" style="float:none;" class="btn" value="提交"/> 
+                <input type="button" style="float:none;" class="btn" value="取消" onclick="$.fancybox.close();" /></td>
+            </tr>
+        </table>
+    </form>
+</div>
+<script type="text/javascript" src="__PUBLIC__/static/jquery.form.js"></script>
+<script type="text/javascript">
+$(function(){
+    $('#declare_invest_form').ajaxForm({
+        beforeSubmit: validate,
+        success: function(msg){
+            if(msg == 1){
+                layer.alert('提交成功！',function(){
+                    rightContent.window.reload_declaring_show();
+                    $.fancybox.close();
+                    layer.closeAll();
+                });
+            }else{
+                layer.alert('提交失败！');
+            }
+        }
+    }); 
+});
+function validate(){
+   var choose_mark = $('input:radio[name="check_type"]:checked').val();
+   if(choose_mark == '' || choose_mark == null){
+        layer.msg('请选择审核状态',{icon:11,time: 1000});
+        return false;
+   }
+   var remark = $("#check_remark").val();
+   if (remark=='') {
+        layer.msg('请填写备注',{icon:11,time: 1000});
+        return false;
+   }
+
+}
+</script>

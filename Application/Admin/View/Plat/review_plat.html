@@ -1,0 +1,201 @@
+<script type="text/javascript" src="__ROOT__/ueditor/ueditor.config.js"></script>
+<script type="text/javascript" src="__ROOT__/ueditor/ueditor.all.js"></script>
+<div class="fanbox_proView">
+    <h3>查看</h3>
+        <table width="100%" cellpadding="0" cellspacing="0" class="view_table">
+            <tr>
+                <td colspan=3 class="fb">一、基本信息：</td>
+            </tr>
+            <tr>
+                <td width="30%">平台简称：
+                    <input type="text" class="input2"  value="{$list.plat_shortname}" readonly/>
+                </td>
+                <td>
+                    平台LOGO：
+                    <input type="file"  readonly/>
+                </td>
+                <td>
+                    上线时间：
+                    <input id="online_time" name="online_time" type="text" value="{$list.online_time}">
+                    <!--<span  class="add-on"><i class="icon-calendar"></i></span>-->
+                </td>
+            </tr>
+            <tr>
+                <td width="30%" >注册资金：
+                    <input type="text" class="input2"  value="{$list.register_money}" readonly/>万元
+                </td>
+                <td colspan=2>
+                    所属公司：
+                    <input type="text" class="input2"  value="{$list.company_name}" readonly/>
+                </td>
+                
+            </tr>
+            <tr>
+                <td width="30%">法人代表：
+                    <input type="text" class="input2"  value="{$list.cor_represent}" readonly/>
+                </td>
+                <td colspan=2>
+                    公司地址：
+                    <input type="text" class="input2"  value="{$list.company_address}" readonly/>
+                </td>
+                
+            </tr>
+            <tr>
+                <td width="30%">所在地区：
+                    <select disabled>
+                        <option>{$list.province}</option>
+                    </select>
+                </td>
+                <td colspan=2>
+                    <select disabled>
+                        <option>{$list.city}</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td width="30%" >平台网址：
+                    <input type="text" class="input2" value="{$list.platform_site}" readonly/>
+                </td>
+                <td colspan=2>平台负责人：
+                    <select disabled>
+                        <option>{$list.plat_user}</option>
+                    </select>
+                </td>
+                
+            </tr>
+            
+            <tr>
+                <td>
+                    <span style="display:block;float: left;line-height: 30px;">平台类别(民营或其他自定义)：</span>
+                    <input type="text" class="input2" id="plat_type"  name="plat_type" value="{$list.plat_type}" readonly/>
+                </td>
+                <td colspan=2>
+                    平台级别(A+/B/..)：
+                    <input id="plat_level" name="plat_level" type="text" required value="{$list.plat_level}" readonly/>
+                </td>
+            </tr>
+            
+            <tr>
+                <td colspan=3 class="fb">二、平台对账：</td>
+            </tr>
+            <tr>
+                <td colspan=3>
+                    手工对账：
+                    <select disabled>
+                        <if condition="$list.check_account eq 1">
+                            <option>有</option>
+                        <else />
+                            <option>无</option>
+                        </if>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td colspan=3 class="fb">三、复投方式：</td>
+            </tr>
+            <tr>
+                <td colspan=3>
+                    复投方式：
+                    <select disabled>
+                        <if condition="$list.re_cast eq 1">
+                            <option>是</option>
+                        <else />
+                            <option>否</option>
+                        </if>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td colspan=3 class="fb">四、费用信息：</td>
+            </tr>
+            <tr>
+                <td>
+                    充值费用：
+                    <select disabled>
+                        <if condition="$list.recharge_cost eq 1">
+                            <option>有</option>
+                        <else />
+                            <option>无</option>
+                        </if>
+                    </select>
+                </td>
+                <td colspan=2>
+                    提现费：
+                    <select disabled>
+                        <if condition="$list.cash_cost eq 1">
+                            <option>有</option>
+                        <else />
+                            <option>无</option>
+                        </if>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td colspan=3 class="fb">五、债权转让：</td>
+            </tr>
+            <tr>
+                <td colspan=3>
+                    转让功能：
+                    <select disabled>
+                        <if condition="$list.tranfer eq 1">
+                            <option>有</option>
+                        <else />
+                            <option>无</option>
+                        </if>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td colspan=3 class="fb">六、风险管理：</td>
+            </tr>
+            <tr>
+                <td>
+                    储备金：
+                    <select disabled>
+                        <if condition="$list.risk_money eq 1">
+                            <option>有</option>
+                        <else />
+                            <option>无</option>
+                        </if>
+                    </select>
+                </td>
+                <td colspan=2>
+                    资金托管：
+                    <input type="text" class="input2" value="{$list.finance_deposit}" readonly/>
+                </td>
+            </tr>
+            <tr>
+                <td colspan=3 class="fb">七、标的优惠信息：</td>
+            </tr>
+            <tr>
+                <td colspan=3>
+                    首投奖励：
+                    <input type="text" class="input2" value="{$list.cq_red}" placeholder='可选填' readonly/>元
+                </td>
+            </tr>
+            <tr>
+                <td colspan=3 class="fb">八、投资攻略：</td>
+            </tr>
+            <tr>
+                <td colspan=3>
+                    <script id="invest_guide" type="text/plain">
+                        {$list.invest_guide}
+                    </script>
+                </td>
+            </tr>
+            <tr>
+                <td colspan=3 class="fb">九、公司介绍：</td>
+            </tr>
+            <tr>
+                <td colspan=3>
+                    <script id="plat_brief" type="text/plain">
+                        {$list.plat_brief}
+                    </script>
+                </td>
+            </tr>
+        </table>
+</div>
+<script type="text/javascript">
+        var invest_guide = UE.getEditor('invest_guide');
+        var plat_brief = UE.getEditor('plat_brief');
+</script>

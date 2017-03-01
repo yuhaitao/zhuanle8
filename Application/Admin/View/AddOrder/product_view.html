@@ -1,0 +1,244 @@
+<div class="fanbox_proView">
+    <h3>查看</h3>
+        <table width="100%" cellpadding="0" cellspacing="0" class="view_table table">
+            <tr>
+                <td colspan=3 class="fb">平台相关：</td>
+            </tr>
+            <tr>
+                <td width="30%" align="left">平台简称：
+                    <select disabled><option>{$list.plat_shortname}</option></select>
+                </td>
+                <td colspan=2>
+                    跳转链接：
+                    <input type="text" class="input2" name="jump_link" value="{$list.jump_link}" readonly/>
+                </td>
+            </tr>
+            <tr>
+                <td colspan=3 class="fb">标的基本信息：</td>
+            </tr>
+            <tr>
+                <td align="left">
+                    标的名称：
+                    <input type="text" class="input2" name="targetname" value="{$list.target_name}" readonly/>
+                </td>
+                <td>
+                    标的年化：<input type="text" class="input2" style="width:120px;" name="annual_income_rate" value="{$list.annual_income_rate}" readonly/>&nbsp;&nbsp;%
+                </td>
+                <td>
+                    投标期限：
+                    <input type="text" value="{$list.invest_month}" style="width:100px;" readonly>&nbsp;&nbsp;月&nbsp;&nbsp;<input type="text" value="{$list.invest_day}" style="width:100px;" readonly>&nbsp;&nbsp;天
+                </td>
+            </tr>
+            <tr>
+                <td align="left">
+                    起投金额：
+                    <input type="text" class="input2" name="start_invest_amount" value="{$list.start_invest_amount}" readonly/>
+                </td>
+                <td>
+                    限投金额：<input type="text" class="input2" name="end_invest_amount" value="{$list.end_invest_amount}" readonly/>
+                </td>
+                <td>
+                    投的总额：
+                    <input type="text" value="{$list.product_sum}" readonly>&nbsp;&nbsp;万元
+                </td>
+            </tr>
+            <tr>
+                <td colspan=3 class="fb">标的优惠信息：</td>
+            </tr>
+            <if condition="$list.product_type eq 1">
+                <tr>
+                    <td align="left">
+                        赚乐扒加息：
+                        <input type="text" class="input2" name="cq_rate" value="{$list.cq_rate}" readonly/>&nbsp;%
+                    </td>
+                    <td colspan=2>
+                        综合年化：
+                        <input type="text" class="input2" name="unit_rate" value="{$list.unit_rate}" readonly/>&nbsp;&nbsp;%（标的年化+赚乐扒加息）
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        赚乐扒红包：
+                        <input type="text" class="input2" name="cq_red" value="{$list.cq_red}" readonly/>&nbsp;&nbsp;元
+                    </td>
+                    <td colspan=2>
+                        红包介绍：
+                        <input type="text" class="input2" name="red_info" value="{$list.red_info}" readonly/>
+                    </td>
+                </tr>
+            <elseif condition="$list.product_type eq 3" />
+                <tr>
+                    <td align="left">
+                        赚乐扒返现：
+                        <input type="text" class="input2" name="cq_rebate_rate" value="{$list.cq_rebate_rate}" readonly/>
+                    </td>
+                    <td colspan=2>
+                        返现时间：满标即返（后台数据核对后，将返利金额打到用户账户）
+                    </td>
+                </tr>
+            <else />
+                <tr>
+                    <td align="left">
+                        赚乐扒返现：
+                        <input type="text" class="input2" name="cq_rebate_rate" value="{$list.cq_rebate_rate}" readonly/>
+                    </td>
+                    <td colspan=2>
+                        返现时间：满标即返（后台数据核对后，将返利金额打到用户账户）
+                    </td>
+                </tr>
+            </if>
+            
+            <tr>
+                <td colspan=3 class="fb">上下线时间：</td>
+            </tr>
+            <tr>
+                <td colspan=3>上下线时间：<input type="text" value="{$list.online_time}" readonly>&nbsp;&nbsp;到：<input type="text" value="{$list.down_time}" readonly></td>
+            </tr>
+            <tr>
+                <td colspan=3 class="fb">其余选择方式：</td>
+            </tr>
+            <tr>
+                <td align="left">
+                    解冻方式：
+                    <select disabled>
+                        <if condition="$list.thawing_method eq 1">
+                            <option>满标</option>
+                        <else />
+                            <option>非满标</option>
+                        </if>
+                    </select>
+                </td>
+                <td>
+                    流标返利：
+                    <select disabled>
+                        <if condition="$list.flow_rebate eq 1">
+                            <option>是</option>
+                        <else />
+                            <option>否</option>
+                        </if>
+                    </select>
+                </td>
+                <td>
+                    复投方式：
+                    <select disabled>
+                        <if condition="$list.re_cast eq 1">
+                            <option>是</option>
+                        <else />
+                            <option>否</option>
+                        </if>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td colspan=3 class="fb">投资保障方式：</td>
+            </tr>
+            <tr>
+                <if condition="$list.bid_security_type eq 1">
+                    <td colspan=3>
+                        投资保障：
+                        <select disabled>
+                            <option>本息保障</option>
+                        </select>
+                    </td>
+                <elseif condition="$list.bid_security_type eq 2" />
+                    <td colspan=3>
+                        投资保障：
+                        <select disabled>
+                            <option>本金保障</option>
+                        </select>
+                    </td>
+                <elseif condition="$list.bid_security_type eq 3" />
+                    <td>
+                        投资保障：
+                        <select disabled>
+                            <option>其他</option>
+                        </select>
+                    </td>
+                    <td colspan=2>
+                        <input type="text" value='{$list.bid_security_other}' readonly>
+                    </td>
+                </if>
+            </tr>
+            <tr>
+                <td colspan=3 class="fb">计息方式：</td>
+            </tr>
+            <tr>
+                <if condition="$list.interest_type eq 1">
+                    <td colspan=3>
+                        计息方式：
+                        <select disabled>
+                            <option>满标计息</option>
+                        </select>
+                    </td>
+                <elseif condition="$list.interest_type eq 2" />
+                    <td colspan=3>
+                        计息方式：
+                        <select disabled>
+                            <option>当日计息</option>
+                        </select>
+                    </td>
+                <elseif condition="$list.interest_type eq 3" />
+                    <td>
+                        计息方式：
+                        <select disabled>
+                            <option>其他</option>
+                        </select>
+                    </td>
+                    <td colspan=2>
+                        <input type="text" value='{$list.interest_other}' readonly>
+                    </td>
+                <elseif condition="$list.interest_type eq 4" />
+                    <td colspan=3>
+                        计息方式：
+                        <select disabled>
+                            <option>次日计息</option>
+                        </select>
+                    </td>
+                <elseif condition="$list.interest_type eq 5" />
+                    <td colspan=3>
+                        计息方式：
+                        <select disabled>
+                            <option>满标次日计息</option>
+                        </select>
+                    </td>
+                </if>
+            </tr>
+            <tr>
+                <td colspan=3 class="fb">还款方式：</td>
+            </tr>
+            <tr>
+                <if condition="$list.rebate_type eq 1" >
+                    <td colspan=3>
+                        还款方式：
+                        <select disabled>
+                            <option>等额本息</option>
+                        </select>
+                    </td>
+                <elseif condition="$list.rebate_type eq 2" />
+                    <td colspan=3>
+                        还款方式：
+                        <select disabled>
+                            <option>每月付息，到期还本</option>
+                        </select>
+                    </td>
+                <elseif condition="$list.rebate_type eq 3" />
+                    <td colspan=3>
+                        还款方式：
+                        <select disabled>
+                            <option>到期还本付息</option>
+                        </select>
+                    </td>
+                <elseif condition="$list.rebate_type eq 4" />
+                    <td>
+                        还款方式：
+                        <select disabled>
+                            <option>其他</option>
+                        </select>
+                    </td>
+                    <td colspan=2>
+                        <input type="text" value='{$list.rebate_other}' readonly>
+                    </td>
+                </if>
+            </tr>
+        </table>
+</div>

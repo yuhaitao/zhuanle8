@@ -1,0 +1,44 @@
+<include file="Public/head" />
+<include file="Public/header" />
+
+<content>
+<div class="reg">
+        <div class="reg_cen" style="margin: 0 auto;">
+            <div class="title_bar text_thseven">
+                注册成功
+            </div>
+            <!-- success -->
+            <div class="find_suc ">
+                <ul>
+                    <li class="li_hei3"><img src="__PUBLIC__/images/home/icon/reg_5.png"></li>
+                    <li class="text_nineteen li_hei">恭喜您成功注册赚乐扒</li>
+                    <li class="text_one li_hei">页面<span id="timer">4</span>秒后跳转至<a href="__APP__/login/login.html" class="text_thirty hover404" style="color: #F60">登录页面</a></li>
+                    <li class="li_hei2">
+                        <a href="__APP__/" class="approve_a1">进入首页</a>
+                        <a href="__APP__/userinfo/accountInfo.html" class="approve_a2 approve_a_margin">实名认证</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</content>	
+<script type="text/javascript">
+
+function countDown(){
+    var c = 4;     
+    var timeVal = setInterval(function () {
+        $("#timer").text(c);
+        if(c == 0){
+           clearTimeout(timeVal);
+           window.location.href = "__APP__/login/login.html";  //跳转登录页
+       }
+       c--;
+    }, 1000);
+}
+countDown();
+</script>
+
+
+<!-- /底部 -->
+<include file = "Public/footer" />
+

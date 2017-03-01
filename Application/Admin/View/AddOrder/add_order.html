@@ -1,0 +1,117 @@
+<div class="fanbox_add_order">
+	<h3>查询</h3>
+	<form id="add_order_form" action="{:U('Admin/AddOrder/save_order')}" method="post">
+	<table width="100%" cellpadding="0" cellspacing="0" class="search_table">
+		<input type="hidden" id='product_id' name='product_id'>
+		<tr>
+			<td>&nbsp;&nbsp;购买金额：</td>
+			<td><input type="text" id='buy_money' name='buy_money'></td>
+		</tr>
+		<tr>
+			<td>&nbsp;&nbsp;购买日期：</td>
+            <td style="position:relative;">
+                <input id="buy_time" name="buy_time" type="text" readonly>
+                <span  class="add-on"><i class="icon-calendar"></i></span>
+            </td>
+		</tr>
+		<tr>
+			<td>&nbsp;&nbsp;购买人：</td>
+			<td><input type='hidden' id="buy_man_id" name='buy_man_id'>
+				<input type="text" id='buy_man' name='buy_man'></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td>
+				<input type="submit" class="btn" value="保存">
+				<input type="reset" class="btn" value="清除">
+				<input type="button" class="btn" onclick="javascript:$.fancybox.close();" value="关闭">
+			</td>
+		</tr>
+	</table>
+	</form>
+</div>
+<div id="user_list_div" style="display:none">
+    <ul></ul>
+</div>
+<script type="text/javascript">
+    laydate({
+            istime:true,
+            format: 'YYYY-MM-DD hh:mm:ss',
+            elem: '#buy_time'
+        });
+</script>
+<script type="text/javascript" src="__PUBLIC__/static/jquery.form.js"></script>
+<script type="text/javascript">
+$(function(){
+	var pid=add_pid;
+	$("#product_id").val(pid);
+	$("#buy_man").bind('input propertychange' ,function(){
+		var buy_man=$("#buy_man").val();
+		if(buy_man.length > 0){
+			$("#user_list_div > ul").html("");
+			$.ajax({
+			  	type:'post',
+			  	url:"{:U('AddOrder/user_list')}",
+			  	dataType:'json',
+			  	async:true,
+			  	data:{buy_man:buy_man},
+			  	success:function(data){
+	
+			  		var userArr=data;
+			  		if(userArr.length > 0){
+			  			$("#user_list_div").fadeIn(300);
+			  			for (var i = 0; i < userArr.length; i++) {
+				  			var html="";
+				  			html+="<li onclick='chooseThis("+userArr[i]['user_id']+")'>"+userArr[i]['mobile']+"  "+userArr[i]['user_name']+"  "+userArr[i]['nick_name']+"</li>";
+				  			$("#user_list_div > ul").append(html);
+				  		}
+			  		}else{
+			  			//top.layer.msg('请输入有效的信息',{icon:11,time: 1000});
+			  			$("#user_list_div").fadeOut(300);
+			  		}
+			  	}
+			});
+		}else{
+			$("#user_list_div").fadeOut(300);
+		}
+	});
+	$('#add_order_form').ajaxForm({
+        beforeSubmit: checkinput,
+        success: function(msg){
+            if(msg == 1){
+            	top.layer.msg('添加成功',{icon: 1,time: 1500});
+            	$.fancybox.close();
+            }else{
+                top.layer.msg('添加失败',{icon: 1,time: 1500});
+            }
+        }
+    }); 
+});
+function chooseThis(uid){
+	$("#buy_man").val(uid);
+	$("#buy_man_id").val(uid);
+	$("#user_list_div").fadeOut(300);
+}
+function checkinput(){
+	var buy_money=$("#buy_money").val();
+	if(buy_money.length < 1){
+		top.layer.msg('请输入购买金额',{icon: 1,time: 1500});
+		return false;
+	}else{
+		if(isNaN(buy_money)){
+			top.layer.msg('请输入购买金额',{icon: 1,time: 1500});
+			return false;
+		}
+	}
+	var buy_time=$("#buy_time").val();
+	if(buy_time.length < 1){
+		top.layer.msg('请输入购买时间',{icon: 1,time: 1500});
+		return false;
+	}
+	var buy_man=$("#buy_man_id").val();
+	if(buy_man.length < 1){
+		top.layer.msg('请选择购买人',{icon: 1,time: 1500});
+		return false;
+	}
+}
+</script>

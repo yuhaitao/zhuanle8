@@ -1,0 +1,71 @@
+<div class="fanbox_revise">
+    <form id="editPlatHandle_form" action="{:U('Admin/Plat/savePlatHandle')}" method="post" >
+        <input type="hidden" name="plat_id" value="{$plat_id}" />
+        <table width="100%" cellpadding="0" cellspacing="0" class="post_table">
+            <tr>
+                <td width="30%" align="right">平台名称：</td>
+                <td>
+                    <input type="text" class="input2" value="{$plat_name}" disabled/>
+                </td>
+            </tr>
+            <tr>
+                <td align="right">跳转类型：</td>
+                <td>
+                    <select name="handle_type" id="handle_type">
+                        <option value="001">跳转注册页面</option>
+                        <option value="002">跳转登录页面</option>
+                        <option value="003">本站注册</option>
+                        <option value="004">本站跳转但是需要配置参数</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td width="30%" align="right">跳转操作：</td>
+                <td>
+                    <input type="text" class="input2" name="handle_controller" id="handle_controller" value="{$handle_controller}" />
+                </td>
+            </tr>
+            <tr>
+                <td height="60">&nbsp;</td>
+                <td style="text-align: right;">
+                    <input type="submit" style="float:none;" class="btn" value="提交"/> 
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<script type="text/javascript" src="__PUBLIC__/static/jquery.form.js"></script>
+<script type="text/javascript">
+$(function(){
+    $('#editPlatHandle_form').ajaxForm({
+        beforeSubmit: beforesub,
+        success: function(msg){
+
+            if(msg == 1){
+                layer.msg('修改成功！',{icon:2},function(){
+                    $.fancybox.close();
+                    layer.closeAll();
+                });
+            }else{
+                layer.msg('保存失败', {icon:11},{
+                    closeBtn: 0 ,
+                  },function(){
+                });
+            }
+        }
+    }); 
+    function beforesub () {
+        var jump_link=$("#handle_controller").val();
+        if (jump_link=="") {
+            top.layer.msg('跳转操作不可为空',{icon: 2,time: 1500});
+            return false;
+        }
+        var RegUrl = new RegExp();  
+        RegUrl.compile("^[A-Za-z]+://[A-Za-z0-9-_]+\\.[A-Za-z0-9-_%&\?\/.=]+$");  
+        if (!RegUrl.test(jump_link)) {  
+             top.layer.msg('输入网址不正确',{icon: 2,time: 1500});
+            return false;  
+        }  
+            return true;
+        }
+});

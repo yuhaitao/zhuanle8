@@ -1,0 +1,38 @@
+<include file="Public/head"/>
+<!-- 头部 -->
+<include file="Public/header"/>
+
+<!--理财学院-->
+
+<div class="news_list clearfix">
+		<!--位置导航-->
+		<div class="content_menu" style="border-top: none;">
+			<div class="content_menu_cen text_shisan">
+				您的位置： <a href="__APP__/">首页</a><i class="icon-angle-right fz16 m4"></i>媒体报道<i class="icon-angle-right fz16 m4"></i>媒体报道列表
+			</div>
+		</div>
+		<!--位置导航结束-->
+		<!---->
+		<div class="news_listleft">
+			 <div class="aboutRead clearfix">
+	    		<ul>
+	    			<volist name="mediaInfo" id="vo">
+	    				<li>
+	    					<div class="news_leftimg"><img src="__ROOT__{$vo.media_picture}" /></div>
+	    					<div class="news_rignr">
+			            		<h2><a href="__APP__/media/{$vo.media_id}.html">{$vo.media_title|getSubstr=0,30}</a></h2>
+			            		<span class="news_shows">{$vo.media_describe|getSubstr=0,80}<em><i class="glyphicon glyphicon-time"></i>{$vo.add_time}</em></span>
+			            	</div>
+	    				</li>
+	    			</volist>
+	    		</ul>
+			 </div>
+			 <div class="pagination" style="margin-top: 20px;">{$page}</div>
+		</div>
+		<!---->
+		<include file="public_right" />
+
+</div>
+<!--理财学院结束-->
+
+<include file="Public/footer" />

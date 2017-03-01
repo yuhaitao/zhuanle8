@@ -1,0 +1,70 @@
+<include file="Public/head" />
+<div class="lbs_nav"><include file="Public/breadcrumbs"/></div>
+<div id="topics"></div>
+<script type="text/javascript">
+$('<table id="right_list"></table>').appendTo('#topics');
+grid = jQuery("#right_list");
+var lastsel;
+var lheight = document.body.clientHeight-190;
+grid.jqGrid({
+    height: lheight,
+    scroll:true,
+    url:"{:U('System/rightlist')}",
+    datatype:"json", //数据来源，json
+    mtype:"post",
+    loadui: "disable",
+    colNames: ["id","权限名称","权限编号","权限路径","深度","序号","权限备注","修改","删除"],
+    //
+    colModel: [
+        {name: "id",width:'100%',hidden:true},
+        {name: "right_name", width:'10%', resizable: false},
+        {name: "right_id",width:'5%'},
+        {name: "right_url",width:'10%'},
+        {name: "lv",width:'5%'},
+        {name: "order_num",width:'5%'},
+        {name: "mark",width:'6%'},
+        {name: "edit",width:'3%'},
+        {name: "delete",width:'3%'}
+    ],
+    treeGrid: true,
+    treeGridModel: "adjacency",
+    //caption: "页面元素",
+    ExpandColumn: "right_name",
+    autowidth: true,
+    rowNum: 10000,
+    ExpandColClick: true,
+    toolbar : [ true, "top" ],
+    treeIcons: {leaf:'ui-icon-document-b'},
+    // loadComplete:function  (data) {
+    //     console.log(data);
+    // },
+    jsonReader: {
+        repeatitems: false,
+        root: "response"
+    },
+    onSelectRow: function(id){ 
+        if(id && id!==lastsel){ 
+            grid.jqGrid('restoreRow',lastsel); 
+            grid.jqGrid('editRow',id,true); 
+            lastsel=id; 
+        } 
+    }
+});
+$("#t_right_list").append("<a href='javascript:void(0)' class='add_new'><i class='glyphicon glyphicon-plus'></i>添加</a>");
+$(".add_new", "#t_right_list").click(function() {
+    var rowid=lastsel.split("_");
+    if (!rowid) {
+        layer.alert('未选择节点');
+        return false;
+    }
+    var right_id=rowid[rowid.length-1];
+    top.$.fancybox({
+        'type':'ajax',
+        'href':App+"/Admin/System/add_right.html?right_id="+right_id,
+        'autoScale' :true,
+    });
+});
+function reload_right_list(){
+    $("#right_list").trigger("reloadGrid");
+}
+</script>

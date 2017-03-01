@@ -1,0 +1,139 @@
+<include file="Public/head"/>
+<!-- 头部 -->
+<include file="Public/header"/>
+<!-- /头部 -->
+<!---------------赚乐扒内容页面位置开始------------------>
+<div class="jflnr_wz">
+    <div class="jflnr_wz_tb"><img src="__PUBLIC__/images/newimages/wztb.png" width="45" height="45"> </div>
+    <div class="jflnr_wz_nr">位置：<a href="__ROOT__/">首页</a> > 意见反馈
+            </div>
+</div>
+<!---------------赚乐扒内容页面位置结束------------------>
+<!--文章主体内容-->
+<div class="jflnews">
+<div class="middle clearfix">
+	<div class="middle_cen">
+		<include file="Public/articleLeft" />
+
+		<script type="text/javascript">
+		$(function(){
+			changeClass(null);
+		});
+		function changeClass(php){
+			var typeJsp= "View";
+			if(php!=null){
+				typeJsp=php;
+			}
+			if(typeJsp!=''&&typeJsp!=null){
+				if(typeJsp=='CompanyInfo'){
+				   changeDiv('about_id1',typeJsp);
+				}
+				if(typeJsp=='SeeList'){
+				   changeDiv('about_id2',typeJsp);
+				}
+				if(typeJsp=='JoinUs'){
+				   changeDiv('about_id3',typeJsp);
+				}
+				if(typeJsp=='ContactUs'){
+				   changeDiv('about_id4',typeJsp);
+				}
+				if(typeJsp=='View'){
+				   changeDiv('about_id5',typeJsp);
+				}
+			
+			}else{
+			changeDiv('about_id5','View');
+			}
+		}
+		function changeDivContext(obj,name,url){
+		    $('.middle_cen_left tr td').attr('class', '_left_td _td_text1');
+		    $(obj).find("td").attr("class",'_left_td _td_text2');
+		    changeClass(name)
+			openwin_self(url);
+		}
+
+		function changeDiv(id,name){
+			$('.middle_cen_left tr td').attr('class', '_left_td _td_text1');
+			$("#"+id).parent().attr("class","_left_td _td_text2");
+		}
+		</script>
+		<div id="middle_cen_right_id" class="middle_cen_right">
+				<div class="right_top_article">
+					<span class="r_top_span">意见反馈</span>
+				</div>
+				<div class="right_bottom" style="float:left">
+				<p class="bot_p">
+				&nbsp;问题描述
+				</p>
+				<textarea id="describeId" name="describe" class="textarea" placeholder="请输入您的意见或建议..."></textarea>
+				<div class="view_div2">
+					<table class="view_table">
+						<tbody>
+							<tr>
+								<td class="view_td td_w1" style="border: 0px"></td>
+								<td class="view_td td_w2" style="border: 0px">
+								<a class="td_a" href="javaScript:void(0);" onclick="gotoThirdPurchase('{$userId}');">提交</a>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				
+			</div>
+		</div>
+        <div class="clear"></div>
+	</div>
+</div>
+</div>
+<script type="text/javascript">
+	/*
+	 * 意见反馈
+	 */
+	function gotoThirdPurchase(id){
+ 	var userId=id;
+ 	var description=$("#describeId").val();
+ 	  if(description==null || description==''){
+	   layer.alert("不能为空");
+	   return;  
+	   }
+	    var description1 = description.length;
+	   if(description1>60){
+	   	layer.alert("您输入字数过多!");
+	   	return;
+	   }
+	  	if(userId==""){
+	  		layer.open({
+	 				title:"用户登录",
+	 				type: 1,
+	 				area: ['380px', '340px'], //宽高
+	 				fix: false, //不固定
+	 				maxmin: false,
+	 				offset:'auto',
+	 				scrollbar: false,
+	 				content:"<div class='up-w'><table style='padding:10px 50px;  text-align: left;' align='center'><tbody><tr><td height='15px' class='text_seventeen' id='validateid'>		</td></tr><tr><td><i class='icon phone'></i><input class='in_15' type='text' placeholder='请输入手机号码' id='loginuser' name='loginuser' onblur='luhmCheck(this.value);'></td>	</tr><tr><td><i class='icon lock'></i><input class='in_15' type='password' id='loginpwd' name='loginpwd' placeholder='请输入密码'>	</td></tr><tr height='30px'><td class='rem-pass'><div style='float: left;'>	<input type='checkbox' onclick=''>记住账号	</div><div style='float: right;'>	<a target='_blank' href='/login/passwords.html' class='rem-pass'>忘记密码？</a>	</div></td>	</tr><tr><td height='60px'>			<a href='javascript:void(0);' onclick='login();' id='loginbtn' class='a24' style='padding: 10px 96px;'>立即登录</a>	</td></tr><tr>	<td height='15px'>	<div style='float: right;font-size:14px;'>	还没有注册	<a target='_blank' href='/login/reg.html' class='flo-reg'>立即注册</a>	</div>	</td></tr></tbody></table></div>",
+	 			}); 
+	  	}else{
+		  $.ajax({
+		     type : "post",
+		     url : App+'/feedback',
+		     data : {'description':description},
+		     success : function(data){
+
+		     			if(data == 1){
+				                layer.alert('添加成功',function(){
+				                    layer.closeAll();
+				                });
+				            }else{
+				                layer.alert('添加失败', {
+				                    closeBtn: 0 ,
+				                  });
+				            }
+		        	}
+		      });
+		  	} 
+	 }
+
+
+</script>
+<!--文章主体内容结束-->
+<include file="Public/footer" />

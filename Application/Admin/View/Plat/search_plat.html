@@ -1,0 +1,39 @@
+<div class="fanbox_add">
+	<h3>查询</h3>
+	<form id="plat_search" action="" method="post">
+	<table width="100%" cellpadding="0" cellspacing="0" class="search_table">
+		<tr>
+			<td>&nbsp;&nbsp;平台编号：</td>
+			<td><input type="text" id='plat_id'></td>
+		</tr>
+		<tr>
+			<td>&nbsp;&nbsp;平台名称：</td>
+			<td><input type="text" id='plat_shortname'></td>
+		</tr>
+		<tr>
+			<td>&nbsp;&nbsp;公司名称：</td>
+			<td><input type="text" id='company_name'></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td>
+				<input type="button" class="btn" onclick="query_plat()" value="查询">
+				<input type="reset" class="btn" value="清除">
+				<input type="button" class="btn" onclick="javascript:$.fancybox.close();" value="关闭">
+			</td>
+		</tr>
+	</table>
+	</form>
+</div>
+<script type="text/javascript">
+function query_plat(){
+	var plat_id=$("#plat_id").val();
+	var plat_shortname=$("#plat_shortname").val();
+	var company_name=$("#company_name").val();
+	$("#plat_show").jqGrid('setGridParam',{ 
+            url:"{:U('Plat/platlist')}", 
+            postData:{'plat_id':plat_id,'plat_shortname':plat_shortname,'company_name':company_name}, //发送数据 
+            page:1 
+        }).trigger("reloadGrid"); //重新载入 
+}
+</script>

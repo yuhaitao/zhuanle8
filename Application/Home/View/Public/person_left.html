@@ -1,0 +1,90 @@
+<div class="jflgrzx_zhzy_left_top">
+            <div class="grzxleft_01"><img src="{$personal.user_photo}" width="182" height="182"> </div>
+            <div class="grzxleft_02">
+                <a href="javascript:void(0);" class="on" onclick="jumpToAccountInfo('mobile','17756586584');">
+                   <img src="__PUBLIC__/images/newimages/grzxys01.png" width="37" height="37">
+                </a>
+                <a href="javascript:void(0);" <if condition="$personal.email gt 0 "> class="on" </if> onclick="jumpToAccountInfo('email','');">
+                 <img src="__PUBLIC__/images/newimages/grzxys02.png" width="37" height="37">
+                </a>
+                <a href="javascript:void(0);" <if condition="$personal.identity gt 0 "> class="on" </if> onclick="jumpToAccountInfo('auth','');">
+                <img src="__PUBLIC__/images/newimages/grzxys03.png" width="37" height="37"> </a>
+                <a href="javascript:void(0);" <if condition="$personal.bank gt 0 ">class="on" </if> onclick="jumpToAccountInfo('bank','false');">
+                <img src="__PUBLIC__/images/newimages/grzxys04.png" width="37" height="37"> </a>
+            </div>
+            <div class="grzxleft_03">安全等级：{$personal.safe}</div>
+        </div>
+        <div class="jflgrzx_zhzy_left_bottom">
+            <div class="grzxleft_04">
+                <div class="grzxleft_04_01">我的账户</div>
+                <div class="grzxleft_04_02">
+                    <a href="javascript:void(0);" id="accountView" onclick="changeDivContext(this,'accountView','accountView.html');">账户总览</a>
+                    <a id="accountInfo" href="javascript:void(0);" onclick="changeDivContext(this,'accountInfo','accountInfo.html');">账户信息</a>
+                    <a id="wdApply" href="javascript:void(0);" onclick="changeDivContext(this,'wdApply','wdApply.html');">提现申请</a></a>
+                    <a id="wdRecode" href="javascript:void(0);" onclick="changeDivContext(this,'wdRecode','wdRecode.html');">提现记录</a>
+                    <div class="line"></div>
+                </div>
+            </div>
+            <div class="grzxleft_04">
+                <div class="grzxleft_04_01">我的投资</div>
+                <div class="grzxleft_04_02">
+                    <a id="investRecord" href="javascript:void(0);" onclick="changeDivContext(this,'investRecord','investRecord.html');">投资记录</a>
+                    <a id="investPlat" href="javascript:void(0);" onclick="changeDivContext(this,'investPlat','investPlat.html');">投资平台</a>
+                    <a id="incomeDet" href="javascript:void(0);" onclick="changeDivContext(this,'incomeDet','incomeDet.html');">收益明细</a>
+                    <a id="investRepair" href="javascript:void(0);" onclick="changeDivContext(this,'investRepair','investRepair.html');">投资申报</a>
+                    <a id="skipCode" href="javascript:void(0);" onclick="changeDivContext(this,'skipCode','skipCode.html');">跳转记录</a>
+                    <div class="line"></div>
+                </div>
+            </div>
+            <div class="grzxleft_04">
+                <div class="grzxleft_04_01">其他</div>
+                <div class="grzxleft_04_02">
+                    <a id="inviteFriend" href="javascript:void(0);" onclick="changeDivContext(this,'inviteFriend','inviteFriend.html');">邀请好友</a>
+                    <a id="inviteRecode" href="javascript:void(0);" onclick="changeDivContext(this,'inviteRecode','inviteRecode.html');">邀请记录</a>
+                    <a id="inforMation" href="javascript:void(0);" onclick="changeDivContext(this,'inforMation','inforMation.html');">信息中心</a>
+                    <div class="line"></div>
+                </div>
+            </div>
+        </div>
+
+	<script type="text/javascript">
+
+	$(function(){
+	changeClss();
+	
+	$(document).scrollTop(120); 
+	
+	
+	});
+
+	function changeClss(){
+		var jspname = 'accountInfo';
+		if(jspname!=null&&jspname!=''){
+		
+		$("#"+jspname).attr("class","text_twenty");
+		
+		}
+	}
+
+function changeDivContext(obj,name,url){
+	openwin_self(url);
+}
+
+function jumpToAccountInfo(targ,targValue){
+
+	if(targ == 'bank'){
+
+		if(targValue == 'true'){
+			targ = '';
+		}
+		changeDivContext(this,'wdapply','__APP__/userinfo/wdapply.html?targ='+targ);
+	}else{
+		if(targValue != ''){
+			targ == '';
+		}
+		changeDivContext(this,'accountInfo','__APP__/userinfo/accountInfo.html?targ='+targ);
+	}
+
+}
+
+</script>

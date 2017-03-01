@@ -1,0 +1,158 @@
+<div class="fanbox_investRecord">
+<!-- jqGrid table -->
+<table id="investRecord"></table>
+<!-- jqGrid 分页 div gridPager -->
+<div id="investRecordPager"></div>
+</div>
+	<script type="text/javascript">
+			jQuery(function($) {
+				var grid_selector = "#investRecord";
+				var pager_selector = "#investRecordPager";
+				var lheight = document.body.clientHeight-360;
+				jQuery(grid_selector).jqGrid({
+					url:"{:U('InvestRank/investRecordRank')}",
+			        datatype:"json", //数据来源，json
+			        mtype:"POST",
+					height:lheight,
+					sortorder:'desc',
+					colNames:['id','投资年月'],
+					colModel:[
+					{name:'rank_id',index:'rank_id', width:'20%',editable:true,align:'center',hidden:true},
+					{name:'yearmonth',index:'yearmonth', editable:true,width:'100%',align:'left'}
+					], 
+					caption:'投资奖励历史记录',
+					viewrecords : true,
+					rowNum:20,
+					rowList:[20,50,100],
+					pager : pager_selector,
+			    	sortname : 'yearmonth',
+			     	multiselect : false,
+					loadComplete : function(data) {
+						var table = this;
+						setTimeout(function(){
+							styleCheckbox(table);
+							updateActionIcons(table);
+							updatePagerIcons(table);
+						}, 0);
+					},
+					autowidth: true,
+					subGrid : true,
+			        subGridRowExpanded : function(subgrid_id, row_id) {
+			          var time_id = $("#investRecord").jqGrid('getCell',row_id,'yearmonth');
+			          var subgrid_table_id, pager_id;
+			          subgrid_table_id = subgrid_id + "_t";
+			          pager_id = "p_" + subgrid_table_id;
+			          $("#" + subgrid_id).html(
+			              "<table id='" + subgrid_table_id
+			                  + "' class='scroll'></table><div id='"
+			                  + pager_id + "' class='scroll'></div>");
+			          jQuery("#" + subgrid_table_id).jqGrid(
+			              {
+			                url : "{:U('InvestRank/invetRecordList')}",
+			                datatype : "json",
+			                mtype:'POST',
+			                postData:{time_show:time_id},
+			                colNames : [ '排名', '投资手机号', '投资金额', '投资年月','发放状态','排行状态'],
+			                colModel : [ 
+			                             {name : "number",  index : "number",width : '80%'}, 
+			                             {name : "mobile",index : "mobile",  width : '187%'}, 
+			                             {name : "invest_amount",index : "invest_amount",width : '180%',align : "left"}, 
+			                             {name : "yearmonth",index : "yearmonth",width : '100%',align : "left"}, 
+			                             {name : "state",index : "state",width : '120%',align : "left"},
+			                             {name : "tag",index : "tag",width : '188%',align : "left"},
+			                           ],
+			                sortname : 'yearmonth',
+			              });
+			          jQuery("#" + subgrid_table_id).jqGrid('navGrid',
+			              "#" + pager_id, {
+			                edit : false,
+			                add : false,
+			                del : false
+			              });
+			        },
+			        
+				});	
+
+				//navButtons
+				jQuery(grid_selector).jqGrid('navGrid',pager_selector,
+					{ 	//navbar options
+						edit: false,
+                        editicon : 'icon-pencil blue',
+                        add: false,
+                        addicon : 'icon-plus-sign purple',
+                        del: false,
+                        delicon : 'icon-trash red',
+                        search: false,
+                        searchicon : 'icon-search orange',
+                        refresh: true,
+                        refreshicon : 'icon-refresh blue',
+                        view: false,
+                        viewicon : 'icon-zoom-in grey',
+					}
+			
+				)
+				
+				function styleCheckbox(table) {
+				/**
+					$(table).find('input:checkbox').addClass('ace')
+					.wrap('<label />')
+					.after('<span class="lbl align-top" />')
+					$('.ui-jqgrid-labels th[id*="_cb"]:first-child')
+					.find('input.cbox[type=checkbox]').addClass('ace')
+					.wrap('<label />').after('<span class="lbl align-top" />');
+				*/
+				}
+				function updateActionIcons(table) {
+					/**
+					var replacement = 
+					{
+						'ui-icon-pencil' : 'icon-pencil blue',
+						'ui-icon-trash' : 'icon-trash red',
+						'ui-icon-disk' : 'icon-ok green',
+						'ui-icon-cancel' : 'icon-remove red'
+					};
+					$(table).find('.ui-pg-div span.ui-icon').each(function(){
+						var icon = $(this);
+						var $class = $.trim(icon.attr('class').replace('ui-icon', ''));
+						if($class in replacement) icon.attr('class', 'ui-icon '+replacement[$class]);
+					})
+					*/
+				}
+				function style_edit_form(form) {
+					//enable datepicker on "sdate" field and switches for "stock" field
+					form.find('input[name=sdate]').datepicker({format:'yyyy-mm-dd' , autoclose:true})
+						.end().find('input[name=stock]')
+							  .addClass('ace ace-switch ace-switch-5').wrap('<label class="inline" />').after('<span class="lbl"></span>');
+			
+					//update buttons classes
+					var buttons = form.next().find('.EditButton .fm-button');
+					buttons.addClass('btn btn-sm').find('[class*="-icon"]').remove();//ui-icon, s-icon
+					buttons.eq(0).addClass('btn-primary').prepend('<i class="icon-ok"></i>');
+					buttons.eq(1).prepend('<i class="icon-remove"></i>')
+					
+					buttons = form.next().find('.navButton a');
+					buttons.find('.ui-icon').remove();
+					buttons.eq(0).append('<i class="icon-chevron-left"></i>');
+					buttons.eq(1).append('<i class="icon-chevron-right"></i>');		
+				}
+				//replace icons with FontAwesome icons like above
+				function updatePagerIcons(table) {
+					var replacement = 
+					{
+						'ui-icon-seek-first' : 'icon-double-angle-left bigger-140',
+						'ui-icon-seek-prev' : 'icon-angle-left bigger-140',
+						'ui-icon-seek-next' : 'icon-angle-right bigger-140',
+						'ui-icon-seek-end' : 'icon-double-angle-right bigger-140'
+					};
+					$('.ui-pg-table:not(.navtable) > tbody > tr > .ui-pg-button > .ui-icon').each(function(){
+						var icon = $(this);
+						var $class = $.trim(icon.attr('class').replace('ui-icon', ''));
+						
+						if($class in replacement) icon.attr('class', 'ui-icon '+replacement[$class]);
+					})
+				}
+			});	
+			function reload_investRank(){
+				$("#investRank").trigger("reloadGrid");
+			}
+		</script>

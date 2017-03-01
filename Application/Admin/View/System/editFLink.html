@@ -1,0 +1,67 @@
+<div class="fanbox_revise">
+	<h3>添加</h3>
+    <form id="editFLink_form" action="{:U('Admin/System/save_editFLink')}" method="post" enctype="multipart/form-data">
+        <table width="100%" cellpadding="0" cellspacing="0" class="post_table">
+            <tr>
+                <td align="right">链接名称：</td>
+                <td>
+                    <input type="hidden" name="fl_type" value="{$fl_type}" />
+                    <input type="hidden" name="fl_link" value="{$fl_link}" />
+                    <input type="text" id="fl_name" class="input2" name="fl_name" value="{$list.fl_name}" required/>
+                </td>
+            </tr>
+            <tr>
+                <td align="right">链接地址：</td>
+                <td>
+                    <input type="text" class="input2" id="friendly_link" name="friendly_link" value="{$list.friendly_link}"/>
+                </td>
+            </tr>
+            <if condition="$fl_type eq 1">
+                <tr>
+                    <td align="right">链接图片：</td>
+                    <td>
+                        <input type="file" class="input2" id="fl_pic" name="fl_pic"/>
+                    </td>
+                </tr>
+                <else />
+            </if>
+            <tr>
+                <td style="text-align: right;" colspan=4>
+                <input type="submit" style="float:none;" class="btn" value="提交"/> 
+                <!-- <input type="button" id="undo" style="float:none;" class="btn" value="取消" /> -->
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<script type="text/javascript" src="__PUBLIC__/static/jquery.form.js"></script>
+<script type="text/javascript">
+$(function(){
+    $('#editFLink_form').ajaxForm({
+        beforeSubmit: validate,
+        success: function(msg){
+            var reg = /<pre.+?>(.+)<\/pre>/g;    
+            var result = msg.match(reg);    
+            msg = RegExp.$1;
+            if(msg == 1){
+                layer.alert('修改成功！',function(){
+                	$.fancybox.close();
+                    top.layer.closeAll();
+                    top.rightContent.window.reload_partner_show();
+                });
+            }else{
+                layer.alert('修改失败', {
+                    closeBtn: 0 ,
+                  });
+            }
+        }
+    }); 
+});
+function validate() {
+   var fl_name=$("#fl_name").val();
+   if (!fl_name) {
+   		top.layer.msg('链接名称不可为空',{icon: 2,time: 1500});
+   	  	return false;
+   }
+}
+</script>

@@ -1,0 +1,39 @@
+<aside>
+	<div class="main_left">
+	<!--左侧显示-->
+	  <div class="main_left_show">
+		<div class="panel-header">
+			<div class="panel-title">{$top_li}</div>
+			<div class="panel-tool"><a href="javascript:void(0)" class="layout-button-left glyphicon glyphicon-list"></a></div>
+		</div>
+		<div class="panel-group" role="tablist" >
+		    <div class="panel">
+		    <foreach name="left_list" item="vo" key="k" >
+		      <div class="panel-top" role="tab" id="collapseListGroupHeading1">
+		          <a class="" role="button" data-toggle="collapse" href="#collapseListGroup1" aria-expanded="true" aria-controls="collapseListGroup1">
+		            {$vo.right_name} <i class="icon-angle-left fz18 icon_r"></i>
+		          </a>
+		      </div>
+		      
+		      <div id="collapseListGroup1" style="border-bottom: solid 1px #95b8e7;" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="collapseListGroupHeading1" aria-expanded="true">
+		        <ul class="list-group">
+
+		        <foreach name="vo.sub_menu" item="vv" key="kk">
+		          <li class="list-group-item"><a href="__APP__{$vv.right_url}" target='rightContent'><cite></cite>{$vv.right_name}</a></li>
+		        </foreach>
+		        </ul>
+		      </div>
+		    </foreach>
+		    </div>
+	    </div>
+	   </div>
+	   <!---->
+	   <!--左侧隐藏-->
+	   <div id="layout-left" class="layout-expand layout-expand-west" style="display: none;">
+   			<div class="panel-tool">
+   			<a href="javascript:void(0)" class="layout-button-rig glyphicon glyphicon-list"></a></div>
+	   		<div title="" class="panel-body"></div>
+	   	</div>
+	   <!---->
+	</div>
+</aside>

@@ -1,0 +1,77 @@
+<div class="fanbox_revise">
+	<h3>修改</h3>
+    <form id="editDicSmall_form" action="{:U('Admin/System/save_editDicSmall')}" method="post">
+        <table width="100%" cellpadding="0" cellspacing="0" class="post_table">
+            <tr>
+                <td align="right">小类编号：</td>
+                <td>
+                    <input type="hidden" name="dicsmall_id" value="{$dicsmall_id}" />
+                    <input type="text" id="dicsmall_no" class="input2" name="dicsmall_no" value="{$list.dicsmall_no}" required/>
+                </td>
+                <td align="right">小类名称：</td>
+                <td>
+                    <input type="text" class="input2" id="dicsmall_name" name="dicsmall_name" value="{$list.dicsmall_name}" required/>
+                </td>
+            </tr>
+            <tr>
+                <td align="right">冗余字段1：</td>
+                <td>
+                    <input type="text" class="input2" id="redundancy1" name="redundancy1" value="{$list.redundancy1}"/>
+                </td>
+                <td align="right">冗余字段2：</td>
+                <td>
+                    <input type="text" class="input2" id="redundancy2" name="redundancy2" value="{$list.redundancy2}"/>
+                </td>
+            </tr>
+            <tr>
+                <td align="right">冗余字段3：</td>
+                <td>
+                    <input type="text" class="input2" id="redundancy3" name="redundancy3" value="{$list.redundancy3}"/>
+                </td>
+                <td align="right">冗余字段4：</td>
+                <td>
+                    <input type="text" class="input2" id="redundancy4" name="redundancy4" value="{$list.redundancy4}"/>
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: right;" colspan=4>
+                <input type="submit" style="float:none;" class="btn" value="提交"/> 
+                <!-- <input type="button" id="undo" style="float:none;" class="btn" value="取消" /> -->
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<script type="text/javascript" src="__PUBLIC__/static/jquery.form.js"></script>
+<script type="text/javascript">
+$(function(){
+    $('#editDicSmall_form').ajaxForm({
+        beforeSubmit: validate,
+        success: function(msg){
+            if(msg == 1){
+                layer.alert('修改成功！',function(){
+                    top.rightContent.window.reload_dicSmall_show();
+                	$.fancybox.close();
+                    top.layer.closeAll();
+                });
+            }else{
+                layer.alert('修改失败', {
+                    closeBtn: 0 ,
+                  });
+            }
+        }
+    }); 
+});
+function validate() {
+   var dicsmall_no=$("#dicsmall_no").val();
+   if (!dicsmall_no) {
+   		top.layer.msg('小类编号不可为空',{icon: 2,time: 1500});
+   	  	return false;
+   }
+   var dicsmall_name=$("#dicsmall_name").val();
+   if (!dicsmall_name) {
+        top.layer.msg('小类名称不可为空',{icon: 2,time: 1500});
+        return false;
+   }
+}
+</script>

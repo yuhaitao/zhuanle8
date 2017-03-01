@@ -1,0 +1,77 @@
+<include file="Public/head"/>
+<!-- 头部 -->
+<include file="Public/header"/>
+<!-- /头部 -->
+
+<!--文章主体内容-->
+<div class="middle clearfix">
+	<div class="middle_cen">
+		<include file="Public/articleLeft" />
+
+		<script type="text/javascript">
+		$(function(){
+			changeClass(null);
+		});
+		function changeClass(php){
+			var typeJsp= "BusinessNews";
+			if(php!=null){
+			  typeJsp=php;
+			}
+			if(typeJsp!=''&&typeJsp!=null){
+				if(typeJsp=='SeeList'){
+				   changeDiv('about_id1',typeJsp);
+				}
+				if(typeJsp=='CompanyInfo'){
+				   changeDiv('about_id2',typeJsp);
+				}
+				if(typeJsp=='JoinUs'){
+				   changeDiv('about_id3',typeJsp);
+				}
+				if(typeJsp=='ContactUs'){
+				   changeDiv('about_id4',typeJsp);
+				}
+				if(typeJsp=='View'){
+				   changeDiv('about_id5',typeJsp);
+				}
+				if(typeJsp=='BusinessNews'){
+				   changeDiv('about_id6',typeJsp);
+				}
+				if(typeJsp=='BusinessNews'){
+				   changeDiv('about_id6',typeJsp);
+				}
+			
+			}else{
+			changeDiv('about_id1','CompanyInfo');
+			}
+		}
+		function changeDivContext(obj,name,url){
+		    $('.middle_cen_left tr td').attr('class', '_left_td _td_text1');
+		    $(obj).find("td").attr("class",'_left_td _td_text2');
+		    changeClass(name)
+			openwin_self(url);
+		}
+
+		function changeDiv(id,name){
+			$('.middle_cen_left tr td').attr('class', '_left_td _td_text1');
+			$("#"+id).parent().attr("class","_left_td _td_text2");
+		}
+		</script>
+		<div id="middle_cen_right_id" class="middle_cen_right">
+			<div id="middle_cen__id">
+				<div class="right_top_det">
+					<span class="r_top_span">{$business.journalism_title}</span><br>
+					<span class="r_top_span2">{$business.add_time}</span>
+				</div>
+				<div class="bot_p2">
+					{$business_nr}
+				</div>
+				<div class="bot_p3">
+					<span>上一篇：{$front_info}</span>
+					<span class="_right">下一篇：{$next_info}</span>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!--文章主体内容结束-->
+<include file="Public/footer" />

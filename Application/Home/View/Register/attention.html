@@ -1,0 +1,17 @@
+<include file="Public/head" />
+
+<body>
+<div class="erfloat">
+    <div class="ername">领取5元红包</div>
+    <div class="ertitle">关注赚乐扒微信公众账号领取</div>
+    <div class="erbg"></div>
+    <a href="javascript:void(0);" onclick="closeWindow();" class="era">关注我领红包</a>
+</div>
+<script type="text/javascript">
+    var index = parent.layer.getFrameIndex(window.name); 
+    function closeWindow(){
+        parent.countDown();
+        parent.layer.close(index);
+    }
+</script>
+</body>

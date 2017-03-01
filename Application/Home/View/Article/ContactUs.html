@@ -1,0 +1,207 @@
+<include file="Public/head"/>
+<!-- 头部 -->
+<include file="Public/header"/>
+<!-- /头部 -->
+<!-- 引入百度地图的API -->
+<!---------------赚乐扒内容页面位置开始------------------>
+<div class="jflnr_wz">
+    <div class="jflnr_wz_tb"><img src="__PUBLIC__/images/newimages/wztb.png" width="45" height="45"> </div>
+    <div class="jflnr_wz_nr">位置：<a href="__ROOT__/">首页</a> > 联系我们
+            </div>
+</div>
+<!---------------赚乐扒内容页面位置结束------------------>
+<script type="text/javascript" src="http://api.map.baidu.com/api?key=&v=1.1&services=true"></script>
+<!--文章主体内容-->
+<div class="jflnews">
+<div class="middle clearfix">
+	<div class="middle_cen">
+		<include file="Public/articleLeft" />
+
+		<script type="text/javascript">
+		$(function(){
+			changeClass(null);
+		});
+		function changeClass(php){
+			var typeJsp= "ContactUs";
+			if(php!=null){
+			  typeJsp=php;
+			}
+			if(typeJsp!=''&&typeJsp!=null){
+				if(typeJsp=='CompanyInfo'){
+				   changeDiv('about_id1',typeJsp);
+				}
+				if(typeJsp=='SeeList'){
+				   changeDiv('about_id2',typeJsp);
+				}
+				if(typeJsp=='JoinUs'){
+				   changeDiv('about_id3',typeJsp);
+				}
+				if(typeJsp=='ContactUs'){
+				   changeDiv('about_id4',typeJsp);
+				}
+				if(typeJsp=='View'){
+				   changeDiv('about_id5',typeJsp);
+				}
+				if(typeJsp=='BusinessNews'){
+				   changeDiv('about_id6',typeJsp);
+				}
+			}else{
+			changeDiv('about_id4','ContactUs');
+			}
+		}
+		function changeDivContext(obj,name,url){
+		    $('.middle_cen_left tr td').attr('class', '_left_td _td_text1');
+		    $(obj).find("td").attr("class",'_left_td _td_text2');
+		    changeClass(name)
+			openwin_self(url);
+		}
+
+		function changeDiv(id,name){
+			$('.middle_cen_left tr td').attr('class', '_left_td _td_text1');
+			$("#"+id).parent().attr("class","_left_td _td_text2");
+		}
+		</script>
+        
+		<div id="middle_cen_right_id" class="middle_cen_right">
+    
+    	
+		<div class="right_top_article">
+			<span class="r_top_span">联系我们</span>
+		</div>
+		<div class="right_bottom">
+			<div class="bottom_div"> </div>
+			<div class="img_div">
+				<!---->
+				<!--百度地图容器-->
+                  <div style="width:100%;height:450px;" id="dituContent"></div>
+                
+	                <script type="text/javascript">
+	                    //创建和初始化地图函数：
+	                    function initMap(){
+	                        createMap();//创建地图
+	                        setMapEvent();//设置地图事件
+	                        addMapControl();//向地图添加控件
+	                        addMarker();//向地图中添加marker
+	                    }
+	                    
+	                    //创建地图函数：
+	                    function createMap(){
+	                        var map = new BMap.Map("dituContent");//在百度地图容器中创建一个地图
+	                        var point = new BMap.Point(119.961548,31.674743);//定义一个中心点坐标
+	                        map.centerAndZoom(point,18);//设定地图的中心点和坐标并将地图显示在地图容器中
+	                        window.map = map;//将map变量存储在全局
+	                    }
+	                    
+	                    //地图事件设置函数：
+	                    function setMapEvent(){
+	                        map.enableDragging();//启用地图拖拽事件，默认启用(可不写)
+	                        map.enableScrollWheelZoom();//启用地图滚轮放大缩小
+	                        map.enableDoubleClickZoom();//启用鼠标双击放大，默认启用(可不写)
+	                        map.enableKeyboard();//启用键盘上下左右键移动地图
+	                    }
+	                    
+	                    //地图控件添加函数：
+	                    function addMapControl(){
+	                                        //向地图中添加比例尺控件
+	                    var ctrl_sca = new BMap.ScaleControl({anchor:BMAP_ANCHOR_BOTTOM_LEFT});
+	                    map.addControl(ctrl_sca);
+	                    }
+	                    
+	                    //标注点数组
+	                    var markerArr = [{title:"赚乐扒",content:"江苏省常州市武进高新区天安数码城C栋709-2室",point:"119.961548|31.674743",isOpen:1,icon:{w:21,h:21,l:0,t:0,x:6,lb:5}}
+	                         ];
+	                    //创建marker
+	                    function addMarker(){
+	                        for(var i=0;i<markerArr.length;i++){
+	                            var json = markerArr[i];
+	                            var p0 = json.point.split("|")[0];
+	                            var p1 = json.point.split("|")[1];
+	                            var point = new BMap.Point(p0,p1);
+	                            var iconImg = createIcon(json.icon);
+	                            var marker = new BMap.Marker(point,{icon:iconImg});
+	                            var iw = createInfoWindow(i);
+	                            var label = new BMap.Label(json.title,{"offset":new BMap.Size(json.icon.lb-json.icon.x+10,-20)});
+	                            marker.setLabel(label);
+	                            map.addOverlay(marker);
+	                            label.setStyle({
+	                                        borderColor:"#808080",
+	                                        color:"#333",
+	                                        cursor:"pointer"
+	                            });
+	                            
+	                            (function(){
+	                                var index = i;
+	                                var _iw = createInfoWindow(i);
+	                                var _marker = marker;
+	                                _marker.addEventListener("click",function(){
+	                                    this.openInfoWindow(_iw);
+	                                });
+	                                _iw.addEventListener("open",function(){
+	                                    _marker.getLabel().hide();
+	                                })
+	                                _iw.addEventListener("close",function(){
+	                                    _marker.getLabel().show();
+	                                })
+	                                label.addEventListener("click",function(){
+	                                    _marker.openInfoWindow(_iw);
+	                                })
+	                                if(!!json.isOpen){
+	                                    label.hide();
+	                                    _marker.openInfoWindow(_iw);
+	                                }
+	                            })()
+	                        }
+	                    }
+	                    //创建InfoWindow
+	                    function createInfoWindow(i){
+	                        var json = markerArr[i];
+	                        var iw = new BMap.InfoWindow("<b class='iw_poi_title' title='" + json.title + "'>" + json.title + "</b><div class='iw_poi_content'>"+json.content+"</div>");
+	                        return iw;
+	                    }
+	                    //创建一个Icon
+	                    function createIcon(json){
+	                        var icon = new BMap.Icon("http://app.baidu.com/map/images/us_mk_icon.png", new BMap.Size(json.w,json.h),{imageOffset: new BMap.Size(-json.l,-json.t),infoWindowOffset:new BMap.Size(json.lb+5,1),offset:new BMap.Size(json.x,json.h)})
+	                        return icon;
+	                    }
+	                    
+	                    initMap();//创建和初始化地图
+	                </script>
+				<!---->
+			</div>
+			<table class="contact_table" cellspadding="0" cellspacing="0">
+				<tbody><tr class="contact_tr">
+					<td class="contact_td  contact_tdw2 contact_tdt1">{$address.dicbig_name}</td>
+					<td class="contact_td  contact_tdw1 contact_tdt1">{$emailInfo.dicbig_name}</td>
+				</tr>
+				<tr class="contact_tr">
+					<td class="contact_td  contact_tdw2 contact_tdt2">
+						<div class="tubiao"><img src="__PUBLIC__/images/home/icon/dingwei.png">&nbsp;&nbsp;&nbsp;{$address.dicsmall_name}</div></td>
+					<td class="contact_td  contact_tdw1 contact_tdt2">
+						<div class="tubiao"><img src="__PUBLIC__/images/home/icon/dianhua .png">&nbsp;&nbsp;&nbsp;{$address.redundancy2}：{$address.redundancy3}</div></td>
+				</tr>
+				<tr class="contact_tr">
+					<td class="contact_td  contact_tdw2 contact_tdt2">
+						<div class="tubiao"><img src="__PUBLIC__/images/home/icon/youjian2.png">&nbsp;&nbsp;&nbsp;{$emailInfo.dicsmall_name}：{$emailInfo.redundancy1}</div></td>
+					<td class="contact_td  contact_tdw1 contact_tdt2">
+						<div class="tubiao"><img src="__PUBLIC__/images/home/icon/youjian.png">&nbsp;&nbsp;&nbsp;{$emailInfo.redundancy2}：{$emailInfo.redundancy3}</div></td>
+				</tr>
+				<tr class="contact_tr">
+					<td class="contact_td  contact_tdw1 contact_tdt2"></td>
+				</tr>
+				<tr class="contact_tr">
+					<td class="contact_td  contact_tdw2 contact_tdt1">{$bussInfo.dicbig_name}</td>
+				</tr>
+				<tr class="contact_tr">
+					<td class="contact_td  contact_tdw2 contact_tdt2">
+						<div class="tubiao"><img src="__PUBLIC__/images/home/icon/condian3.png">&nbsp;&nbsp;&nbsp;{$bussInfo.dicsmall_name}：{$bussInfo.redundancy1}</div></td>
+					<td class="contact_td  contact_tdw12 contact_tdt2">
+						<div class="tubiao2"><img src="__PUBLIC__/images/home/icon/youjian.png">&nbsp;&nbsp;&nbsp;{$bussInfo.redundancy2}：{$bussInfo.redundancy3}</div></td>
+				</tr>
+			</tbody></table>
+		</div>
+</div><div class="clear"></div>
+	</div>
+</div>
+</div>
+<!--文章主体内容结束-->
+<include file="Public/footer" />

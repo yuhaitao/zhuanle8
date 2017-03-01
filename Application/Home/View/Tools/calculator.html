@@ -1,0 +1,278 @@
+<include file="Public/head"/>
+<!-- 头部 -->
+<include file="Public/header"/>
+
+<content>
+	<div class="list">
+		<div class="cal_top text_two">
+			<div class="cal_tt text_thseven">收益计算器</div>
+			<ul>
+				<li>
+					<table>
+						<tbody><tr height="66px" style="line-height: 66px;">
+							<td width="100px">出借金额</td>
+							<td>
+								<div class="in_div">
+									<input class="cal_input cal_control" name="loanMoney" id="loanMoney_id" onchange="flase();"> <span class="cal_span">元</span>
+								</div>
+							</td>
+						</tr>
+						<tr height="66px" style="line-height: 66px;">
+							<td width="100px">年化利率</td>
+							<td>
+								<div class="in_div">
+									<div class="in_div">
+										<input class="cal_input cal_control" name="annualRate" id="annualRate_id" onchange="flase();"> <span class="cal_span">%</span>
+									</div>
+								</div>
+							</td>
+						</tr>
+					</tbody></table>
+				</li>
+				<li>
+					<table>
+						<tbody><tr height="66px" style="line-height: 66px;">
+							<td width="100px">借款期限</td>
+							<td>
+								<div class="in_div">
+									<input class="cal_input cal_control" name="loanTerm" id="loanTerm_id" onchange="flase();"> <span class="cal_span">个月</span>
+								</div>
+							</td>
+						</tr>
+						<tr height="66px" style="line-height: 66px;">
+							<td width="100px">还款方式</td>
+							<td><select class="cal_sel cal_control" style="" name="repaymentMethod" id="repaymentMethod_id" onchange="flase();">
+									<option value="1">等额本息</option>
+									<option value="2">每月付息，到期还本</option>
+							</select></td>
+						</tr>
+					</tbody></table>
+				</li>
+				<li>
+					<table>
+						<tbody><tr height="66px" style="line-height: 66px;">
+							<td></td>
+							<td></td>
+						</tr>
+						<tr height="66px" style="line-height: 66px;">
+							<td><a href="javascript:void(0);" onclick="start();" class="a26">开始计算</a></td>
+						</tr>
+					</tbody></table>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<div class="list">
+		<div class="cal_bot">
+			<div class="cal_btab">
+				<table width="1200px" cellpadding="0" cellspacing="0" style="border-collapse: collapse;" id="table_id">
+					<tbody><tr class="text_nineteen" height="50px">
+						<td class="cal_btab_td" colspan="5">收益详情</td>
+					</tr>
+					<tr class="text_nineteen" height="125px">
+						<td class="cal_btab_td2" colspan="5">
+							<ul>
+								<li>
+									<div class="text_twot">出借金额</div>
+									<div class="text_oneone">
+										￥<span  id="text_thone1">0.00</span>
+									</div>
+								</li>
+								<li>
+									<div class="text_twot">应收利息</div>
+									<div class="text_oneone">
+										￥<span  id="text_thone2">0.00</span>
+									</div>
+								</li>
+								<li>
+									<div class="text_twot">月收本息</div>
+									<div class="text_oneone">
+										￥<span  id="text_thone3">0.00</span>
+									</div>
+								</li>
+							</ul>
+						</td>
+					</tr>
+					<tr class="cal_btab_tr" height="40px" style="background: #eee;font-size: 14px;color:#999;">
+						<td>期数</td>
+						<td>月收本息</td>
+						<td>月收本金</td>
+						<td>月收利息</td>
+						<td>待收本息</td>
+					</tr>
+				</tbody></table>
+			</div>
+		</div>
+	</div>
+	</content>
+
+<script type="text/javascript">
+	document.onkeydown=function() { 
+	   	if (event.keyCode==13){ 
+	   		start();
+	   	}
+	 }
+		function start() {
+			var term = /(^\+?[1-9][0-9]*$)/;//验证正整数正则
+			var rate = /(^[0-9]+(.[0-9]{1,2})?$)/;//验证有1-2位小数的正实数正则
+			var loanMoney = $("#loanMoney_id").val() * 1;//出借金额
+			var loanTerm = $("#loanTerm_id").val() * 1;//出借期限
+			var annualRate = $("#annualRate_id").val() * 1;//年化利率
+			var repaymentMethod = $("#repaymentMethod_id").val();//还款方式
+			if (loanMoney % 10 != 0) {
+				layer.alert("您输入金额需为10的整数倍！");
+				return;
+			}
+			if(loanMoney<50){
+				layer.alert("您输入金额最少为50！");
+				return;
+			}
+			if(loanTerm>48){
+				layer.alert("出借期限最长为48个月！");
+				return;
+			}
+			if(!term.test(loanTerm)){
+				layer.alert("请您正确输入月份！");
+				return;
+			}
+			if(annualRate>24){
+				layer.alert("您输入的年化利率最大为24%！");
+				return;
+			} 
+			if(!rate.test(annualRate)){
+				layer.alert("请您正确输入年化利率！");
+				return;
+			}
+			if (repaymentMethod == 1) {
+				if (loanMoney != 0) {
+					$("#text_thone1").text(loanMoney);
+				}
+				var yl = annualRate / 100 / 12;//月利率
+				// var pw = Math.pow(1 + yl, loanTerm);//平方
+				// var ysbx = ((loanMoney * pw * yl) * 1 / (pw - 1) * 1)
+				// 		.toFixed(2);//月收本息
+				// var yslx = (((loanMoney * loanTerm * yl * pw) * 1 / (pw - 1) * 1) * 1 - loanMoney)
+						// .toFixed(2);//应收利息
+					var ysbx = loanMoney*yl*1;
+					var yslx = loanMoney * (yl*loanTerm);
+				if (yslx != "NaN") {
+					$("#text_thone2").text(yslx.toFixed(2));
+				}
+				if (ysbx != "NaN") {
+					$("#text_thone3").text(ysbx.toFixed(2));
+				}
+				syxq();
+				return;
+			}
+			if (repaymentMethod == 2) {
+				if (loanMoney != 0) {
+					$("#text_thone1").text(loanMoney);
+				}
+				var yl1 = annualRate / 100 / 12;//月利率
+				var ysbx1 = (loanMoney * yl1).toFixed(2);//月收本息
+				var yslx1 = (loanMoney * loanTerm * yl1).toFixed(2);//应收利息
+				if (yslx1 != "NaN") {
+					$("#text_thone2").text(yslx1);
+				}
+				if (ysbx1 != "NaN") {
+					$("#text_thone3").text(ysbx1);
+				}
+				syxq1();
+				return;
+			}
+		}
+		//全局变量
+		var gb = false;
+		var ysbx1 = "";
+		var bj = "";
+		var lx = "";
+		var dsbx = "";
+		var sybj = "";
+		var bjh = "";
+		function syxq() {
+			var loanMoney = $("#loanMoney_id").val() * 1;//出借金额
+			var loanTerm = $("#loanTerm_id").val() * 1;//出借期限
+			var annualRate = $("#annualRate_id").val() * 1;//年化利率
+			var yl = annualRate / 100 / 12;//月利率
+			var ysbx = (loanMoney/loanTerm+loanMoney * yl).toFixed(2);//月收本息
+			var yslx = (loanMoney * loanTerm * yl).toFixed(2);//应收利息
+			dsbx = ((loanMoney) * 1 + (yslx) * 1 - (ysbx) * 1).toFixed(2);//第一个月代收本息
+			lx = ((loanMoney) * 1 * (yl) * 1).toFixed(2);//第一个月利息
+			bj = (loanMoney/loanTerm).toFixed(2);//第一个月本金
+			ysbx1 = ((lx) * 1 + (bj) * 1).toFixed(2);//第一个月月收本息
+			bjh = bj;
+			if (!gb) {
+				$(".ys").remove();
+				for (var i = 0; i < loanTerm; i++) {
+					if (i == loanTerm - 1) {
+						lx = (((loanMoney) * 1 - ((bjh) * 1 - (bj) * 1)) * yl)
+								.toFixed(2);
+						ysbx1 = ((dsbx) * 1 + (ysbx1) * 1).toFixed(2);
+						bj = ((ysbx1) * 1 - (lx) * 1).toFixed(2);
+						dsbx = ((ysbx1) * 1 - (ysbx1) * 1).toFixed(2);
+					}
+					$("#table_id").append(
+							'<tr class = "text_two cal_btab_tr ys" height = "50px" ><td>'
+									+ (i + 1) + '</td><td>' + ysbx1
+									+ '</td><td>' + bj + '</td><td>' + lx
+									+ '</td><td>' + dsbx + '</td></tr>');
+					dsbx = ((dsbx) * 1 - (ysbx1) * 1).toFixed(2);
+				}
+			}
+			gb = true;
+			ysbx1 = "";
+			bj = "";
+			lx = "";
+			dsbx = "";
+			sybj = "";
+			bjh = "";
+		}
+		//全局变量
+		var ysbx2 = "";
+		var bj1 = "";
+		var lx1 = "";
+		var dsbx1 = "";
+		function syxq1() {
+			var loanMoney = $("#loanMoney_id").val() * 1;//出借金额
+			var loanTerm = $("#loanTerm_id").val() * 1;//出借期限
+			var annualRate = $("#annualRate_id").val() * 1;//年化利率
+			var yl1 = annualRate / 100 / 12;//月利率
+			var ysbx1 = (loanMoney * yl1).toFixed(2);//月收本息
+			var yslx1 = (loanMoney * loanTerm * yl1).toFixed(2);//应收利息
+			dsbx1 = ((loanMoney) * 1 + (yslx1) * 1 - (ysbx1) * 1).toFixed(2);//第一个月代收本息
+			lx1 = ysbx1;//第一个月利息
+			bj1 = (0.00).toFixed(2);//第一个月本金
+			ysbx2 = ((lx1) * 1 + (bj1) * 1).toFixed(2);//第一个月月收本息
+			if (!gb) {
+				$(".ys").remove();
+				for (var i = 0; i < loanTerm; i++) {
+					if (i == loanTerm - 1) {
+						dsbx1 = (0.00).toFixed(2);
+						lx1 = ysbx1;
+						bj1 = loanMoney;
+						ysbx2 = (lx1) * 1 + (bj1) * 1;
+					}
+					$("#table_id").append(
+							'<tr class = "text_two cal_btab_tr ys" height = "50px" ><td>'
+									+ (i + 1) + '月</td><td>' + ysbx2
+									+ '</td><td>' + bj1 + '</td><td>' + lx1
+									+ '</td><td>' + dsbx1 + '</td></tr>');
+					dsbx1 = ((dsbx1) * 1 - (ysbx1) * 1).toFixed(2);
+					lx1 = ysbx1;
+					bj1 = (0.00).toFixed(2);
+					ysbx2 = ((lx1) * 1 + (bj1) * 1).toFixed(2);
+				}
+			}
+			gb = true;
+			ysbx2 = "";
+			bj1 = "";
+			lx1 = "";
+			dsbx1 = "";
+		}
+		function flase() {
+			gb = false;
+		}
+	</script>
+
+<!--footer-->
+<include file="Public/footer" />

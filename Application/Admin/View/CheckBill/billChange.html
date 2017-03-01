@@ -1,0 +1,53 @@
+<div class="fanbox_bill">
+    <h3>{$option}</h3>
+    <form id="bill_form" action="{:U('Admin/CheckBill/billXiugai')}" method="post">
+        <table width="100%" cellpadding="0" cellspacing="0" class="post_table">
+            <tr>
+                <td width="30%" align="right">购买金额&nbsp;&nbsp;</td>
+                <td>
+                    <input type="hidden" name="product_buy_id" value="{$product_buy_id}" />
+                    <input type="hidden" name="type_id" value="{$type_id}" />
+                    <input name="buy_money" type="text" value="{$pro_list.buy_money}" />
+                </td>
+            </tr>
+            <tr>
+                <td width="30%" align="right">购买时间&nbsp;&nbsp;</td>
+                <td>
+                    <input id="buy_time" name="buy_time" type="text" value="{$pro_list.buy_time}" />
+                </td>
+            </tr>
+            <tr>
+                <td height="60">&nbsp;</td>
+                <td style="text-align: right;">
+                <input type="submit" style="float:none;" class="btn" value="提交"/> 
+                <input type="button" style="float:none;" class="btn" value="取消" onclick="$.fancybox.close();" /></td>
+            </tr>
+        </table>
+    </form>
+</div>
+<script type="text/javascript" src="__PUBLIC__/static/jquery.form.js"></script>
+<script type="text/javascript">
+    laydate({
+            istime:true,
+            format: 'YYYY-MM-DD hh:mm:ss',
+            elem: '#buy_time'
+        });
+</script>
+<script type="text/javascript">
+$(function(){
+    $('#bill_form').ajaxForm({
+        success: function(msg){
+            if(msg == 1){
+                layer.alert('修改成功！',function(){
+                    top.rightContent.window.reload_type_show();
+                    $.fancybox.close();
+                    layer.closeAll();
+                });
+            }else{
+                layer.alert('修改失败！');
+            }
+        }
+    }); 
+});
+
+</script>

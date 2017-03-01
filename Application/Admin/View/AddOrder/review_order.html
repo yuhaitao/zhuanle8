@@ -1,0 +1,119 @@
+<div class="fanbox_bill">
+
+    <h3>审核</h3>
+
+    <form id="review_order_form" action="{:U('Admin/AddOrder/save_review')}" method="post">
+
+        <table width="100%" cellpadding="0" cellspacing="0" class="post_table">
+
+            <tr>
+
+                <td width="30%" align="left">审核状态&nbsp;&nbsp;</td>
+
+                <td>
+
+                    <input name="order_id" id="order_id" type="hidden" />
+
+                    <label><input name="mark" type="radio" value="1" />审核通过 </label> 
+
+                    <label><input name="mark" type="radio" value="2" />审核失败 </label> 
+
+                </td>
+
+            </tr>
+
+            <tr>
+
+                <td width="30%" align="left">备注&nbsp;&nbsp;</td>
+
+                <td>
+
+                    <textarea id='remark' name='remark'></textarea>
+
+                </td>
+
+            </tr>
+
+            <tr>
+
+                <td height="60">&nbsp;</td>
+
+                <td style="text-align: right;">
+
+                <input type="submit" style="float:none;" class="btn" value="提交"/> 
+
+                <input type="button" style="float:none;" class="btn" value="取消" onclick="$.fancybox.close();" /></td>
+
+            </tr>
+
+        </table>
+
+    </form>
+
+</div>
+
+<script type="text/javascript" src="__PUBLIC__/static/jquery.form.js"></script>
+
+<script type="text/javascript">
+
+$(function(){
+
+    $("#order_id").val(order_id);
+
+    $('#review_order_form').ajaxForm({
+
+        beforeSubmit: validate,
+
+        success: function(msg){
+
+            if(msg == 1){
+
+                layer.alert('提交成功！',function(){
+
+                    rightContent.window.reload_orderReview_list();
+
+                    $.fancybox.close();
+
+                    layer.closeAll();
+
+                });
+
+            }else{
+
+                layer.alert('提交失败！');
+
+            }
+
+        }
+
+    }); 
+
+});
+
+function validate(){
+
+   var choose_mark = $('input:radio[name="mark"]:checked').val();
+
+   if(choose_mark == '' || choose_mark == null){
+
+        layer.msg('请选择审核状态',{icon:11,time: 1000});
+
+        return false;
+
+   }
+
+   var remark = $("#remark").val();
+
+   if (remark=='') {
+
+        layer.msg('请填写备注',{icon:11,time: 1000});
+
+        return false;
+
+   }
+
+
+
+}
+
+</script>

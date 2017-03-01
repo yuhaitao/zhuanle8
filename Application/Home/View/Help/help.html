@@ -1,0 +1,141 @@
+<include file="Public/head"/>
+<!-- 头部 -->
+<include file="Public/header"/>
+<!-- /头部 -->
+<!---------------赚乐扒内容页面位置开始------------------>
+<div class="jflnr_wz">
+    <div class="jflnr_wz_tb"><img src="__PUBLIC__/images/newimages/wztb.png" width="45" height="45"> </div>
+    <div class="jflnr_wz_nr">位置：<a href="__ROOT__/">首页</a> > 新手入门
+            </div>
+</div>
+<div class="jflnr_bt">新手入门</div>
+<!---------------赚乐扒个人中心账户总阅开始------------------>
+<div class="jflgrzx_zhzy">
+    <div class="jflgrzx_zhzy_left">
+        <div class="jflgrzx_zhzy_left_bottom">
+            <div class="grzxleft_04">
+                <div class="grzxleft_04_01">新手入门</div>
+                <div class="grzxleft_04_02">
+
+                    <volist name="helplist" id="vo" offset="0" length="5" key="k">
+							<a id="help_info_id{$k}" href="javascript:void(0)" onclick="changeDivContext(this,'helpInfo','{$vo.dicsmall_no}')">{$vo.dicsmall_name}</a>
+					</volist>
+                        
+                    <div class="line"></div>
+                </div>
+            </div>
+            <div class="grzxleft_04">
+                <div class="grzxleft_04_01">产品介绍</div>
+                <div class="grzxleft_04_02">
+                
+                    <volist name="helplist" id="vo" offset="5" length='3' key="k">
+							<a href="javascript:void(0)" id="help_info_id{$k+5}" onclick="changeDivContext(this,'helpInfo','{$vo.dicsmall_no}')">{$vo.dicsmall_name}</a>
+					</volist>
+                    <div class="line"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="jflgrzx_zhzy_right">
+       
+        <div class="bzzx_01">
+           <div id="middle_cen_right_id" class="middle_cen_right" style="padding:0; margin:0; width:100%; border:none; min-height:auto"></div>
+            <div class="line"></div>
+        </div>
+    </div>
+    <div class="line"></div>
+</div>
+<!---------------赚乐扒个人中心账户总阅结束------------------>
+
+
+
+		<script type="text/javascript">
+			$(function(){
+				help(type);
+			});
+			
+		   function help(type){
+			if(type==181){
+				str= "注册登录";
+				}else if(type==182){
+				str=  "账户密码";
+				}else if(type==183){
+				str=  "提现";
+				}else if(type==184){
+				str=  "安全认证";
+				}else if(type==185){
+				str=  "名词解释";
+				}else if(type==186){
+				str=  "稳健型产品";
+				}else if(type==187){
+				str=  "精选产品";
+				}else if(type==188){
+				str=  "高收益产品";
+				}
+				$("#r_top_span_id").html(str);
+			  }
+			  
+			function accoutHideDiv(id,le){
+			for(var i=0;i<le;i++){
+			if(id!=i){
+			// document.getElementById("nickNameli"+i).style.display=='list-item';
+			$("#_bot_li"+i).find("span").attr("class","_bot_li_span _bot_li_bg1");
+			}}
+			if(document.getElementById("nickNameli"+id).style.display=='none'){
+			$("#_bot_li"+id).find("span").attr("class","_bot_li_span _bot_li_bg2");
+			}
+			else{
+			document.getElementById("nickNameli"+id).style.display=='list-item';
+			$("#_bot_li"+id).find("span").attr("class","_bot_li_span _bot_li_bg1");
+			}
+			$("#nickNameli"+id).fadeToggle();
+			}
+
+			
+		</script>
+		<script type="text/javascript">
+			var type = '181';
+			var total_num ;
+			$(function(){
+				var help_info_id1 = '';
+				changeDivContext("help_info_id1","helpInfo",type);
+				$("#help_info_id1").attr('class', '');
+			});
+
+			function changeDivContext(obj,name,types){
+		      type=types;
+		     
+
+		   
+		      $(obj).attr('class', '');
+			 	$.ajax({
+					type : "post",
+					url : "helpList.html",
+					data : {'phpName':name,'type':type},
+					dataType: 'json',
+					success : function(json) {
+		
+						$("#middle_cen_right_id").html('');
+						var toptr = "<div class='right_top'><span class='r_top_span' id='r_top_span_id'></span></div><div class='right_bottom' id='feedbackId_table'><ul class='_bot_ul'></ul></div>";
+						total_num = json.total_num;//总记录数
+
+						$("#middle_cen_right_id").append(toptr);
+						help(type);
+						if (total_num > 0) {
+	                        var tr = "";
+	                        var list = json.list;
+	                       
+	                        $.each(list, function(index, array) { //遍历返回json
+	                        tr += "<li class='_bot_li ' id='_bot_li"+index+"' onclick='accoutHideDiv("+index+",5);'>	<span style='cursor:pointer' class='_bot_li_span _bot_li_bg1'>"+array['description']+"</span></li><li class='_bot_li_xia' id='nickNameli"+index+"' style='display:none'><ul class='_bot_li_ul'><li class='_bot_li_li text_two'>"+array['reply']+"</li></ul></li></ul>";
+	                        });
+	                        $("._bot_ul").append(tr);
+                        }else{
+                        	$("._bot_ul").append("<tr><td class='platformtd1 td_bor2' colspan='8'>没有数据</td></tr>");
+                        }
+					}
+				}); 
+			}
+
+			</script>
+
+<include file = "Public/footer" />

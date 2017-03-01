@@ -1,0 +1,248 @@
+<include file="Public/head"/>
+<!-- 头部 -->
+<include file="Public/header"/>
+<!-- /头部 -->
+<script type="text/javascript">
+	$(function(){
+		//账户信息
+		$("#nickNameli").hide();
+		$("#userpasswordli").hide();
+		$("#tradePasli").hide();
+		$("#userAddressli").hide();
+		$("#editImageDiv").hide();
+
+	});
+	//显示隐藏DIV
+	function accoutHideDiv(id){
+		if(!(id=="nickNameli")){
+			$("#nickNameli").fadeOut();
+		}
+		if(!(id=="userpasswordli")){
+			$("#userpasswordli").fadeOut();
+		}
+		if(!(id=="userEmailli")){
+			$("#userEmailli").fadeOut();
+		}
+		if(!(id=="userRenzhengli")){
+			$("#userRenzhengli").fadeOut();
+		}
+		if(!(id=="tradePasli")){
+			$("#tradePasli").fadeOut();
+		}
+		if(!(id=="userAddressli")){
+			$("#userAddressli").fadeOut();
+		}
+	  	$("#"+id).fadeToggle();
+	}
+	//隐藏DIV
+	function accoutShowDiv(id){
+	   $("#"+id).fadeOut();
+	}
+</script>
+<!---------------赚乐扒内容页面位置开始------------------>
+<div class="jflnr_wz">
+    <div class="jflnr_wz_tb"><img src="__PUBLIC__/images/newimages/wztb.png" width="45" height="45"> </div>
+    <div class="jflnr_wz_nr">位置：<a href="__ROOT__/">首页</a> > 投资记录 </div>
+</div>
+<!---------------赚乐扒内容页面位置结束------------------>
+
+<!---------------赚乐扒个人中心投资记录开始------------------>
+<div class="jflgrzx_zhzy">
+    <div class="jflgrzx_zhzy_left">
+        <include file="Public/person_left"/>
+    </div>
+    <div class="jflgrzx_zhzy_right">
+        <div class="right_top">
+					<ul class="right_top_ul">
+                        <li class="right_top_li2"><a class="text_twenty" id="waitRebateA" href="javascript:void(0);" onclick="selectInvestDiv(1,this);">已投标</a></li> 
+                        <li class="right_top_li"><a class="text_nineteen" href="javascript:void(0);" onclick="selectInvestDiv(2,this);">返利待确定</a></li>
+                        <li class="right_top_li"><a class="text_nineteen" href="javascript:void(0);" onclick="selectInvestDiv(3,this);">已过期</a></li>
+                        <li style="float:right; height: 50px; padding:0; line-height: 50px; color: #ffae00; font-size: 12px;text-align: right; width: 400px; margin-left: 50px;">温馨提示：个别平台数据信息反馈较慢，返利信息请耐心等待!</li>
+                    </ul>
+		</div>
+       <div class="xuankuang_div">
+					<span class="xiaoxi_type" id="timeTitle">购买时间</span>
+					<div class="_type_xiala">
+						  <input class="laydate-icon " id="start" readonly="" style="width:180px; height:30px; line-height:30px; color: #666; padding-left:10px;">
+                    &nbsp;&nbsp;&nbsp;&nbsp;至&nbsp;&nbsp;&nbsp;&nbsp;<input class="laydate-icon " id="end" readonly="" style="width:180px; height:30px; line-height:30px; color: #666; padding-left:10px;">
+					</div>
+					<div class="state_xiala" id="tradeStatusSelect">
+						<span class="xiaoxi_state">交易状态</span> <select class="_state_top" id="examineStatus_id" onchange="getData(1)">
+							<option value="0" selected="selected">不限</option>
+							<option value="1">返利冻结中</option>
+							<option value="2">已返利</option>
+						</select>
+					</div>
+				</div>
+				<div class="right_main_bot5">
+                    <div class="platform_list" id="ul_lists">
+                    	
+                    </div>
+                    <div class="page" id="page"></div>
+                </div>
+    </div>
+    <div class="line"></div>
+</div>
+<!---------------赚乐扒个人中心投资记录结束------------------>
+
+
+	<script type="text/javascript">
+	$(function(){
+		changeClss();
+	});
+	function changeClss(){
+		var jspname = 'investRecord';
+		if(jspname!=null&&jspname!=''){
+			$("#"+jspname).attr("class","text_twenty");
+		}
+	}
+	function changeDivContext(obj,name,url){
+		openwin_self(url);
+	}
+	</script>
+	<script type="text/javascript">
+            var productStatus=""; //满标或流标
+            var handleStatus="1"; //未处理
+            var globalType=2;
+            var page_cur = 1; //当前页
+            var total_num, page_size, page_total_num;//总记录数,每页条数,总页数
+            var toptr = "<table cellspadding='0' cellspacing='0' style=' border-collapse:collapse; margin-bottom: 10px;' width='870px;'><tr class='platformtr3 text_one'><td width='10px' class='platformtd1 td_bor2'></td> <td class='platformtd1 td_bor2' width='90px'>标的名称</td><td class='platformtd1 td_bor2' width=''>投资金额</td><td class='platformtd1 td_bor2' width=''>赚乐扒返利</td><td class='platformtd1 td_bor2' width=''>返利金额</td><td class='platformtd1 td_bor2' width=''>状态</td><td class='platformtd1 td_bor2' width='200px'>购买/解冻时间</td><td width='10px' class='platformtd1 td_bor2'></td></tr></table>";
+
+            function getData(page) { //获取当前页数据
+                var st=$("#start").val();
+                var et=$("#end").val();
+                var ta="";
+                if (globalType==2) {ta=$("#examineStatus_id").val();}
+                $.ajax({
+                    type: 'GET',
+                    url: 'investrecord_list.html',
+                    data: {'page': page - 1,'start_time':st,'end_time':et,'status':ta,'productStatus':productStatus,'handleStatus':handleStatus,'globalType':globalType},
+                    dataType: 'json',
+                    success: function(json) {
+                     
+                        $("#ul_lists").empty();
+                        total_num = json.total_num;//总记录数
+                        page_size = json.page_size;//每页数量
+	                    page_cur = page;//当前页
+	                    page_total_num = json.page_total_num;//总页数
+
+                        $("#ul_lists").append(toptr);
+
+                        if (total_num > 0) {
+	                        var tr = "";
+	                        var list = json.list;
+	                        $.each(list, function(index, array) { //遍历返回json
+                            var  shotstr = getSubstr(array['target_name'],0,10);
+	                        tr += "<table cellspadding='0' cellspacing='0' class='platformtd3' style=' border-collapse:collapse; margin-bottom: 10px;' width='870px;'><tr class='platformtr7 text_ththree'><td width='15px'></td><td class='platformtd1 td_bor2 tdleft' colspan='6'><div class='tdimg'><img class='imgwh' src='__ROOT__"+array['plat_logo']+"'></div><div class='tdlogodate'>"+array['add_time']+"</div><div class='tdtextdiv'>订单号："+array['serial_no']+"</div></td><td width='15px'></td>	</tr><tr class='platformtr8 text_ththree'><td></td><td class='td_bor2 tdleft' width='200px'><a href='javascript:;' onclick='jumptoUrl("+array['product_id']+")' target='_blank' class='logo-name'>"+shotstr+"</a></td><td class=' td_bor2' width='128px'>"+array['buy_money']+"</td><td class='td_bor2' width='128px'>"+array['cq_rate']+"</td><td class='td_bor2' width='128px'>"+array['cash_money']+"</td><td class='td_bor2' width='128px'>"+array['freeze_status']+"</td><td class='td_bor2 tdright tdline'>"+array['buy_time']+"--</td><td></td></tr></table>";
+	                        });
+	                        $("#ul_lists").append(tr);
+                        }else{
+                        	$("#ul_lists").append("<table cellspadding='0' cellspacing='0' class='platformtd3' style=' border-collapse:collapse; margin-bottom: 10px;' width='870px;'<tr><td class='platformtd1 td_bor2'>没有数据</td></tr></table>");
+                        }
+                        
+                    },
+                    complete: function() {
+                        getPageBar();//js生成分页，可用程序代替
+                    },
+                    error: function() {
+                        alert("数据异常,请检查是否json格式");
+                    }
+                });
+            }
+
+            function getPageBar() { //js生成分页
+                if (page_cur > page_total_num)
+                    page_cur = page_total_num;//当前页大于最大页数
+                if (page_cur < 1){
+                	page_cur = 1;//当前页小于1
+                }
+                page_str = "<span>共" + total_num + "条</span><span>" + page_cur + "/" + page_total_num + "</span>";
+                
+                //若是第一页
+                if (page_cur == 1) {
+                	page_str += "<span class='pageall'>首页</span><span class='pageall'>上一页</span>";
+                } else {
+                    page_str += "<span class='pageall'><a href='javascript:void(0)' data-page='1'>首页</a></span><span class='pageall'><a href='javascript:void(0)' data-page='" + (page_cur - 1) + "'>上一页</a></span>";
+                }
+                //若是最后页
+                if (page_cur >= page_total_num) {
+                    page_str += "<span class='pageall'>下一页</span><span class='pageall'>尾页</span>";
+                } else {
+                    page_str += "<span class='pageall'><a href='javascript:void(0)' data-page='" + (parseInt(page_cur) + 1) + "'>下一页</a></span><span class='pageall'><a href='javascript:void(0)' data-page='" + page_total_num + "'>尾页</a></span>";
+                }
+                $("#page").html(page_str);
+            }
+
+            $(function() {
+                getData(1);//默认第一页
+                $("#page").on('click','a',function() { 
+                    var page = $(this).attr("data-page");//获取当前页
+                    getData(page);
+                });
+            });
+           function selectInvestDiv(type,obj){
+                startTime="";
+                endTime="";
+                freezeStatus="";
+                $("#start").val("");
+                $("#end").val("");
+                $(".right_top_ul li").attr("class","right_top_li");
+                $(".right_top_ul li a").attr("class","text_nineteen");
+                obj.parentNode.className="right_top_li2";
+                obj.className="text_twenty";
+                if(type==2){
+                    $("#timeTitle").html("创建时间");
+                    $("#tradeStatusSelect").hide();
+                    productStatus="0"; //未满标和流标
+                    handleStatus="2"; //未处理
+                    globalType=1;
+                    getData(1);
+                }else if(type==1){
+                    $("#timeTitle").html("购买时间");
+                    $("#tradeStatusSelect").show();
+                    productStatus=""; //传空到后台，对该字段不进行处理
+                    handleStatus="1"; //已买过，不管产品现在是满标还是流标
+                    globalType=2;
+                    getData(1);
+                }else if(type==3){
+                    $("#timeTitle").html("创建时间");
+                    $("#tradeStatusSelect").hide();
+                    productStatus="3,9"; //满标或流标
+                    handleStatus="2"; //未处理
+                    globalType=3;
+                    getData(1);
+                }
+            }
+
+            //跳转链接
+            function jumptoUrl(id){
+            	window.location.href="__APP__/product/"+id;
+            }
+            //截取字符串
+            function getSubstr(string, start, length) {
+              if(string.length>length){
+                  var str = string.substr(start,length);
+                  return str+'...';
+              }else{
+                  return string;
+              }
+            }
+            laydate({
+                istime:true,
+                format: 'YYYY-MM-DD hh:mm:ss',
+                elem: '#start',
+                choose:function () {
+                    getData(1);
+                }
+            });
+            laydate({
+                istime:true,
+                format: 'YYYY-MM-DD hh:mm:ss',
+                elem: '#end',
+                choose:function () {
+                    getData(1);
+                }
+            });
+        </script>
+<!-- /底部 -->
+<include file = "Public/footer" />

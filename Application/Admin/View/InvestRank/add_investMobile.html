@@ -1,0 +1,47 @@
+<div class="fanbox_add_invest">
+	<h3>添加手机号</h3>
+	<form id="add_invest_form" action="{:U('Admin/InvestRank/addInvestMobile')}" method="post">
+	<table width="100%" cellpadding="0" cellspacing="0" class="search_table">
+		<tr>
+			<td>&nbsp;&nbsp;投资手机号</td>
+			<td><input type="text" id='add_investMobile' name='add_investMobile' value="" />&nbsp;&nbsp;<div class="error_show">(该输入项为必填选项！)</div></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td>
+				<input type="submit" class="btn" value="保存">
+				<input type="button" class="btn" onclick="javascript:$.fancybox.close();" value="关闭">
+			</td>
+		</tr>
+	</table>
+	</form>
+</div>
+
+<script type="text/javascript" src="__PUBLIC__/static/jquery.form.js"></script>
+<script type="text/javascript">
+$(function(){
+	$('#add_invest_form').ajaxForm({
+        beforeSubmit: checkinput,
+        success: function(msg){
+            if(msg == 1){
+            	top.layer.msg('添加成功!',{icon: 1,time: 1500});
+            	$.fancybox.close();
+            	reload_investRank();
+            }else{
+                top.layer.msg('添加失败!',{icon: 11,time: 1500});
+            }
+        }
+    }); 
+});
+function checkinput(){
+	if($('#add_investMobile').val() == '' || $('#add_investMobile').val() == null ) {
+		layer.msg('请补全内容！',{icon:11,time:1000});
+		return false;
+	}
+	if(!(/^1[3|4|5|7|8]\d{9}$/.test($('#add_investMobile').val()))){ 
+		$('.error_show').css('color','red');
+        $('.error_show').html("手机号码有误，请重填!");  
+        return false; 
+    } 
+}
+</script>

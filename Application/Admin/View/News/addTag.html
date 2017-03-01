@@ -1,0 +1,57 @@
+
+<div class="fanbox_tags">
+    <h3>编辑标签</h3>
+    <form id="addtag_form" action="{:U('Admin/News/addTagList')}" method="post">
+        <table width="90%" cellpadding="0" cellspacing="0" style="margin: 0 auto; position: relative; top: 10px;    font-size: 14px;" class="search_table">
+            <tr>
+                <td width="20%">&nbsp;&nbsp;&nbsp;标签：&nbsp;</td>
+                <td>&nbsp;<input type="text" id="tag_name" name="tag_name" style="width:260px;" value="">
+                </td>
+            </tr>
+            <tr> 
+                <td width="20%">&nbsp;&nbsp;&nbsp;是否热门：&nbsp; </td>
+                <td>
+                   <label class="radio-inline">
+                      <input type="radio" name="isHot" id="isHot1" value="1">是
+                    </label>
+                    <label class="radio-inline">
+                      <input type="radio" name="isHot" id="isHot2" value="0">否
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td height="80px">&nbsp;</td>
+                <td style="text-align: right;">
+                <input type="submit" style="float:none;" class="btn" value="提交"> 
+                <input type="button" style="float:none;" class="btn" value="取消" onclick="$.fancybox.close();"></td>
+            </tr>
+        </table>
+    </form>
+</div>
+
+<script type="text/javascript" src="__PUBLIC__/static/jquery.form.js"></script>
+<script type="text/javascript">
+$(function(){
+    $('#addtag_form').ajaxForm({
+        beforeSubmit: validate,
+        success: function(msg){
+
+            if(msg == 1){
+                top.layer.alert('添加成功',function(){
+                    $.fancybox.close();
+                    top.rightContent.window.reload_Tag();
+                    top.layer.closeAll();
+                });
+            }else{
+                layer.alert('添加失败', {
+                    closeBtn: 0 ,
+                  });
+            }
+        }
+    }); 
+});
+function validate() {
+
+}
+
+</script>

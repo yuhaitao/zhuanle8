@@ -1,0 +1,48 @@
+<div class="fanbox_revise">
+	<h3>添加</h3>
+    <form id="newArea_form" action="{:U('Admin/System/save_newArea')}" method="post">
+        <table width="100%" cellpadding="0" cellspacing="0" class="post_table">
+            <tr>
+                <td align="right">区域名称：</td>
+                <td>
+                    <input type="hidden" name="area_id" value="{$area_id}" />
+                    <input type="text" id="area_name" class="input2" name="area_name" required/>
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: right;" colspan=4>
+                <input type="submit" style="float:none;" class="btn" value="提交"/> 
+                <!-- <input type="button" id="undo" style="float:none;" class="btn" value="取消" /> -->
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<script type="text/javascript" src="__PUBLIC__/static/jquery.form.js"></script>
+<script type="text/javascript">
+$(function(){
+    $('#newArea_form').ajaxForm({
+        beforeSubmit: validate,
+        success: function(msg){
+            if(msg == 1){
+                layer.alert('添加成功！',function(){
+                	$.fancybox.close();
+                    top.layer.closeAll();
+                    top.rightContent.window.reload_area_list();
+                });
+            }else{
+                layer.alert('添加失败', {
+                    closeBtn: 0 ,
+                  });
+            }
+        }
+    }); 
+});
+function validate() {
+   var area_name=$("#area_name").val();
+   if (!area_name) {
+   		top.layer.msg('区域名称不可为空',{icon: 2,time: 1500});
+   	  	return false;
+   }
+}
+</script>

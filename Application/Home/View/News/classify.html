@@ -1,0 +1,43 @@
+<include file="Public/head"/>
+<!-- 头部 -->
+<include file="Public/header"/>
+
+<!--理财学院-->
+
+<div class="news_list clearfix">
+		<!--位置导航-->
+		<div class="content_menu" style="border-top: none;">
+			<div class="content_menu_cen text_shisan">
+				您的位置： <a href="__APP__/">首页</a><i class="icon-angle-right fz16 m4"></i><a href="__APP__/news.html">理财学院</a><i class="icon-angle-right fz16 m4"></i>{$classify_name}
+			</div>
+		</div>
+		<!--位置导航结束-->
+		<!---->
+		<div class="news_listleft">
+			 <div class="aboutRead clearfix">
+	    		<ul>
+	    			<volist name="newsArr" id="vk">
+	    				<li>
+	    					<div class="news_leftimg"><img src="__ROOT__{$vk.picture_link}" /></div>
+	    					<div class="news_rignr">
+			            		<h2><a href="__APP__/news/{$vk.news_id}.html">{$vk.news_name}</a></h2>
+			            		<span class="news_shows">{$vk.news_description|getSubstr=0,80}</span>
+								<div class="news_tags">
+									<volist name="vk['tags']" id="vg">
+										<i>{$vg.news_tags_name}</i>
+									</volist>
+									<span><em class="glyphicon glyphicon-time"></em>{$vk.add_time}</span>
+								</div>
+			            	</div>
+	    				</li>
+	    			</volist>
+	    		</ul>
+			 </div>
+			 <div class="pagination" style="margin-top: 20px;">{$page}</div>
+		</div>
+		<include file="public_right" />
+
+</div>
+<!--理财学院结束-->
+
+<include file="Public/footer" />

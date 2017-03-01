@@ -1,0 +1,56 @@
+<include file="Public/head" />
+<div class="lbs_nav">
+<include file="Public/breadcrumbs"/></div>
+<div class="fanbox_website">
+    <form id="website_form" action="{:U('Admin/System/saveSmsmang')}" method="post">
+        <table width="100%" cellpadding="0" cellspacing="0" class="weisite_table">
+            <tr>
+                <td style="text-align: left;" colspan=2>
+                </td>
+            </tr>
+            <tr>
+                <td width="33%" align="right">您的剩余短信为：</td>
+                <td>{$mysms}</td>
+            </tr>
+            <tr>
+                <td align="right">SN：</td>
+                <td>
+                    <input type="text" class="input2" id="smssn" name="smssn" value="{$sms_sn}" style="width:300px;"/>
+                </td>
+            </tr>
+            <tr>
+                <td align="right">密码：</td>
+                <td style="text-align: left;"><input type="password" class="input2" id="smspwd" name="smspwd" style="width:300px;" value="{$sms_pwd}"/></td>
+            </tr>
+            <tr>
+              <td height="47" align="right">&nbsp;</td>
+              <td style="text-align: left;"><input type="submit" style="float:none;" class="btn" value="提交"/> 
+                <input type="hidden" name="website_id" value="{$website_id}" />
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<script type="text/javascript" src="__PUBLIC__/static/jquery.form.js"></script>
+<script type="text/javascript">
+$(function(){
+    $('#website_form').ajaxForm({
+        beforeSubmit: validate,
+        success: function(msg){
+            if(msg == 1){
+                top.layer.alert('修改成功！',function(){
+                    location.reload();
+                    top.layer.closeAll();
+                });
+            }else{
+                top.layer.alert('修改失败', {
+                    closeBtn: 0 ,
+                  });
+            }
+        }
+    }); 
+});
+function validate() {
+   
+}
+</script>

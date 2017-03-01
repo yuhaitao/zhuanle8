@@ -1,0 +1,37 @@
+<include file="Public/head"/>
+<!-- 头部 -->
+<include file="Public/header"/>
+<!---------------赚乐扒内容页面位置开始------------------>
+<div class="jflnr_wz">
+    <div class="jflnr_wz_tb"><img src="__PUBLIC__/images/newimages/wztb.png" width="45" height="45"> </div>
+    <div class="jflnr_wz_nr">位置：<a href="__ROOT__/">首页</a> > 理财专栏
+            </div>
+</div>
+<!---------------赚乐扒内容页面位置结束------------------>
+<!---------------赚乐扒内容标题开始------------------>
+<div class="jflnr_bt">理财专栏</div>
+<!---------------赚乐扒内容标题结束------------------>
+<!---------------赚乐扒新闻页面banner开始------------------>
+<div class="jflnews_banner"><img src="__PUBLIC__/images/newimages/jflnews_banner.jpg" width="1190" height="173"> </div>
+<!---------------赚乐扒新闻页面banner结束------------------>
+<!---------------赚乐扒新闻页面内容开始------------------>
+<div class="jflnews">
+   
+   <volist name="financeInfo" id="vk">
+    <div class="jflnews_01">
+        <div class="jflnews_01_left"><a href="#"><img src="__ROOT__{$vk.slide_image}" width="318" height="193"> </a> </div>
+        <div class="jflnews_01_right">
+            <p class="p5 newsys_01">{$vk.add_time|strtotime|date="Y.m.d",###}</p>
+            <p class="p4 newsys_02"><a href="__APP__/financeview/{$vk.slide_id}.html">{$vk.slide_title}</a></p>
+            <p class="newsys_03">{$vk.slide_description}</p>
+        </div>
+        <div class="clear"></div>
+    </div>
+    </volist>
+  
+    <div class="jflnews_02"><ul>{$page}</ul></div>
+</div>
+<!---------------赚乐扒新闻页面内容结束------------------>
+
+
+<include file="Public/footer" />

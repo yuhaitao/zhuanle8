@@ -1,0 +1,94 @@
+<include file="Public/head" />
+<div class="lbs_nav"><include file="Public/breadcrumbs"/></div>
+<div class="fanbox_website">
+    <form id="website_form" action="{:U('Admin/System/saveWebsite')}" method="post">
+        <table width="100%" cellpadding="0" cellspacing="0" class="weisite_table">
+            <tr>
+                <td style="text-align: left;" colspan=5>
+                <input type="submit" style="float:none;" class="btn" value="提交"/> 
+                </td>
+            </tr>
+            <tr>
+                <td width="17%" align="right">站点名称：</td>
+                <td width="23%">
+                    <input type="hidden" name="website_id" value="{$list.website_id}" />
+                    <input type="text" id="website_name" class="input2" name="website_name" value="{$list.website_name}"/>
+                </td>
+                <td width="16%" align="right">工作时间：</td>
+                <td width="20%">
+                    <input type="text" class="input2" id="working_time" name="working_time" value="{$list.working_time}"/>
+                </td>
+                <td width="24%"><span style="float:left;">选择LOGO：</span><a href="javascript:;" class="file"><i class="upload_img glyphicon glyphicon-picture"></i>选择文件 <input type="file" name="news_img" id="news_img" value="">
+                    </a></td>
+            </tr>
+            <tr>
+                <td align="right">电话号码：</td>
+                <td>
+                    <input type="text" class="input2" id="telephonr" name="telephonr" value="{$list.telephonr}"/>
+                </td>
+                <td align="right">QQ群号：</td>
+                <td>
+                    <input type="text" class="input2" id="website_qq" name="website_qq" value="{$list.website_qq}"/>
+                </td>
+                <td><img src="{$list.website_logo}" height="35" />&nbsp;</td>
+            </tr>
+            <tr>
+                <td align="right">网站首页标题：</td>
+                <td style="text-align: left;" colspan=4>
+                    <textarea name="website_number" class="form-control">{$list.website_number}</textarea>
+                </td>
+            </tr>
+            <tr>
+                <td align="right">站点关键字：</td>
+                <td style="text-align: left;" colspan=4>
+                    <textarea name="site_key" class="form-control">{$list.site_key}</textarea>
+                </td>
+            </tr>
+            <tr>
+                <td align="right">网站描述：</td>
+                <td style="text-align: left;" colspan=4>
+                    <textarea name="website_description" class="form-control">{$list.website_description}</textarea>
+                </td>
+            </tr>
+            <tr>
+                <td align="right">站点描述：</td>
+                <td style="text-align: left;" colspan=4>
+                    <textarea name="site_description" class="form-control">{$list.site_description}</textarea>
+                </td>
+            </tr>
+            <tr>
+                <td align="right">修改人：</td>
+                <td>
+                    <input type="text" class="input2" value="{$list.back_user_name}" disabled/>
+                </td>
+                <td align="right">修改时间：</td>
+                <td colspan="2">
+                    <input type="text" class="input2" value="{$list.up_time}" disabled/>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<script type="text/javascript" src="__PUBLIC__/static/jquery.form.js"></script>
+<script type="text/javascript">
+$(function(){
+    $('#website_form').ajaxForm({
+        beforeSubmit: validate,
+        success: function(msg){
+            if(msg == 1){
+                top.layer.alert('添加成功！',function(){
+                    location.reload();
+                    top.layer.closeAll();
+                });
+            }else{
+                top.layer.alert('添加失败', {
+                    closeBtn: 0 ,
+                  });
+            }
+        }
+    }); 
+});
+function validate() {
+   
+}
+</script>

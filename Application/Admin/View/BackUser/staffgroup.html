@@ -1,0 +1,129 @@
+<include file="Public/head" />
+<div width="100%">
+	<a class="add_new" onclick="addstaff()"><i class="glyphicon glyphicon-plus"></i>添加</a>
+</div>
+<div class="container">
+   <div class="row" >
+      <div class="col-xs-6 col-sm-4">
+         <span>用户名</span>
+      </div>
+      <div class="col-xs-6 col-sm-4">
+         <span>手机号</span>
+      </div>
+
+      <div class="col-xs-6 col-sm-4">
+         <span>删除</span>
+      </div>
+      
+   </div>
+</div>
+   <!---->
+
+   		<div class="tree well">
+		    <ul id='ul'>
+		       
+		    </ul>
+		</div>
+   
+
+<!---->
+<script type="text/javascript">
+$(document).ready(function () {
+	var userArr={$staff};
+	for(var i=0; i < userArr.length;i++){
+		var staff_p=userArr[i]['staff_parent'];
+		staff_p=staff_p.substr(0,staff_p.length-1);
+		var staff_arr=staff_p.split(",");
+		var length = staff_arr.length;
+		if(userArr[i]['pid']==0){
+			var html="<li><span class='well_cut' onclick='chooseMe("+userArr[i]['user_id']+")'><a href='javascript:;' class='col-xs-6 col-sm-4'><i id='i"+userArr[i]['user_id']+"' class='icon-folder-open mr6'></i>"+userArr[i]['back_user_name']+"</a><a href='javascript:;' class='col-xs-6 col-sm-4'>"+userArr[i]['back_user_mobile']+"</a><a href='javascript:;' class='col-xs-6 col-sm-4'></a></span> <ul id='ul"+userArr[i]['user_id']+"' class='well_cut_child'></ul>";
+			$("#ul").append(html);
+		}else if(length==2){
+			var html="<li><span class='well_cut' onclick='chooseMe("+userArr[i]['user_id']+")'><a href='javascript:;' class='col-xs-6 col-sm-4'><i id='i"+userArr[i]['user_id']+"' class='glyphicon glyphicon-leaf mr6'></i>"+userArr[i]['back_user_name']+"</a><a href='javascript:;' class='col-xs-6 col-sm-4'>"+userArr[i]['back_user_mobile']+"</a><a href='javascript:deletestaff("+userArr[i]['user_id']+");' class='col-xs-6 col-sm-4'>删除</a></span> <ul id='ul"+userArr[i]['user_id']+"' class='well_cut_child-2'></ul>";
+			$("#i"+userArr[i]['pid']).addClass('icon-minus-sign');
+			$("#ul"+userArr[i]['pid']).append(html);
+		}else if(length==3){
+			var html="<li><span class='well_cut' onclick='chooseMe("+userArr[i]['user_id']+")'><a href='javascript:;' class='col-xs-6 col-sm-4'><i id='i"+userArr[i]['user_id']+"' class='glyphicon glyphicon-leaf mr6'></i>"+userArr[i]['back_user_name']+"</a><a href='javascript:;' class='col-xs-6 col-sm-4'>"+userArr[i]['back_user_mobile']+"</a><a href='javascript:deletestaff("+userArr[i]['user_id']+");' class='col-xs-6 col-sm-4'>删除</a></span> <ul id='ul"+userArr[i]['user_id']+"' class='well_cut_child-3'></ul>";
+
+			$("#i"+userArr[i]['pid']).addClass('icon-minus-sign');
+			$("#ul"+userArr[i]['pid']).append(html);
+		}else if(length==4){
+			var html="<li><span class='well_cut' onclick='chooseMe("+userArr[i]['user_id']+")'><a href='javascript:;' class='col-xs-6 col-sm-4'><i id='i"+userArr[i]['user_id']+"' class='glyphicon glyphicon-leaf mr6'></i>"+userArr[i]['back_user_name']+"</a><a href='javascript:;' class='col-xs-6 col-sm-4'>"+userArr[i]['back_user_mobile']+"</a><a href='javascript:deletestaff("+userArr[i]['user_id']+");' class='col-xs-6 col-sm-4'>删除</a></span> <ul id='ul"+userArr[i]['user_id']+"' class='well_cut_child-4'></ul>";
+			$("#i"+userArr[i]['pid']).addClass('icon-minus-sign');
+			$("#ul"+userArr[i]['pid']).append(html);
+		}else{
+			var html="<li><span class='well_cut' onclick='chooseMe("+userArr[i]['user_id']+")'><a href='javascript:;' class='col-xs-6 col-sm-4'><i id='i"+userArr[i]['user_id']+"' class='glyphicon glyphicon-leaf mr6'></i>"+userArr[i]['back_user_name']+"</a><a href='javascript:;' class='col-xs-6 col-sm-4'>"+userArr[i]['back_user_mobile']+"</a><a href='javascript:deletestaff("+userArr[i]['user_id']+");' class='col-xs-6 col-sm-4'>删除</a></span> <ul id='ul"+userArr[i]['user_id']+"' class='well_cut_child-5'></ul>";
+			$("#i"+userArr[i]['pid']).addClass('icon-minus-sign');
+			$("#ul"+userArr[i]['pid']).append(html);
+		}
+	}
+	$('.tree li:has(ul)').addClass('parent_li').find(' > span').attr('title', '');
+
+    $('.tree ul > li >span').on('click',function(){
+
+    	$('.tree li > span').each(function(){
+    		$(this).removeClass('span_select');
+    	});
+    		$(this).addClass('span_select');
+    });
+
+    $('.tree li.parent_li > span > a >i').on('click', function (e) {
+
+        var children = $(this).parent('a').parent('span').parent('li.parent_li').find(' > ul > li');
+        var bodys = $('.tree li.parent_li').find(' > ul');
+        if (children.is(":visible")) {
+            children.slideUp('fast');
+            $(this).addClass('icon-plus-sign').removeClass('icon-minus-sign');
+        }
+        else{
+    		children.slideDown('fast');
+        	$(this).addClass('icon-minus-sign').removeClass('icon-plus-sign');
+        	}
+            
+        e.stopPropagation();
+    });
+	var lheight = document.body.clientHeight-225;
+	$('#table').css('height',lheight+'px');
+});
+var obj_s={};
+function chooseMe(uid){
+	$.data(obj_s,'staff_id',uid);
+}
+function addstaff(){
+	var pid=$.data(obj_s,'staff_id');
+	if(!pid){
+		top.layer.msg('未选择任何节点',{icon: 2,time: 2000});
+		return false;
+	}
+	$.fancybox({
+		'type':'ajax',
+		'href':App+"/Admin/BackUser/addstaff",
+		'autoScale' :true
+	});
+}
+function deletestaff(uid){
+	if(uid){
+		top.layer.confirm('确定删除？', {
+		  btn: ['确定','取消'] 
+		}, function(){
+		  $.ajax({
+		  	type:'post', 
+		  	url:App+'/Admin/BackUser/delete_staff',
+		  	dataType:'json',
+		  	async:true,
+		  	data:{delete_id:uid},
+		  	success:function(data){
+		  		if(data == 1){
+		  			top.layer.msg('删除成功！',{icon: 1,time: 1000});
+		  			window.location.reload();
+		  		}else{
+		  			top.layer.msg('删除失败！',{icon: 2,time: 1000});
+		  		}
+		  	}
+		  });
+		}, function(){
+		  
+		});
+	}
+}
+</script>

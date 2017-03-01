@@ -1,0 +1,82 @@
+<include file="Public/head"/>
+<!-- 头部 -->
+<include file="Public/header"/>
+<!-- /头部 -->
+<!---------------赚乐扒内容页面位置开始------------------>
+<div class="jflnr_wz">
+    <div class="jflnr_wz_tb"><img src="__PUBLIC__/images/newimages/wztb.png" width="45" height="45"> </div>
+    <div class="jflnr_wz_nr">位置：<a href="__ROOT__/">首页</a> > 
+           平台公告
+            </div>
+</div>
+<!---------------赚乐扒内容页面位置结束------------------>
+<!---------------赚乐扒新闻页面banner开始------------------>
+<div class="jflnews_banner"><img src="__PUBLIC__/images/newimages/jflnews_banner.jpg" width="1190" height="173"> </div>
+<!---------------赚乐扒新闻页面banner结束------------------
+<!---------------赚乐扒新闻页面内容开始------------------>
+<div class="jflnews">
+   <script type="text/javascript">
+		$(function(){
+			changeClass(null);
+		});
+		function changeClass(php){
+			var typeJsp= "SeeList";
+			if(php!=null){
+			typeJsp=php;
+			}
+			if(typeJsp!=''&&typeJsp!=null){
+				if(typeJsp=='CompanyInfo'){
+				   changeDiv('about_id1',typeJsp);
+				}
+				if(typeJsp=='SeeList'){
+				   changeDiv('about_id2',typeJsp);
+				}
+				if(typeJsp=='JoinUs'){
+				   changeDiv('about_id3',typeJsp);
+				}
+				if(typeJsp=='ContactUs'){
+				   changeDiv('about_id4',typeJsp);
+				}
+				if(typeJsp=='View'){
+				   changeDiv('about_id5',typeJsp);
+				}
+				if(typeJsp=='BusinessNews'){
+				   changeDiv('about_id6',typeJsp);
+				}
+			
+			}else{
+			changeDiv('about_id2','SeeList');
+			}
+		}
+		function changeDivContext(obj,name,url){
+		    $('.middle_cen_left tr td').attr('class', '_left_td _td_text1');
+		    $(obj).find("td").attr("class",'_left_td _td_text2');
+		    changeClass(name)
+			openwin_self(url);
+		}
+
+		function changeDiv(id,name){
+			$('.middle_cen_left tr td').attr('class', '_left_td _td_text1');
+			$("#"+id).parent().attr("class","_left_td _td_text2");
+		}
+		</script>
+   <volist name="noticeList" id="vo">
+    <div class="jflnews_01">
+        <div class="jflnews_01_right" style="width:100%;">
+            <p class="p5 newsys_01">{$vo.add_time|substr=0,10}</p>
+            <p class="p4 newsys_02"><a class="list_td_a" href="__APP__/aboutus/sitenotice/{$vo.announ_id}.html">{$vo.announ_title}</a></p>
+            <p class="newsys_03">{$vo.announ_describe}</p>
+        </div> <div class="clear"></div>
+    </div>
+   
+</volist>
+   
+    <div class="jflnews_02"><ul>
+       {$page}</ul>
+    </div>
+</div>
+<!---------------赚乐扒新闻页面内容结束------------------>
+
+
+
+<include file="Public/footer" />

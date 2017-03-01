@@ -1,0 +1,298 @@
+<include file="Public/head"/>
+<!-- 头部 -->
+<include file="Public/header"/>
+<script type="text/javascript" src="__PUBLIC__/static/ZeroClipboard.js"></script>
+<!-- /头部 -->
+<script type="text/javascript">
+	$(function(){
+		//账户信息
+		$("#nickNameli").hide();
+		$("#userpasswordli").hide();
+		$("#tradePasli").hide();
+		$("#userAddressli").hide();
+		$("#editImageDiv").hide();
+
+	});
+	//显示隐藏DIV
+	function accoutHideDiv(id){
+		if(!(id=="nickNameli")){
+			$("#nickNameli").fadeOut();
+		}
+		if(!(id=="userpasswordli")){
+			$("#userpasswordli").fadeOut();
+		}
+		if(!(id=="userEmailli")){
+			$("#userEmailli").fadeOut();
+		}
+		if(!(id=="userRenzhengli")){
+			$("#userRenzhengli").fadeOut();
+		}
+		if(!(id=="tradePasli")){
+			$("#tradePasli").fadeOut();
+		}
+		if(!(id=="userAddressli")){
+			$("#userAddressli").fadeOut();
+		}
+	  	$("#"+id).fadeToggle();
+	}
+	//隐藏DIV
+	function accoutShowDiv(id){
+	   $("#"+id).fadeOut();
+	}
+</script>
+<!---------------赚乐扒内容页面位置开始------------------>
+<div class="jflnr_wz">
+    <div class="jflnr_wz_tb"><img src="__PUBLIC__/images/newimages/wztb.png" width="45" height="45"> </div>
+    <div class="jflnr_wz_nr">位置：<a href="__ROOT__/">首页</a> > 邀请好友 </div>
+</div>
+<!---------------赚乐扒内容页面位置结束------------------>
+
+
+<!---------------赚乐扒个人中心投资记录开始------------------>
+<div class="jflgrzx_zhzy">
+    <div class="jflgrzx_zhzy_left">
+        <include file="Public/person_left"/>
+    </div>
+    <div class="jflgrzx_zhzy_right">
+        <div class="right_top">
+					<ul class="right_top_ul">
+                       <li class="right_top_li text_nineteen">邀请好友</li>
+                    </ul>
+		</div>
+      <div class="share_friend">
+      					
+      					<div class="share_url text_thtwo">
+                            <div style="float: left; margin-right: 15px;">您的邀请码是</div> 
+                            <div style="text-align: left;font-size: x-large;">
+                                {$invite_code}
+                            </div>
+                        </div>
+                        <div class="share_url text_thtwo">
+                            <div style="float: left; margin-right: 15px;">您的邀请链接</div> 
+                            <div class="_url" id="foo">
+                                <div class="_url_wid">{$invite_url}</div>
+                            </div>
+                            <div style="text-align:left;">
+                                <a href="javaScript:void(0);" id="d_clip_button" data-clipboard-target="foo" class="a19">复制</a>
+                            </div>
+                        </div>
+                        <div class="share_url2 text_thtwo">
+                            <div style="float: left; margin-right: 15px;">分享链接给好友</div>
+                            <ul>
+                                <li><a href="javaScript:void(0);" onclick="weixin();"><img src="__PUBLIC__/images/home/icon/self_115.png"></a></li>
+                                <li><a href="javaScript:void(0);" onclick="xinlang();"><img src="__PUBLIC__/images/home/icon/self_116.png"></a></li>
+                                <li><a href="javaScript:void(0);" onclick="qq();"><img src="__PUBLIC__/images/home/icon/self_117.png"></a></li>
+                                <li><a href="javaScript:void(0);" onclick="qzone();"><img src="__PUBLIC__/images/home/icon/self_118.png"></a></li>
+                            
+                                <li><a href="javaScript:void(0);" onclick="pengyou();"><img src="__PUBLIC__/images/home/icon/self_120.png"></a></li>
+                            </ul>
+                        </div>
+                        <!-- <table class="share_table" width="810px" cellspadding="0" style="border-collapse:collapse;">
+                            <tbody>
+                                <tr class="share_tr1 text_one">
+                                    <td width="230px">好友投资额（元）</td>
+                                    <td width="220px">佣金比例</td>
+                                    <td width="200px">奖励</td>
+                                </tr>
+                                <tr class="share_tr2 text_two">
+                                    <td width="230px">0~100000</td>
+                                    <td width="220px">返总额0.13%</td>
+                                    <td width="200px">0~130</td>
+                                </tr>
+                            
+                                <tr class="share_tr2 text_two">
+                                    <td width="230px">100001~300000</td>
+                                    <td width="220px">返总额0.18%</td>
+                                    <td width="200px">180~540</td>
+                                </tr>
+                            
+                                <tr class="share_tr2 text_two">
+                                    <td width="230px">300001~500000</td>
+                                    <td width="220px">返总额0.23%</td>
+                                    <td width="200px">690~1150</td>
+                                </tr>
+                            
+                                <tr class="share_tr2 text_two">
+                                    <td width="230px">500001~1000000</td>
+                                    <td width="220px">返总额0.28%</td>
+                                    <td width="200px">1400~2800</td>
+                                </tr>
+                            
+                                <tr class="share_tr2 text_two">
+                                    <td width="230px">1000001以上</td>
+                                    <td width="220px">返总额0.33%</td>
+                                    <td width="230px">3300以上</td>
+                                </tr>
+                            
+                        </tbody></table> -->
+                    </div>
+                    <div class="platform platform_bg4">
+                        <div class="platform_bg3_div_share text_one">邀请好友规则</div>
+                        <div class="platform_bg3_text_share text_two">
+                            
+                            1、用户邀请好友通过赚乐扒注册投资成功后，即可以获得好友投资奖励。<br>
+							2、推广员制度:<br>
+							   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;普通推广员：通过赚乐扒赚取收益3000元（不含）以下，推广提成为一级粉丝每笔返利收益的10%，二级粉丝每笔返利收益的5%。<br>
+							   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;精英推广员：通过赚乐扒累计赚取3000元（含）以上，推广提成为一级粉丝每笔返利收益的15%，二级粉丝每笔返利收益的10%。<br>
+							3、 被邀请好友获得通过赚乐扒投资获得投资返利，邀请人可同时获得投资奖励，此部分奖励由赚乐扒提供。<br>
+							4、 每位受邀好友活动期间内所有符合赚乐扒返利规则的投资均可获得赚乐扒奖励，次日凌晨显示前一日好友投资情况。<br>
+							5、每位受邀好友必须为独立用户，即受邀者姓名、手机号、银行账号均唯一。<br>
+							6、本次活动奖励以自然月为一个周期，赚乐扒奖励金额按月度累计，跨月重新计算。<br>
+							7、每月10-15日内结算上月好友投资总额并统一发放。<br>
+							8、本活动解释权归赚乐扒所有。<br>
+							<p>
+							  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;举个例子，小王每月始终保持，作为普通推广员的他，每天坚持推广1个粉丝投资10万元，该粉丝获得赚乐扒的返利为1000元，小王每天赚取100元，月赚3000元；加上每月435个二级粉丝每个50元，共21750元，小王合计每月赚24750元。
+							3个月后，小王累计收益超过3000元了，升级为精英推广员的他，每天坚持推广1个粉丝投资10万元，该粉丝获得赚乐扒的返利为1000元，小王每天赚取150元，月赚4500元；加上每月435个二级粉丝每个100元，共43500元，小王合计每月赚48000元。
+							       </p>                     
+                        </div>
+                    </div>
+    </div>
+    <div class="line"></div>
+</div>
+<!---------------赚乐扒个人中心投资记录结束------------------>
+
+	<script type="text/javascript">
+	$(function(){
+		changeClss();
+	});
+	function changeClss(){
+		var jspname = 'inviteFriend';
+		if(jspname!=null&&jspname!=''){
+			$("#"+jspname).attr("class","text_twenty");
+		}
+	}
+	function changeDivContext(obj,name,url){
+		openwin_self(url);
+	}
+    var clip = new ZeroClipboard( document.getElementById("d_clip_button"), {
+      moviePath: "__PUBLIC__/static/ZeroClipboard.swf"
+    } );
+
+    // 复制内容到剪贴板成功后的操作
+    clip.on( 'complete', function(client, args) {
+       copy();
+    } );
+    //复制链接
+    function copy(){
+        var invite_url="{$invite_url}";
+        //window.clipboardData.setData("Text",invite_url);
+         layer.open({
+            type : 1, //page层
+            title : '链接复制成功',
+            shade : 0.6, //遮罩透明度
+            skin : 'layui-layer-demo', //样式类名
+            closeBtn : 1, //不显示关闭按钮
+            area : [ '600px', '160px' ], //宽高
+            moveType : 1,//拖拽风格，0是默认，1是传统拖动
+            shift : 5,//0-6的动画形式，-1不开启
+            content : '<div class = "warn_info2 text_two"><div class = "">复制成功</div><div class = "">'+invite_url+'</div></div>'
+            });
+    }
+
+    
+    function weixin(){
+    var p = {
+    url:"{$invite_url}", 
+    appid:'wxf19137808f51b897',
+    AppSecret:'3eccbee71e6cc858f1af193dd06d30be',
+    img_width:"640",
+    img_height:"640",
+    link:'http://www.caiqi.com',
+    desc:'{$webInfo.site_description}',
+    title:'邀请好友获取返利'
+    };
+    var s = [];
+    for(var i in p){
+    s.push(i + '=' + encodeURIComponent(p[i]||''));
+    } 
+    openwin(['https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential',s.join('&'),].join(''));
+    }
+
+    function qq(){
+    var p = {
+    url:"{$invite_url}", /*获取URL，可加上来自分享到QQ标识，方便统计*/
+    desc:'{$webInfo.site_description}', /*分享理由(风格应模拟用户对话),支持多分享语随机展现（使用|分隔）*/
+    title:'邀请好友获取返利', /*分享标题(可选)*/
+    summary:'赚乐扒', /*分享摘要(可选)*/
+    pics:'http://www.caiqi.com/cqw/skin/img/favicon.ico', /*分享图片(可选)*/
+    flash: '', /*视频地址(可选)*/
+    site:'赚乐扒', /*分享来源(可选) 如：QQ分享*/
+    style:'201',
+    width:32,
+    height:32
+    };
+    var s = [];
+    for(var i in p){
+    s.push(i + '=' + encodeURIComponent(p[i]||''));
+    } 
+    openwin(['http://connect.qq.com/widget/shareqq/index.html?',s.join('&'),].join(''));
+    };
+
+
+        
+    function qzone(){
+    var p = {
+    url:"{$invite_url}",
+    showcount:'1',/*是否显示分享总数,显示：'1'，不显示：'0' */
+    desc:'',/*默认分享理由(可选)*/
+    summary:'',/*分享摘要(可选)*/
+    title:'邀请好友获取返利--{$webInfo.site_description}',/*分享标题(可选)*/
+    site:'赚乐扒',/*分享来源 如：腾讯网(可选)*/
+    pics:'http://www.caiqi.com/cqw/skin/img/favicon.ico', /*分享图片的路径(可选)*/
+    style:'203',
+    width:98,
+    height:22
+    };
+    var s = [];
+    for(var i in p){
+    s.push(i + '=' + encodeURIComponent(p[i]||''));
+    }
+    openwin(['http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?',s.join('&'),].join(''));
+    };
+
+
+    function xinlang(){
+    var p = {
+    url:"{$invite_url}",
+    count:'',/* 表示是否显示当前页面被分享数量(1显示)(可选，允许为空) */
+    appkey:'',/* 用于发布微博的来源显示，为空则分享的内容来源会显示来自互联网。(可选，允许为空) */
+    title:'邀请好友获取返利--{$webInfo.site_description}',/* 分享时所示的文字内容，为空则自动抓取分享页面的title值(可选，允许为空) */
+    pic:'http://www.caiqi.com/cqw/skin/img/favicon.ico',/* 自定义图片地址，作为微博配图(可选，允许为空) */
+    ralateUid:'',/* 转发时会@相关的微博账号(可选，允许为空) */
+    language:'',/* 语言设置(zh_cn|zh_tw)(可选) */
+    };
+    var s = [];
+    for(var i in p){
+    s.push(i + '=' + encodeURIComponent(p[i]||''));
+    }
+    openwin(['http://service.weibo.com/share/share.php?url=',s.join('&'),].join(''));
+    };
+
+
+
+    function pengyou(){
+    var p = {
+    url:"{$invite_url}",
+    showcount:'1',/*是否显示分享总数,显示：'1'，不显示：'0' */
+    desc:'',/*默认分享理由(可选)*/
+    summary:'',/*分享摘要(可选)*/
+    title:'{$webInfo.site_description}',/*分享标题(可选)*/
+    site:'',/*分享来源 如：腾讯网(可选)*/
+    pics:'http://www.caiqi.com/cqw/skin/img/favicon.ico', /*分享图片的路径(可选)*/
+    style:'203',
+    width:98,
+    height:22
+    };
+    var s = [];
+    for(var i in p){
+    s.push(i + '=' + encodeURIComponent(p[i]||''));
+    }
+    openwin(['http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?',s.join('&'),].join(''));
+    };
+
+
+	</script>
+	
+</content>
+<!-- /底部 -->
+<include file = "Public/footer" />

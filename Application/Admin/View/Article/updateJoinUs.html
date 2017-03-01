@@ -1,0 +1,55 @@
+<script type="text/javascript" src="__ROOT__/ueditor/ueditor.config.js"></script>
+<script type="text/javascript" src="__ROOT__/ueditor/ueditor.all.js"></script>
+
+<div class="fanbox_joinus">
+    <h3>添加</h3>
+    <form id="addjoinus_form" action="{:U('Admin/Article/editJoinus')}" method="post">
+        <table width="90%" cellpadding="0" cellspacing="0" style="margin: 0 auto; position: relative; top: 10px;    font-size: 14px;">
+            <tr>
+                <td width="180px">
+                    标题：&nbsp;<input type="text" name="joinus_title" style="width:260px;" value="{$joinus.joinus_title}" required="该项为必填选项">
+                    &nbsp;&nbsp;&nbsp;所在地区：&nbsp;<input type="text" name="joinus_place" style="width:200px;" value="{$joinus.joinus_place}" required="该项为必填选项">
+                </td>
+            </tr>
+            <tr> <td>&nbsp;</td> </tr>
+            <tr>
+                <td>
+                    <input type="hidden" name="joinusCur" value="{$joinus.joinus_id}">
+                    <script id="addjoinus_brief" name="addjoinus_brief" type="text/plain">
+                        {$joinus_content}
+                    </script>
+                    <input type="submit" style="float:none;margin-top: 10px;" class="btn" value="提交"/> 
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<script type="text/javascript">
+        var addjoinus_brief = UE.getEditor('addjoinus_brief');
+</script>
+<script type="text/javascript" src="__PUBLIC__/static/jquery.form.js"></script>
+<script type="text/javascript">
+$(function(){
+    $('#addjoinus_form').ajaxForm({
+        beforeSubmit: validate,
+        success: function(msg){
+           
+            if(msg == 1){
+                top.layer.alert('修改成功！',function(){
+                    $.fancybox.close();
+                    top.rightContent.window.reload_joinus();
+                    top.layer.closeAll();
+                });
+            }else{
+                layer.alert('修改失败', {
+                    closeBtn: 0 ,
+                  });
+            }
+        }
+    }); 
+});
+function validate() {
+   
+}
+
+</script>

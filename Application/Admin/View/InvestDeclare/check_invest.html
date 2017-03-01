@@ -1,0 +1,36 @@
+<div class="fanbox_bill">
+    <h3>审核</h3>
+    <table width="100%" cellpadding="0" cellspacing="0" class="post_table">
+        <tr>
+            <td>投资平台：{$list.plat_shortname}</td>
+            <td>平台用户名：{$list.user_name}</td>
+        </tr>
+        <tr>
+            <td>投资标名称：{$list.target_name}</td>
+            <td>平台手机号：{$list.mobile}</td>
+        </tr>
+        <tr>
+            <td>投资金额：{$list.invest_amount}</td>
+            <td>投标时间：{$list.invest_time}</td>
+        </tr>
+    </table>
+    <form id="declare_invest_form" action="{:U('Admin/InvestDeclare/save_declare')}" method="post">
+        <table width="100%" cellpadding="0" cellspacing="0" class="post_table">
+            <if condition="$list.check_type eq 3">
+                <tr>
+                    <td width="20%">审核状态：审核成功</td>
+                </tr>
+                <tr>
+                    <td width="20%">审核备注：{$list.check_remark}</td>
+                </tr>
+            <else />
+                <tr>
+                    <td width="20%">审核状态：审核失败</td>
+                </tr>
+                <tr>
+                    <td width="20%">审核备注：{$list.check_remark}</td>
+                </tr>
+            </if>
+        </table>
+    </form>
+</div>

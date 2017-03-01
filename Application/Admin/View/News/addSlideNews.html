@@ -1,0 +1,81 @@
+<script type="text/javascript" src="__ROOT__/ueditor/ueditor.config.js"></script>
+<script type="text/javascript" src="__ROOT__/ueditor/ueditor.all.js"></script>
+
+<div class="fanbox_slidenews">
+    <h3>添加幻灯新闻</h3>
+    <form id="addSlidenews_form" action="{:U('Admin/News/addSlideNewsList')}" method="post">
+        <table width="90%" cellpadding="0" cellspacing="0" style="margin: 0 auto; position: relative; top: 10px;    font-size: 14px;" class="search_table">
+            <tr>
+                <td width="10%">&nbsp;&nbsp;&nbsp;新闻标题：&nbsp;</td>
+                <td><input type="text" id="news_title" name="news_title" style="width:260px;" value="">
+                    <div class="news_error"></div>
+                </td>
+            </tr>
+            <tr>
+                <td width="10%">&nbsp;&nbsp;&nbsp;新闻描述：&nbsp;</td>
+                <td><textarea id="news_describe" name="news_describe" style="width: 450px;" class="textarea"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td width="10%">&nbsp;&nbsp;&nbsp;新闻内容：&nbsp;</td>
+                <td width="90%">
+                <script id="slidenews_brief" name="slidenews_brief" type="text/plain"> </script>
+                </td>
+            </tr>
+            <tr> 
+                <td width="10%">&nbsp;&nbsp;&nbsp;新闻图片：&nbsp; </td>
+                <td><a href="javascript:;" class="file"><i class="upload_img glyphicon glyphicon-picture"></i>选择文件 <input type="file" name="news_img" id="news_img" value="">
+                </a></td>
+            </tr>
+            <tr>
+                <td height="80px">&nbsp;</td>
+                <td style="text-align: right;">
+                <input type="submit" style="float:none;" class="btn" value="提交"> 
+                <input type="button" style="float:none;" class="btn" value="取消" onclick="$.fancybox.close();"></td>
+            </tr>
+        </table>
+    </form>
+</div>
+<script type="text/javascript">
+        var slidenews_brief = UE.getEditor('slidenews_brief',{
+            autoHeightEnabled: false,
+            initialFrameHeight:120
+        });
+</script>
+<script type="text/javascript" src="__PUBLIC__/static/jquery.form.js"></script>
+<script type="text/javascript">
+$(function(){
+    $('#addSlidenews_form').ajaxForm({
+        beforeSubmit: validate,
+        success: function(msg){
+
+            if(msg == 1){
+                top.layer.alert('添加成功',function(){
+                    $.fancybox.close();
+                    top.rightContent.window.reload_slideNews();
+                    top.layer.closeAll();
+                });
+            }else{
+                layer.alert('添加失败', {
+                    closeBtn: 0 ,
+                  });
+            }
+        }
+    }); 
+});
+function validate() {
+   var slidenews_brief = UE.getEditor('slidenews_brief');
+   var content = slidenews_brief.getContent();
+   if($('#news_title').val() == '' ||$('#news_title').val()== null){
+        $('.news_error').css('display','block');
+        $('.news_error').html('<i class="glyphicon glyphicon-exclamation-sign"></i>填写新闻标题');
+
+        return false;
+   }
+   if(content.length <= 0){
+        layer.alert('请填写完整数据！');
+        return false;
+   } 
+}
+
+</script>

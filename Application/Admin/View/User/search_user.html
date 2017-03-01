@@ -1,0 +1,39 @@
+<div class="fanbox_add">
+	<h3>查询</h3>
+	<form id="searchForm" action="" method="post">
+	<table width="100%" cellpadding="0" cellspacing="0" class="search_table">
+		<tr>
+			<td>&nbsp;&nbsp;用户名：</td>
+			<td><input type="text" id='username'></td>
+		</tr>
+		<tr>
+			<td>&nbsp;&nbsp;用户昵称：</td>
+			<td><input type="text" id='nickname'></td>
+		</tr>
+		<tr>
+			<td>&nbsp;&nbsp;手机号：</td>
+			<td><input type="text" id='mobile'></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td>
+				<input type="button" class="btn" onclick="queryuser()" value="查询">
+				<input type="reset" class="btn" value="清除">
+				<input type="button" class="btn" onclick="javascript:$.fancybox.close();" value="关闭">
+			</td>
+		</tr>
+	</table>
+	</form>
+</div>
+<script type="text/javascript">
+function queryuser(){
+	var username=$("#username").val();
+	var nickname=$("#nickname").val();
+	var mobile=$("#mobile").val();
+	$("#lis_user").jqGrid('setGridParam',{ 
+            url:"{:U('User/userlist')}", 
+            postData:{'username':username,'nickname':nickname,'mobile':mobile}, //发送数据 
+            page:1 
+        }).trigger("reloadGrid"); //重新载入 
+}
+</script>

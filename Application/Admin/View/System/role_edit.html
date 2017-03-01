@@ -1,0 +1,78 @@
+<script type="text/javascript" src="__PUBLIC__/static/jquery.form.js"></script>
+<style type="text/css">
+input:required{
+    background-color: #dff1fd;
+}
+select:required{
+    background-color: #dff1fd;
+}
+</style>
+<div class="fanbox_proView">
+    <h3>修改角色</h3>
+    <form id="role_edit_form" action="{:U('Admin/System/save_edit_role')}" method="post">
+        <input type="hidden" id="role_id"  name="role_id" value="{$role_id}" >
+        <table width="100%" cellpadding="0" cellspacing="0" class="view_table table">
+            <tr>
+                <td width="30%" align="right">角色名称：
+                    <input type="text" id="role_name"  name="role_name" onblur="check_role_name()" value="{$role.role_name}" required/>
+                </td>
+                <td colspan=2>
+                    角色描述：
+                    <input type="text" id="role_mark"  name="role_mark" value="{$role.role_mark}"/>
+                </td>
+            </tr>
+        </table>
+        <div>
+            <input type="submit" value="保存">
+            <input type="reset" value="重置">
+            <input type="button" onclick="javascript:$.fancybox.close();" value="取消">
+        </div>
+    </form>
+</div>
+<script type="text/javascript">
+$(function(){
+    $('#role_edit_form').ajaxForm({
+        beforeSubmit: check_data,
+        success: function(msg){
+            if(msg == "1"){
+                layer.alert('修改成功！',function(){
+                    rightContent.window.reload_role_show();
+                    $.fancybox.close();
+                    layer.closeAll();
+                });
+            }else{
+                layer.alert('修改失败！');
+            }
+        }
+    }); 
+});
+
+function check_data () {
+    var role_name=$("#role_name").val();
+    if(role_name == ""){
+        top.layer.msg('请填写角色名称',{icon: 2,time: 1000});
+        return false;
+    }
+}
+
+function check_role_name(){
+    var role_name=$("#role_name").val();
+    if(role_name.length > 0 && role_name!="{$role.role_name}"){
+        $.ajax({
+            type:'post',
+            url:App+'/Admin/System/have_role_name',
+            dataType:'json',
+            async:true,
+            data:{role_name:role_name},
+            success:function(data){
+                if(data==1){
+                    $("#role_name").val("").focus();
+                    top.layer.msg('该名称已存在',{icon: 2,time: 1000});
+                }
+            }
+        });
+    }else{
+        return false;
+    }
+}
+</script>

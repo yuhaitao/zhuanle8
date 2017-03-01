@@ -1,0 +1,67 @@
+<!---->
+		<div class="news_listrig">
+			<div class="hot_tags">
+				<h2>热门标签</h2>
+				<div class="hot_tags_show clearfix">
+					
+					<volist name="tagList" id="tag">
+						<a href="__APP__/newsList/{$tag.news_tags_id}.html">{$tag.news_tags_name}</a>
+					</volist>
+				</div>
+			</div>
+
+			<div class="hot_rank mt20">
+				<div class="hd">
+					<div class="hot_rank_top clearfix">
+						<h2>热门排行</h2>
+			        	<ul><li>日</li><li>周</li><li>月</li></ul>
+					</div>
+			    </div>
+			    <div class="bd clearfix">
+			        <ul class="clearfix">
+			            <li>
+			            	<foreach name="dayData" item="day">
+			        			<a href="__APP__/news/{$day.news_id}.html">{$day.news_name|getSubstr=0,18}  <em class="hot_num">{$day.count}</em></a>
+			        		</foreach>
+			            </li>
+			        </ul>
+			        <ul>
+			            <li>
+			            	<foreach name="weekData" item="week">
+			        			<a href="__APP__/news/{$week.news_id}.html">{$week.news_name|getSubstr=0,18}  <em class="hot_num">{$week.count}</em></a>
+			        		</foreach>
+			            </li>
+			        </ul>
+			        <ul>
+			        	<li>
+				            <foreach name="monthData" item="month">
+			        			<a href="__APP__/news/{$month.news_id}.html">{$month.news_name|getSubstr=0,18}  <em class="hot_num">{$month.count}</em></a>
+			        		</foreach>
+		        		</li>
+			        </ul>
+			    </div>
+			</div>
+			<script type="text/javascript">jQuery(".hot_rank").slide(); </script>
+
+			<div class="media_list mt20">
+				<h2>媒体报道 <a class="media_more" href="__APP__/mediaList.html"><i class="icon-angle-right fz16"></i></a></h2>
+				<div class="media_nr clearfix">
+					<volist name="mediaList" id="vs" key='k'>
+						<if condition="$k == 1">
+						<div class="media_top clearfix">
+							<span><img src="{$vs.media_picture}" width="150px" height="100px" /></span>
+							<span style="width: 166px; margin-left: 10px; margin-top: 6px;"><a href="__APP__/media/{$vs.media_id}.html">{$vs.media_title|getSubstr=0,30}</a>
+							<em class="fz12">{$vs.media_describe|getSubstr=0,20}</em>
+							</span>
+						</div>
+						<else />
+						<div class="media_show">
+							<ul>
+								<li><i></i><a href="__APP__/media/{$vs.media_id}.html">{$vs.media_title|getSubstr=0,20}</a></li>
+							</ul>
+						</div>
+						</if>
+					</volist>
+				</div>
+			</div>
+		</div>

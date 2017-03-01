@@ -1,0 +1,261 @@
+<include file="Public/head"/>
+<!-- 头部 -->
+<include file="Public/header"/>
+<!-- /头部 -->
+<!---------------赚乐扒内容页面位置开始------------------>
+<div class="jflnr_wz">
+    <div class="jflnr_wz_tb"><img src="__PUBLIC__/images/newimages/wztb.png" width="45" height="45"> </div>
+    <div class="jflnr_wz_nr">位置：<a href="__ROOT__/">首页</a> > 投资平台 </div>
+</div>
+<!---------------赚乐扒内容页面位置结束------------------>
+
+<!---------------赚乐扒个人中心投资记录开始------------------>
+<div class="jflgrzx_zhzy">
+    <div class="jflgrzx_zhzy_left">
+        <include file="Public/person_left"/>
+    </div>
+    <div class="jflgrzx_zhzy_right">
+        <div class="right_top">
+					<ul class="right_top_ul">
+                        <li class="right_top_li2"><a class="text_twenty" href="javascript:void(0);" onclick="selectAccountInfoType(1,this);">投资平台</a></li>
+						<li class="right_top_li"><a class="text_nineteen" id="product_a" href="javascript:void(0);" onclick="selectAccountInfoType(2,this);">标的明细</a></li>
+                    </ul>
+		</div>
+        <div class="right_main_bot">
+				<div id="accountDiv">
+                        <div class="tzpt001">
+            <div class="grzxleft_05_nr_top_03 rcst_01">
+                <p class="p1 zhzy_ys03">投资平台总数</p>
+                <p class="p8 zhzy_ys04">{$plat_count}个</p>
+            </div>
+            <div class="grzxleft_05_nr_top_03 rcst_01">
+                <p class="p1 zhzy_ys03">冻结中标的</p>
+                <p class="p8 zhzy_ys04">{$freeze_count}笔</p>
+            </div>
+            <div class="grzxleft_05_nr_top_03">
+                <p class="p1 zhzy_ys03">已返利标的</p>
+                <p class="p8 zhzy_ys04">{$finance_count}笔</p>
+            </div>
+        </div>
+					<div class="bott_div">
+						<div class="platform_list" id="cashid">
+	                    <table id="ul_lists" cellspadding="0" cellspacing="0" class="table-hover" style="border-collapse:collapse " width="100%">
+	                    </table>
+	                    </div>
+	                    <div class="page" id="page"></div>
+					</div>
+
+				</div>
+				<div id="editImageDiv" class="platform_list" style="display: none;">
+					<div class="platform_list_top text_thtwo">
+						平台名称 &nbsp;&nbsp;
+						<select id="platIdStatusSelect" class="state_xiala2" onchange="getData_oth(1);">
+							<option value=0>不限</option>
+							<foreach name="plat_arr" item="vo">
+								<option value="{$vo.plat_id}">{$vo.plat_shortname}</option>
+							</foreach>
+						</select>
+					</div>
+					<div id="investProductListDiv">
+						<div id="tr_lists">
+	                    
+	                    </div>
+	                    <div class="page" id="page_oth"></div>
+					</div>
+				</div>
+			</div>
+    </div>
+    <div class="line"></div>
+</div>
+<!---------------赚乐扒个人中心投资记录结束------------------>
+
+<script type="text/javascript">
+	//DIV 切换
+	function selectAccountInfoType(type,obj){
+    $(".right_top_ul li").attr('class', 'right_top_li');
+	    $(".right_top_ul li a").attr('class', 'text_nineteen');
+		if(type==1){
+			$("#accountDiv").show();
+			$("#editImageDiv").hide();
+		}else if(type=2){
+		 	$("#accountDiv").hide();
+			$("#editImageDiv").show();
+		}
+		obj.parentNode.className="right_top_li2";
+		obj.className="text_twenty";
+	}
+	
+	</script>
+	<script type="text/javascript">
+	$(function(){
+		changeClss();
+	});
+	function changeClss(){
+		var jspname = 'investPlat';
+		if(jspname!=null&&jspname!=''){
+			$("#"+jspname).attr("class","text_twenty");
+		}
+	}
+	function changeDivContext(obj,name,url){
+		openwin_self(url);
+	}
+	</script>
+	<script type="text/javascript">
+            var page_cur = 1; //当前页
+            var total_num, page_size, page_total_num;//总记录数,每页条数,总页数
+            var toptr = "<tr class='platformtr3 text_one'><td width='10px' class='platformtd1 td_bor2'></td> <td class='platformtd1 td_bor2' width='90px'>平台名称</td><td class='platformtd1 td_bor2' width=''>投资总额</td><td class='platformtd1 td_bor2' width=''>返利金额</td><td class='platformtd1 td_bor2' width=''>投标总数</td><td class='platformtd1 td_bor2' width=''>冻结中</td><td class='platformtd1 td_bor2' width=v200pxv>已返利</td><td class='platformtd1 td_bor2' width=''>操作</td><td width='10px' class='platformtd1 td_bor2'></td></tr>";
+
+            function getData(page) { //获取当前页数据
+                $.ajax({
+                    type: 'GET',
+                    url: 'investPlat_list.html',
+                    data: {'page': page - 1},
+                    dataType: 'json',
+                    success: function(json) {
+                        $("#ul_lists").empty();
+                        total_num = json.total_num;//总记录数
+                        page_size = json.page_size;//每页数量
+	                    page_cur = page;//当前页
+	                    page_total_num = json.page_total_num;//总页数
+	                    $("#ul_lists").append(toptr);
+                        if (total_num > 0) {
+	                        var tr = "";
+	                        var list = json.list;
+	                        $.each(list, function(index, array) { //遍历返回json
+	                        tr += "<tr class='platformtr6 text_ththree'><td class='platformtd1 td_bor2'></td><td class='platformtd1 td_bor2'>" + array['plat_shortname'] + "</td><td class='platformtd1 td_bor2'>"+array['invest_money']+"元</td><td class='platformtd1 td_bor2'>"+array['cash_money']+"元</td><td class='platformtd1 td_bor2'>"+array['invest_count']+"</td><td class='platformtd1 td_bor2'>"+array['freeze_count']+"</td><td class='platformtd1 td_bor2' style='cursor:pointer'><span id='"+array['draw_cash_id']+"'>"+array['cash_count']+"</span></td><td class='platformtd1 td_bor2'><a href='javascript:;' onclick='gotoProductList("+array['plat_id']+")'>查看详情</a></td><td class='platformtd1 td_bor2'></td></tr>";
+	                        });
+	                        $("#ul_lists").append(tr);
+                        }else{
+                        	$("#ul_lists").append("<tr><td class='platformtd1 td_bor2' colspan='9'>没有数据</td></tr>");
+                        }
+                        
+                    },
+                    complete: function() {
+                        getPageBar();//js生成分页，可用程序代替
+                    },
+                    error: function() {
+                        alert("数据异常,请检查是否json格式");
+                    }
+                });
+            }
+
+            function getPageBar() { //js生成分页
+                if (page_cur > page_total_num)
+                    page_cur = page_total_num;//当前页大于最大页数
+                if (page_cur < 1){
+                	page_cur = 1;//当前页小于1
+                }
+                page_str = "<span>共" + total_num + "条</span><span>" + page_cur + "/" + page_total_num + "</span>";
+                
+                //若是第一页
+                if (page_cur == 1) {
+                	page_str += "<span class='pageall'>首页</span><span class='pageall'>上一页</span>";
+                } else {
+                    page_str += "<span class='pageall'><a href='javascript:void(0)' data-page='1'>首页</a></span><span class='pageall'><a href='javascript:void(0)' data-page='" + (page_cur - 1) + "'>上一页</a></span>";
+                }
+                //若是最后页
+                if (page_cur >= page_total_num) {
+                    page_str += "<span class='pageall'>下一页</span><span class='pageall'>尾页</span>";
+                } else {
+                    page_str += "<span class='pageall'><a href='javascript:void(0)' data-page='" + (parseInt(page_cur) + 1) + "'>下一页</a></span><span class='pageall'><a href='javascript:void(0)' data-page='" + page_total_num + "'>尾页</a></span>";
+                }
+                $("#page").html(page_str);
+            }
+
+            $(function() {
+                getData(1);//默认第一页
+                $("#page").on('click','a',function() { 
+                    var page = $(this).attr("data-page");//获取当前页
+                    getData(page);
+                });
+                // $('#start,#end').bind('input propertychange',function(){
+                //     getData(1);
+                // });
+            });
+
+            function gotoProductList (num) {
+            	$("#platIdStatusSelect").val(num);
+            	$("#product_a").click();
+            	getData_oth(1);
+            }
+</script>
+<script type="text/javascript">
+            var page_cur_o = 1; //当前页
+            var total_num_o, page_size_o, page_total_num_o;//总记录数,每页条数,总页数
+            var top_tr = "<table cellspadding='0' cellspacing='0' style=' border-collapse:collapse; margin-bottom: 10px;' width='870px;'><tr class='platformtr3 text_one'><td width='10px' class='platformtd1 td_bor2'></td> <td class='platformtd1 td_bor2' width='90px'>标的名称</td><td class='platformtd1 td_bor2' width=''>投资金额</td><td class='platformtd1 td_bor2' width=''>投资期限</td><td class='platformtd1 td_bor2' width=''>平台年化</td><td class='platformtd1 td_bor2' width=''>还款方式</td><td class='platformtd1 td_bor2' width='200px'>操作</td><td width='10px' class='platformtd1 td_bor2'></td></tr></table>";
+
+            function getData_oth(page) { //获取当前页数据
+            	var plat_iid=$("#platIdStatusSelect").val();
+                $.ajax({
+                    type: 'GET',
+                    url: 'investrecord_list.html',
+                    data: {'page': page - 1,'plat_id':plat_iid},
+                    dataType: 'json',
+                    success: function(json) {
+                        $("#tr_lists").empty();
+                        total_num_o = json.total_num;//总记录数
+                        page_size_o = json.page_size;//每页数量
+	                    page_cur_o = page;//当前页
+	                    page_total_num_o = json.page_total_num;//总页数
+	                    $("#tr_lists").append(top_tr);
+                        if (total_num_o > 0) {
+	                        var tr = "";
+	                        var list = json.list;
+	                        $.each(list, function(index, array) { //遍历返回json
+	                        tr += "<table cellspadding='0' cellspacing='0' class='platformtd3' style=' border-collapse:collapse; margin-bottom: 10px;' width='870px;'><tr class='platformtr7 text_ththree'><td width='15px'></td><td class='platformtd1 td_bor2 tdleft' colspan='6'><div class='tdimg'><img class='imgwh' src='"+array['plat_logo']+"'></div><div class='tdlogodate'>"+array['add_time']+"</div><div class='tdtextdiv'>订单号："+array['serial_no']+"</div></td><td width='15px'></td>	</tr><tr class='platformtr8 text_ththree'><td></td><td class='td_bor2 tdleft' width='200px'><a href='javascript:;' onclick='jumptoUrl("+array['product_id']+")' target='_blank' class='logo-name'>"+array['target_name']+"</a></td><td class=' td_bor2' width='128px'>"+array['buy_money']+"元</td><td class='td_bor2' width='128px'>"+array['limit_time']+"</td><td class='td_bor2' width='128px'>"+array['plat_rate']+"</td><td class='td_bor2' width='128px'>"+array['rebate_type']+"</td><td class='td_bor2 tdright tdline'><a href='"+array['jump_link']+"' target='_blank'>去平台查看</a></td><td></td></tr></table>";
+	                        });
+	                        $("#tr_lists").append(tr);
+                        }else{
+                        	$("#tr_lists").append("<table cellspadding='0' cellspacing='0' class='platformtd3' style=' border-collapse:collapse; margin-bottom: 10px;' width='870px;'<tr><td class='platformtd1 td_bor2'>没有数据</td></tr></table>");
+                        }
+                        
+                    },
+                    complete: function() {
+                        getPageBar_oth();//js生成分页，可用程序代替
+                    },
+                    error: function() {
+                        alert("数据异常,请检查是否json格式");
+                    }
+                });
+            }
+
+            function getPageBar_oth() { //js生成分页
+                if (page_cur_o > page_total_num_o)
+                    page_cur_o = page_total_num_o;//当前页大于最大页数
+                if (page_cur_o < 1){
+                	page_cur_o = 1;//当前页小于1
+                }
+                page_str_o = "<span>共" + total_num_o + "条</span><span>" + page_cur_o + "/" + page_total_num_o + "</span>";
+                
+                //若是第一页
+                if (page_cur_o == 1) {
+                	page_str_o += "<span class='pageall'>首页</span><span class='pageall'>上一页</span>";
+                } else {
+                    page_str_o += "<span class='pageall'><a href='javascript:void(0)' data-page='1'>首页</a></span><span class='pageall'><a href='javascript:void(0)' data-page='" + (page_cur_o - 1) + "'>上一页</a></span>";
+                }
+                //若是最后页
+                if (page_cur_o >= page_total_num_o) {
+                    page_str_o += "<span class='pageall'>下一页</span><span class='pageall'>尾页</span>";
+                } else {
+                    page_str_o += "<span class='pageall'><a href='javascript:void(0)' data-page='" + (parseInt(page_cur_o) + 1) + "'>下一页</a></span><span class='pageall'><a href='javascript:void(0)' data-page='" + page_total_num_o + "'>尾页</a></span>";
+                }
+                $("#page_oth").html(page_str_o);
+            }
+
+            $(function() {
+                getData_oth(1);//默认第一页
+                $("#page_oth").on('click','a',function() { 
+                    var page = $(this).attr("data-page");//获取当前页
+                    getData_oth(page);
+                });
+                // $('#start,#end').bind('input propertychange',function(){
+                //     getData(1);
+                // });
+            });
+            //跳转链接
+            function jumptoUrl(id){
+            	window.location.href="__APP__/product/"+id;
+            }
+</script>
+<!-- /底部 -->
+<include file = "Public/footer" />

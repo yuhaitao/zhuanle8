@@ -1,0 +1,71 @@
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<link rel="stylesheet" href="__PUBLIC__/zTree/css/demo.css" type="text/css">
+	<link rel="stylesheet" href="__PUBLIC__/zTree/css/zTreeStyle/zTreeStyle.css" type="text/css">
+	<script type="text/javascript" src="__PUBLIC__/zTree/js/jquery-1.4.4.min.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/zTree/js/jquery.ztree.core.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/zTree/js/jquery.ztree.excheck.js"></script>
+	<SCRIPT type="text/javascript">
+		<!--
+		var setting = {
+			check: {
+				enable: true
+			},
+			data: {
+				key: {
+					title: "title"
+				},
+				simpleData: {
+					enable: true
+				}
+			}
+		};
+
+		var zNodes ={$responce};
+
+		function addNewPower () {
+			var role_id={$role_id};
+			var zTree = $.fn.zTree.getZTreeObj("treeDemo"),
+			nodes = zTree.getCheckedNodes(true),
+			v = "";
+			for (var i=0, l=nodes.length; i<l; i++) {
+				v += nodes[i].id + ",";
+			}
+			if (v.length > 0 ) v = v.substring(0, v.length-1);
+			top.layer.confirm('确定添加？', {
+              btn: ['确定','取消'] 
+            }, function(){
+                $.ajax({
+                    type:'post', 
+                    url:'__APP__/Admin/System/saveAddPower',
+                    dataType:'json',
+                    async:true,
+                    data:{r_id_list:v,role_id:role_id},
+                    success:function(data){
+                        if(data == 1){
+                            top.layer.msg('添加成功',{icon: 1,time: 1000});
+                            top.layer.closeAll();
+                        }else{
+                            top.layer.msg('添加失败',{icon: 2,time: 1000});
+                        }
+                    }
+                });
+            }, function(){
+              
+            });
+		}
+
+		$(document).ready(function(){
+			$.fn.zTree.init($("#treeDemo"), setting, zNodes);
+			//$("#hideNodesBtn").bind("click", {type:"rename"}, hideNodes);
+			//$("#showNodesBtn").bind("click", {type:"icon"}, showNodes);
+		});
+		//-->
+	</SCRIPT>
+<div class="content_wrap">
+	<div class="zTreeDemoBackground left">
+		<ul id="treeDemo" class="ztree"></ul>
+	</div>
+</div>
+<div>
+	<a href='javascript:addNewPower()' class='add_new'><i class='glyphicon glyphicon-plus'></i>确认添加</a>
+</div>

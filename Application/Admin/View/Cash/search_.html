@@ -1,0 +1,34 @@
+<div class="fanbox_add">
+	<h3>查询</h3>
+	<form id="cash_search" action="" method="post">
+	<table width="100%" cellpadding="0" cellspacing="0" class="search_table">
+		<tr>
+			<td>&nbsp;&nbsp;提现人：</td>
+			<td><input type="text" id='username'></td>
+		</tr>
+		<tr>
+			<td>&nbsp;&nbsp;账号：</td>
+			<td><input type="text" id='draw_no'></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td>
+				<input type="button" class="btn" onclick="query_cash()" value="查询">
+				<input type="reset" class="btn" value="清除">
+				<input type="button" class="btn" onclick="javascript:$.fancybox.close();" value="关闭">
+			</td>
+		</tr>
+	</table>
+	</form>
+</div>
+<script type="text/javascript">
+function query_cash(){
+	var username=$("#username").val();
+	var draw_no=$("#draw_no").val();
+	$("#cash_show").jqGrid('setGridParam',{ 
+            url:"{:U('Cash/cashlist')}", 
+            postData:{'username':username,'draw_no':draw_no}, //发送数据 
+            page:1 
+        }).trigger("reloadGrid"); //重新载入 
+}
+</script>

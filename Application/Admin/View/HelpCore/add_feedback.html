@@ -1,0 +1,62 @@
+<div class="fanbox_reply">
+    <h3>添加</h3>
+    <form id="add_feedback_form" action="{:U('Admin/HelpCore/add_new_feedback')}" method="post">
+        <table width="100%" cellpadding="0" cellspacing="0" class="post_table">
+            <tr>
+                <td width="30%" align="right">问题类型&nbsp;&nbsp;</td>
+                <td>
+                    <select id="question_type" name="question_type">
+                        <option style="display: none"></option>
+                        {$options}
+                    </select>
+                    &nbsp;&nbsp;(该输入项为必填选项！)
+                </td>
+            </tr>
+            <tr>
+                <td align="right">问题描述&nbsp;&nbsp;</td>
+                <td><textarea id="describeId" name="description" class="form-control" rows="6" placeholder="请输入您的意见或建议..." ></textarea></td>
+            </tr>
+           
+            <tr>
+                <td align="right">回答回复&nbsp;&nbsp;</td>
+                <td><textarea id="replyId" name="reply" class="form-control" rows="6" placeholder="请输入回复的被容..."></textarea></td>
+            </tr>
+            <tr>
+                <td height="60">&nbsp;</td>
+                <td style="text-align: right;">
+                <input type="submit" style="float:none;" class="btn" value="提交"/> 
+                <input type="button" style="float:none;" class="btn" value="取消" onclick="$.fancybox.close();" /></td>
+            </tr>
+        </table>
+    </form>
+</div>
+<script type="text/javascript" src="__PUBLIC__/static/jquery.form.js"></script>
+<script type="text/javascript">
+$(function(){
+    $('#add_feedback_form').ajaxForm({
+        beforeSubmit: validate,
+        success: function(msg){
+
+            if(msg == 1){
+                layer.alert('添加成功！',function(){
+                    layer.closeAll();
+                    $.fancybox.close();
+                    $("#type_show").trigger("reloadGrid");
+                });
+            }else{
+                layer.alert('添加失败!');
+            }
+        }
+    }); 
+});
+function validate(){
+    var option = $('#question_type').val();
+    var description = $('#describeId').val();
+    var reply = $('#replyId').val();
+
+    if(option == '' || description == '' || reply == ''){
+        layer.alert('请补全内容！');
+        return false;
+    }
+}
+</script>

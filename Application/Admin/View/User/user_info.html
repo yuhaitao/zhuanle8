@@ -1,0 +1,132 @@
+<!-- 用户详情弹出框 -->
+<style>
+.tab-content{padding:0;}
+.title{font-size:14px; line-height:30px; height:30px; padding-left:8px; color:#fff; background:#528bbc;}
+.user_tr{height:35px; font-size:12px; color:#000;}
+.user_tr .form-control{width:135px; height:22px;line-height: 22px; padding:2px 0; border-radius:2px; font-size:12px; color:#000;}
+.user_td_title{padding:6px 0 0 25px !important; width:80px; height:35px;}
+.user_td_input{width:224px;}
+</style>
+<div style="height:500px;">
+	<div class="title">用户基本信息</div>
+	<input type="hidden" id="user_id" value="{$user_id}"/>
+	<ul class="nav nav-tabs" role="tablist">
+		<li role="presentation" class="active"><a href="#user" role="tab" data-toggle="tab">用户信息</a></li>
+		<li role="presentation"><a href="#sms" role="tab" data-toggle="tab">短信查询</a></li>
+		<li role="presentation"><a href="#email" role="tab" data-toggle="tab">邮箱查询</a></li>
+	</ul>
+	
+	<div class="tab-content">
+		<!-- 用户信息 -->
+		<div role="tabpanel" class="tab-pane active" id="user">
+			<div class="table-responsive">
+			<table class="table">
+				<tr class="user_tr">
+					<td class="user_td_title">用户姓名</td>
+					<td class="user_td_input"><input type="text" class="form-control" readonly="readonly" value="{$user['user_name']}"/></td>
+					<td class="user_td_title">用户昵称</td>
+					<td class="user_td_input"><input type="text" class="form-control" readonly="readonly" value="{$user['nick_name']}"/></td>
+					<td class="user_td_title">出生日期</td>
+					<td class="user_td_input"><input type="text" class="form-control" readonly="readonly" value="{$user['birth_date']}"/></td>
+				</tr>
+				<tr class="user_tr">
+					<td class="user_td_title">手机号码</td>
+					<td class="user_td_input"><input type="text" class="form-control" readonly="readonly" value="{$user['mobile']}"/></td>
+					<td class="user_td_title">身份证号</td>
+					<td class="user_td_input"><input type="text" class="form-control" readonly="readonly" value="{$user['identity']}"/></td>
+					<td class="user_td_title">电话号码</td>
+					<td class="user_td_input"><input type="text" class="form-control" readonly="readonly" value="{$user['telephonr']}"/></td>
+				</tr>
+				<tr class="user_tr">
+					<td class="user_td_title">email</td>
+					<td class="user_td_input"><input type="text" class="form-control" readonly="readonly" value="{$user['email']}"/></td>
+					<td class="user_td_title">用户类型</td>
+					<td class="user_td_input"><input type="text" class="form-control" readonly="readonly" value="{$user['user_type']}"/></td>
+					<td class="user_td_title">联系地址</td>
+					<td class="user_td_input"><input type="text" class="form-control" readonly="readonly" value="{$user['address']}"/></td>
+				</tr>
+				<tr class="user_tr">
+					<td class="user_td_title">邀请人</td>
+					<td class="user_td_input"><input type="text" class="form-control" readonly="readonly" value="{$user['invite_user']}"/></td>
+				</tr>
+			</table>
+			</div>
+		</div>
+		<!-- 短信查询 -->
+		<div role="tabpanel" class="tab-pane" id="sms">
+			<div class="sms_box">
+				<!-- jqGrid table list4 -->
+				<table id="smslist_show"></table>
+				<!-- jqGrid 分页 div gridPager -->
+				<div id="gridPager_smslist"></div>
+			</div>
+		</div>
+		<!-- 邮箱查询 -->
+		<div role="tabpanel" class="tab-pane" id="email">
+			<div class="email_box">
+				<!-- jqGrid table -->
+				<table id="emaillist_show"></table>
+				<!-- jqGrid 分页 -->
+				<div id="gridPager_emaillist"></div>
+			</div>
+		</div>
+	</div>
+
+</div>
+<script type="text/javascript">
+$(function(){
+	var user_id = $('#user_id').val();
+	emailInit(user_id);
+	smsInit(user_id);
+});
+
+//短信查询
+function smsInit(user_id){
+	$('#smslist_show').jqGrid({
+		url : "{:U('Admin/User/user_sms')}",
+		datatype:"json", //数据来源，json
+        postData:{user_id:user_id},
+        mtype:"POST",
+        height:370,
+        colNames:['短信内容', '发信息时间'],
+        colModel:[
+            {name:'sms_content',index:'sms_content', width:'700%',align:'left'},
+            {name:'sms_date',index:'sms_date', width:'185%',align:'left'}
+        ], 
+        viewrecords : true,
+        rowNum:20,
+        rowList:[20,50,100],
+        pager : $('#gridPager_smslist'),
+        altRows: true,
+        rownumbers:true,
+        multiboxonly: true,
+        autowidth: true
+	});
+}
+//邮箱查询
+function emailInit(user_id){
+	$('#emaillist_show').jqGrid({
+		url : "{:U('Admin/User/user_email')}",
+		datatype:"json", //数据来源，json
+        postData:{user_id:user_id},
+        mtype:"POST",
+        height:370,
+        colNames:['邮件主题', '邮件内容', '发送时间', '收件人邮箱', '验证状态'],
+        colModel:[
+            {name:'subject',index:'subject', width:'177%',align:'left'},
+            {name:'content',index:'content', width:'177%',align:'left'},
+            {name:'email_date',index:'email_date', width:'177%',align:'left'},
+            {name:'to_emails',index:'to_emails', width:'177%',align:'left'},
+            {name:'emailtype',index:'emailtype', width:'177%',align:'left'}
+        ], 
+        viewrecords : true,
+        rowNum:20,
+        rowList:[20,50,100],
+        pager : $('#gridPager_emaillist'),
+        altRows: true,
+        rownumbers:true,
+        multiboxonly: true,
+        autowidth: true
+	});
+}
+</script>

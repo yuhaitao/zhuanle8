@@ -1,0 +1,378 @@
+<include file="Public/head" />
+<include file="Public/header" />
+<!---------------赚乐扒内容页面位置开始------------------>
+<div class="jflnr_wz">
+    <div class="jflnr_wz_tb"><img src="__PUBLIC__/images/newimages/wztb.png" width="45" height="45"> </div>
+    <div class="jflnr_wz_nr">位置：<a href="__APP__/">首页</a> > <a href="__APP__/login/reg.html">注册</a> </div>
+</div>
+<!---------------赚乐扒内容页面位置结束------------------>
+<!---------------赚乐扒内容标题开始------------------>
+<div class="jflnr_bt">用户注册</div>
+<!---------------赚乐扒内容标题结束------------------>
+<!---------------赚乐扒用户注册页面开始------------------>
+<form id="register_form" action="save_register.html" method="POST">
+<input id="systemMobileCode" name="systemMobileCode" value="" type="hidden">
+<div class="jflyhzc_bk">
+    <div class="jflsyyhzc_nr">
+        <div class="jfldl_nr_bk_top">用户注册 REGISTER</div>
+        <div class="jfldl_nr_bk_top01">
+            <div class="jflsy_db_top_left_01_tb"><img src="__PUBLIC__/images/newimages/shouji.png" width="63" height="58"> </div>
+            <div class="jflsy_db_top_left_01_wz"><input type="text" id="mobile" maxlength="11" name="mobile" placeholder="输入您的电话"></div>
+            <div id="mobile_tip" class="icon"></div>
+        </div>
+        <div class="jflyhzc_bk_01">
+            <div class="jflyhzc_bk_01_left"><input type="text" id="tuxing_verifi" name="verify" placeholder="请输入图形码"></div>
+            <div class="jflyhzc_bk_01_right">
+            <span id="tuxing">
+                                <img class="verifyimg reloadverify" alt="点击切换" width="120px" height="45px;" src="verify.html" style="cursor:pointer;padding-left: 10px; margin-top:10px;">
+                            </span></div>
+                            <div id="verifyimg_tip" class="icon"></div>
+        </div>
+        <div class="jflyhzc_bk_01">
+            <div class="jflyhzc_bk_01_left"><input type="text" id="mobile_verifi" name="code" placeholder="手机验证码"></div>
+            <div class="jflyhzc_bk_01_right"><a id="validateNewMobile" onclick="sendCode();" href="javascript:;">获取验证码</a></div>
+            <div id="phone_tip" class="icon"></div>
+        </div>
+        <div class="jfldl_nr_bk_top01">
+            <div class="jflsy_db_top_left_01_tb"><img src="__PUBLIC__/images/newimages/yaoshi01.png" width="63" height="58"> </div>
+            <div class="jflsy_db_top_left_01_wz"><input type="password" id="password" name="password" placeholder="请输入8到23位密码" onblur="check_pwd()"></div>
+            <div id="password_tip" class="icon"></div>
+        </div>
+        <div class="jfldl_nr_bk_top01">
+            <div class="jflsy_db_top_left_01_tb"><img src="__PUBLIC__/images/newimages/yaoshi01.png" width="63" height="58"> </div>
+            <div class="jflsy_db_top_left_01_wz"><input type="password" id="repassword" name="repassword" placeholder="请再输入密码" onblur="check_password()"></div>
+            <div id="repassword_tip" class="icon"></div>
+        </div>
+        <div class="jfldl_nr_bk_top01">
+            <div class="jflsy_db_top_left_01_tb"><img src="__PUBLIC__/images/newimages/pen.png" width="63" height="58"> </div>
+            <div class="jflsy_db_top_left_01_wz"><input type="text" id="share_id" name="share_id" placeholder="请输入邀请码"></div>
+            <div id="share_id_tip" class="icon"></div>
+        </div>
+        
+        <div class="jflyhzc_bk_02">
+            <div class="hg"><input type="checkbox" id="checkbox" name="checkbox" style="margin:0;"></div>
+            <div class="ydfw">我已经阅读并同意  <a href="javascript:void(0);" onclick="showAgreement();">《赚乐扒服务协议》</a></div>
+        </div>
+        <div class="jfldl_nr_bk_an">
+            <input type="submit" value="立即注册" class="reg_btn" />
+        </div>
+        <div class="jfldl_nr_bk_zc">
+            <span class="dlysdb_left">已注册，立即<a href="__APP__/login/login.html">登录</a> </span>
+        </div>
+    </div>
+</div>
+</form>
+<!---------------赚乐扒用户注册页面结束------------------>
+
+<include file="Public/footer" />
+
+<script type="text/javascript" src="__PUBLIC__/static/jquery.form.js"></script>
+<script type="text/javascript">
+$(function(){
+    $('#register_form').ajaxForm({
+        beforeSubmit: checkForm,
+        success: function(msg){
+            if(msg == 1){
+                ///////////////////
+                var userId = '800900';
+                !function(w,d,e){
+                var _orderno=userId;  //替换此处!;
+                var b=location.href,c=d.referrer,f,s,g=d.cookie,h=g.match(/(^|;)\s*ipycookie=([^;]*)/),i=g.match(/(^|;)\s*ipysession=([^;]*)/);if (w.parent!=w){f=b;b=c;c=f;};u='//stats.ipinyou.com/cvt?a='+e('Xys.bHh.NsdfoQUlmXjzd1_YDjqPtP')+'&c='+e(h?h[2]:'')+'&s='+e(i?i[2].match(/jump\%3D(\d+)/)[1]:'')+'&u='+e(b)+'&r='+e(c)+'&rd='+(new Date()).getTime()+'&OrderNo='+e(_orderno)+'&e=';
+                function _(){if(!d.body){setTimeout(_(),100);}else{s= d.createElement('script');s.src = u;d.body.insertBefore(s,d.body.firstChild);}}_();
+                }(window,document,encodeURIComponent);
+                /////////////////
+                layer.alert('注册成功！', {
+                    closeBtn: 0 ,
+                  },function(){
+                    $.fancybox.close();
+                    layer.closeAll();
+                    window.location.href = "login";
+                });
+            }else{
+                layer.alert(msg,function(){
+                  	$(".reloadverify").click();
+                    layer.closeAll();
+                });
+            }
+        }
+    });
+    //手机号码
+    $('#mobile').bind('input propertychange',function(){
+        var cur_phone = $('#mobile').val();
+        // if(cur_phone.length < 11) { return false;}
+        var myreg = /^1[34578]\d{9}$/;
+        if(cur_phone ==''){
+            $('#mobile_tip').removeClass('ok_input');
+            $('#mobile_tip').addClass('error_input');
+            $('#mobile_tip').html("请输入手机号码！");
+            return false;
+        }else{
+            if(!myreg.test(cur_phone)){
+                $('#mobile_tip').removeClass('ok_input');
+                $('#mobile_tip').addClass('error_input');
+                $('#tuxing_verifi').attr('disabled','disabled');
+                $('#mobile_tip').html("请输入正确的手机号");
+              return false;
+            }else{
+                $.ajax({
+                    type:'post',
+                    url:'checkmobile.html',
+                    dataType:'json',
+                    async:true,
+                    data:{cur_phone:cur_phone},
+                    success:function(data){
+                        if(data == 1){
+                            $('#mobile_tip').removeClass('error_input');
+                            $('#mobile_tip').addClass('ok_input');
+                            $('#mobile_tip').html("");
+                            $('#tuxing_verifi').removeAttr('disabled');
+                            return true;
+                        }else{
+                            $('#mobile_tip').addClass('error_input');
+                            $('#mobile_tip').html("手机号码重复！");
+                            $('#tuxing_verifi').attr('disabled','disabled');
+                            return false;
+                        }
+                    }
+                });
+            }
+        }
+    });
+    
+  //邀请码
+    $('#share_id').bind('input propertychange',function(){
+        var cur_share_id = $('#share_id').val();
+        
+        if(cur_share_id.length != 4) { 
+        	$('#share_id_tip').removeClass('ok_input');
+            $('#share_id_tip').addClass('error_input');
+            $('#share_id_tip').html("请输入正确的邀请码");
+        	return false;
+        	}else{
+            
+            $.ajax({
+                type:'post',
+                url:'checkshare.html',
+                dataType:'json',
+                async:true,
+                data:{share_id:cur_share_id},
+                success:function(data){
+                    if(data == 1){
+                        $('#share_id_tip').removeClass('error_input');
+                        $('#share_id_tip').addClass('ok_input');
+                        $('#share_id_tip').html("");
+                        $('#tuxing_verifi').removeAttr('disabled');
+                        return true;
+                    }else{
+                        $('#share_id_tip').addClass('error_input');
+                        $('#share_id_tip').html("不正确的邀请码！");
+                        $('#tuxing_verifi').attr('disabled','disabled');
+                        return false;
+                    }
+                }
+            });
+            
+        }
+    });
+    
+    var verifyimg = $(".verifyimg").attr("src");
+    $(".reloadverify").click(function(){
+        if( verifyimg.indexOf('?')>0){
+            $(".verifyimg").attr("src", verifyimg+'&random='+Math.random());
+        }else{
+            $(".verifyimg").attr("src", verifyimg.replace(/\?.*$/,'')+'?'+Math.random());
+        }
+    }); 
+});
+
+function showAgreement(){
+	layer.open({
+        title:"赚乐扒用户协议",
+        type: 2,
+        skin: 'layui-layer-rim', //加上边框
+        area: ['650px', '540px'], //宽高
+        maxmin: false,
+        offset:'auto',
+        content: 'agreement.html',
+    });
+
+}
+function quit(){
+    location.href="__APP__/login/login.html";
+}
+
+//图形验证码
+$('#tuxing_verifi').bind('input propertychange',function(){
+        var verify = $('#tuxing_verifi').val();
+        if(verify == '' || verify == null){
+            $('#verifyimg_tip').html("请输入正确的图形码！");
+            return false;
+        }else{
+            $.ajax({
+                type:'post',
+                url:'check_code',
+                dataType:'json',
+                async:true,
+                data:{verify_code:verify},
+                success:function(data){
+                    if(data == 0){
+                        $('#verifyimg_tip').removeClass('error_input');
+                        $('#verifyimg_tip').addClass('ok_input');
+                        $('#verifyimg_tip').html("");
+                        $('#mobile_verifi').removeAttr('disabled');
+                        $('#validateNewMobile').addClass('code_hover');
+                    }else{
+                        $('#verifyimg_tip').addClass('error_input');
+                        $('#verifyimg_tip').html("输入正确的图形码！");
+                        $('#mobile_verifi').attr('disabled','disabled');
+                    }
+                }
+            });
+        }
+    });
+function isEqualimgCode(){
+    var verify = $('#tuxing_verifi').val();
+    if(verify == '' || verify == null){
+        $('#verifyimg_tip').html("请输入正确的图形码！");
+        return false;
+    }else{
+        $.ajax({
+            type:'post',
+            url:'check_code',
+            dataType:'json',
+            async:true,
+            data:{verify_code:verify},
+            success:function(data){
+            
+                if(data == 0){
+                    $('#verifyimg_tip').css({
+                        'width':'16px',
+                        'height':'20px',
+                        'background-position-x':'0px',
+                        'background-position-y':'-30px'
+                });
+                    $('#verifyimg_tip').html("");
+                    $('#mobile_verifi').removeAttr('disabled');
+                     $('#validateNewMobile').addClass('code_hover');
+                }else{
+                    $('#verifyimg_tip').html("输入正确的图形码！");
+                }
+            }
+        });
+    }
+}
+function checkForm(){
+    if(!$('#checkbox').is(':checked')){
+        layer.alert('请确认您已阅读并同意赚乐扒的服务协议', {icon: 11,offset:'280px'});
+        return false;
+    }
+    if($('#mobile').val() == '' || $('#mobile').val() == null ){
+        $('#mobile_tip').addClass('error_input');
+        $('#mobile_tip').html('请输入手机号码！');
+        return false;
+    }
+    if($('#tuxing_verifi').val() == '' || $('#tuxing_verifi').val() == null ){
+        $('#verifyimg_tip').addClass('error_input');
+        $('#verifyimg_tip').html('请输入正确的图形码！');
+        return false;
+    }
+    if($('#mobile_verifi').val() == '' || $('#mobile_verifi').val() == null ){
+        $('#phone_tip').addClass('error_input');
+        $('#phone_tip').html('请输入手机验证码！');
+        return false;
+    }
+	if($('#password').val() == '' || $('#password').val() == null ){
+        $('#password_tip').addClass('error_input');
+        $('#password_tip').html('请输入8-23位字母或数字！');
+        return false;
+    }
+    if($('#repassword').val() == '' || $('#repassword').val() == null ){
+        $('#repassword_tip').addClass('error_input');
+        $('#repassword_tip').html('请再次输入密码！');
+        return false;
+    }
+
+	if(!check_password()){
+		return false;
+	}
+    return true;
+}
+//验证密码格式
+function check_pwd(){
+    var password = $("#password").val();
+    if(password.length < 8 || password.length > 23){
+        $('#password_tip').removeClass('ok_input');
+        $('#password_tip').addClass('error_input');
+        $('#password_tip').html("请输入正确格式的密码");
+        return false;
+    }else{
+        $('#password_tip').removeClass('error_input');
+        $('#password_tip').addClass('ok_input');
+        $('#password_tip').html("");
+    }
+
+}
+//对比密码
+function check_password(){
+	var password = $("#password").val();
+	var repassword = $("#repassword").val();
+	if(repassword != password){
+        $('#repassword_tip').removeClass('ok_input');
+        $('#repassword_tip').addClass('error_input');
+		$('#repassword_tip').html("两次输入的密码不一样");
+		return false;
+	}else{
+        $('#repassword_tip').removeClass('error_input');
+        $('#repassword_tip').addClass('ok_input');
+        $('#repassword_tip').html("");
+        return true;
+    }
+}
+//验证码倒计时
+var countdown=60; 
+function settime() { 
+    if (countdown == 0) { 
+        countdown = 60; 
+
+        $('#validateNewMobile').removeAttr("disabled"); 
+        $('#validateNewMobile').attr('onclick','sendCode()');
+        $('#validateNewMobile').addClass('code_hover');
+        $('#validateNewMobile').html('获取验证码');
+        return;
+    } else { 
+        $('#validateNewMobile').attr('disabled', true); 
+        $('#validateNewMobile').removeAttr('onclick');
+        $('#validateNewMobile').removeClass('code_hover');
+        // obj.value="重新发送(" + countdown + ")"; 
+        countdown--; 
+        $('#validateNewMobile').html("验证码("+countdown+")");
+    } 
+    setTimeout(function() { 
+        settime() },1000);
+}
+//发送验证码
+function sendCode(){
+    settime();
+	var mobile = $('#mobile').val();
+	$.ajax({
+        type:'post',
+        url:'sendcode',
+        dataType:'json',
+        async:true,
+        data:{mobile:mobile},
+        success:function(data){
+            //var result=eval(data);
+            if(data == 1){
+                layer.msg('已发送',{icon: 1,time: 1500});
+                // settime()
+                return true;
+            }else{
+                layer.msg(data,{icon: 2,time: 2000});
+                return false;
+            }
+        }
+    });
+}
+	</script>
+
+</html>

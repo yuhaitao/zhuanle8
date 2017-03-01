@@ -1,0 +1,424 @@
+<script type="text/javascript" src="__ROOT__/ueditor/ueditor.config.js"></script>
+<script type="text/javascript" src="__ROOT__/ueditor/ueditor.all.js"></script>
+<script type="text/javascript" src="__PUBLIC__/static/jquery.form.js"></script>
+<style type="text/css">
+input:required{
+    background-color: #dff1fd;
+}
+select:required{
+    background-color: #dff1fd;
+}
+</style>
+<div class="fanbox_proView">
+    <h3>查看</h3>
+    <form id="product_add_form" name="product_add_form" action="{:U('Admin/Product/save_new_product')}" method="post">
+        <input type='hidden' value="{$product_type}" name="product_type">
+        <table width="100%" cellpadding="0" cellspacing="0" class="view_table table">
+            <tr>
+                <td colspan=3 class="fb">平台相关：</td>
+            </tr>
+            <tr>
+                <td width="30%" align="left">平台简称：
+                    <select id="plat_shortname" name="plat_shortname" required>
+                        <option disabled selected></option>
+                        <foreach name="platlist" item="vo">
+                            <option value="{$vo.plat_id}">{$vo.plat_shortname}</option>
+                        </foreach>
+                    </select>
+                </td>
+                <td colspan=2>
+                    跳转链接：
+                    <input type="text" id="jump_link"  name="jump_link" onblur="check_jump_link()" required/>
+                </td>
+            </tr>
+            <tr>
+                <td colspan=3 class="fb">标的基本信息：</td>
+            </tr>
+            <tr>
+                <td width="30%" align="left">标的名称：
+                    <input type="text" class="input2" id="target_name" name="target_name" onblur="check_target_name()" required/>
+                </td>
+                <td colspan=>
+                    标的年化：
+                    <input type="text" class="input2" id="annual_income_rate" name="annual_income_rate" required/>&nbsp;%
+                </td>
+                <td align="left">投标期限：
+                    <input type="text" style="width:80px" id="investMonth" name="investMonth" required/>&nbsp;月&nbsp;
+                    <input type="text" style="width:80px" id="investDay" name="investDay" required/>&nbsp;天
+                </td>
+            </tr>
+            <tr>
+                <td width="30%" align="left">起投金额：
+                    <input type="text" class="input2" id="start_invest_amount" name="start_invest_amount" onKeyUp="this.value=this.value.replace(/[^\.\d]/g,'');this.value=this.value.replace('.','');" required/>
+                </td>
+                <td>
+                    限投金额：
+                    <input type="text" class="input2" id="end_invest_amount" name="end_invest_amount" onKeyUp="this.value=this.value.replace(/[^\.\d]/g,'');this.value=this.value.replace('.','');" required/>
+                </td>
+                <td>
+                    标的总额：
+                    <input type="text" class="input2" id="product_sum" name="product_sum" required/>&nbsp;万元
+                </td>
+            </tr>
+            <tr>
+                <td colspan=3 class="fb">标的优惠信息：</td>
+            </tr>
+            <if condition="$product_type eq 3">
+                <tr style="display:none">
+                    <td>
+                        赚乐扒加息：
+                        <input type="text" class="input2" id="cq_rate" name="cq_rate" required/>%
+                    </td>
+                    <td colspan=2>
+                        综合年化：
+                        <input type="text" class="input2" id="unit_rate" name="unit_rate" readonly/>&nbsp;%（标的年化+赚乐扒加息）
+                    </td>
+
+                </tr>
+                <tr style="display:none">
+                    <td>
+                        赚乐扒红包：
+                        <input type="text" class="input2" id="cq_red" name="cq_red" />&nbsp;元
+                    </td>
+                    <td colspan=2>
+                        红包介绍：
+                        <input type="text" class="input2" id="red_info" name="red_info"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan=3>
+                        赚乐扒返现：
+                        <input type="text" class="input2" id="cq_rebate_rate" name="cq_rebate_rate" required/>&nbsp;%
+                        &emsp; 返现时间:     满标即返（后台数据核对后，将返利金额打到用户账户）
+                    </td>
+                </tr>
+            <else/>
+                <tr >
+                    <td>
+                        赚乐扒加息：
+                        <input type="text" class="input2" id="cq_rate" name="cq_rate" required/>&nbsp;%
+                    </td>
+                    <td colspan=2>
+                        综合年化：
+                        <input type="text" class="input2" id="unit_rate" name="unit_rate" readonly/>&nbsp;%（标的年化+赚乐扒加息）
+                    </td>
+
+                </tr>
+                <tr>
+                    <td>
+                        赚乐扒红包：
+                        <input type="text" class="input2" id="cq_red" name="cq_red" />&nbsp;元
+                    </td>
+                    <td colspan=2>
+                        红包介绍：
+                        <input type="text" class="input2" id="red_info" name="red_info"/>
+                    </td>
+                </tr>
+                <tr style="display:none">
+                    <td colspan=3>
+                        赚乐扒返现：
+                        <input type="text" class="input2" id="cq_rebate_rate" name="cq_rebate_rate"/>%
+                        &emsp; 返现时间:     满标即返（后台数据核对后，将返利金额打到用户账户）
+                    </td>
+                </tr>
+            </if>
+            
+            <tr>
+                <td colspan=3 class="fb">上下线时间：</td>
+            </tr>
+            <tr>
+                <td colspan=3>
+                    上下线时间：<input type="text" class="input2" id="online_time" name="online_time"/>
+                    到：<input type="text" class="input2" id="down_time" name="down_time"/>
+                </td>
+            </tr>
+            <tr>
+                <td colspan=3 class="fb">其余选择方式：</td>
+            </tr>
+            <tr>
+                <td>
+                    解冻方式：
+                    <select name="thawing_method" id="thawing_method" required>
+                        <option disabled selected> </option>
+                        <option value=1>满标</option>
+                        <option value=2 >非满标</option>
+                    </select>
+                </td>
+                <td>
+                    流标返利：
+                    <select name="flow_rebate" id="flow_rebate" required>
+                        <option disabled selected> </option>
+                        <option value=1>是</option>
+                        <option value=2 >否</option>
+                    </select>
+                </td>
+                <td>
+                    复投方式：
+                    <select name="re_cast" id="re_cast" required>
+                        <option disabled selected> </option>
+                        <option value=1>是</option>
+                        <option value=2 >否</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td colspan=3 class="fb">投资保障方式：</td>
+            </tr>
+            <tr>
+                <td colspan=3>
+                    投资保障：
+                    <select name="bid_security_type" id="bid_security_type" required>
+                        <option disabled selected> </option>
+                        <option value=1>本息保障</option>
+                        <option value=2 >本金保障</option>
+                        <option value=3 >其他</option>
+                    </select>
+                    <span id="bid_security" style="display:none">&emsp; 其他：<input type="text" name="bid_security_other" id="bid_security_other"></span>
+                </td>
+            </tr>
+            <tr>
+                <td colspan=3 class="fb">计息方式：</td>
+            </tr>
+            <tr>
+                <td colspan=3>
+                    计息方式：
+                    <select name="interest_type" id="interest_type" required>
+                        <option disabled selected> </option>
+                        <option value=1>满标计息</option>
+                        <option value=2 >当日计息</option>
+                        <option value=3>其他</option>
+                        <option value=4 >次日计息</option>
+                        <option value=5>满标次日计息</option>
+                    </select>
+                    <span id="interest_id" style="display:none">&emsp; 其他：<input type="text" name="interest_other" id="interest_other"></span>
+                </td>
+            </tr>
+            <tr>
+                <td colspan=3 class="fb">还款方式：</td>
+            </tr>
+            <tr>
+                <td colspan=3>
+                    还款方式：
+                    <select name="rebate_type" id="rebate_type" required>
+                        <option disabled selected> </option>
+                        <option value=1>等额本息</option>
+                        <option value=2 >每月付息，到期还本</option>
+                        <option value=3>到期还本付息</option>
+                        <option value=4 >其他</option>
+                    </select>
+                    <span id="rebate_id" style="display:none">&emsp; 其他：<input type="text" name="rebate_other" id="rebate_other"></span>
+                </td>
+            </tr>
+        </table>
+        <div style="text-align: right; margin-top: 6px;">
+            <input type="submit" value="保存" class="btn">
+            <input type="reset" value="重置" class="btn">
+            <input type="button" onclick="javascript:$.fancybox.close();" value="取消" class="btn">
+        </div>
+    </form>
+</div>
+<script type="text/javascript">
+$(function(){
+    $('#product_add_form').ajaxForm({
+        beforeSubmit: check_data,
+        success: function(msg){
+            // var reg = /<pre.+?>(.+)<\/pre>/g;    
+            // var result = msg.match(reg);    
+            // msg = RegExp.$1;
+            if(msg == "1"){
+                layer.alert('添加成功',function(){
+                    rightContent.window.reload_product_full_show();
+                    $.fancybox.close();
+                    layer.closeAll();
+                });
+            }else{
+                layer.alert('添加失败');
+            }
+        }
+    }); 
+    $('#investDay').bind('input propertychange',function(){
+        var val1 = $('#investDay').val();
+        if (val1) {
+            $('#investMonth').attr("disabled","true");
+        }else{
+            $('#investMonth').removeAttr("disabled");
+        }
+    });
+    $('#investMonth').bind('input propertychange',function(){
+        var val2 = $('#investMonth').val();
+        if (val2) {
+            $('#investDay').attr("disabled","true");
+        }else{
+            $('#investDay').removeAttr("disabled");
+        }
+    });
+    $('#annual_income_rate,#cq_rate').bind('input propertychange',function(){
+        var num1 = $('#annual_income_rate').val();
+        var num2 = $('#cq_rate').val();
+        var num3 = Number(num1)+Number(num2);
+        $("#unit_rate").val(num3);
+    });
+    $('#cq_rebate_rate').bind('input propertychange',function(){
+        var num0 = $('#cq_rebate_rate').val();
+        $("#cq_rate").val(num0);
+        var num1 = $('#annual_income_rate').val();
+        var num2 = $('#cq_rate').val();
+        var num3 = Number(num1)+Number(num2);
+        $("#unit_rate").val(num3);
+    });
+    $('#bid_security_type').change(function(){
+        var value = $('#bid_security_type').val();
+        if(value==3){
+            $('#bid_security').show();
+        }else{
+            $('#bid_security').hide();
+        }
+    });
+    $('#interest_type').change(function(){
+        var value = $('#interest_type').val();
+        if(value==3){
+            $('#interest_id').show();
+        }else{
+            $('#interest_id').hide();
+        }
+    });
+    $('#rebate_type').change(function(){
+        var value = $('#rebate_type').val();
+        if(value==4){
+            $('#rebate_id').show();
+        }else{
+            $('#rebate_id').hide();
+        }
+    });
+});
+function check_data(){
+    var plat_shortname=$("#plat_shortname").val();
+    if (plat_shortname == "") {
+        top.layer.msg("请选择 平台简称",{icon: 2,time: 1000});
+        return false;
+    }
+    
+    var target_name=$("#target_name").val();
+    if (target_name == "") {
+        top.layer.msg("请输入标的名称",{icon: 2,time: 1000});
+        return false;
+    }
+    var annual_income_rate=$("#annual_income_rate").val();
+    if (annual_income_rate == "") {
+        top.layer.msg("请输入标的年化",{icon: 2,time: 1000});
+        return false;
+    }
+    var investDay=$("#investDay").val();
+    var investMonth=$("#investMonth").val();
+    if (investMonth==""&&investDay=="") {
+        top.layer.msg("请输入投资期限",{icon: 2,time: 1000});
+        return false;
+    }
+    
+    var start_invest_amount=parseInt($("#start_invest_amount").val());
+    if (start_invest_amount == "") {
+        top.layer.msg("请输入起投金额",{icon: 2,time: 1000});
+        return false;
+    }
+    var end_invest_amount=parseInt($("#end_invest_amount").val());
+    if (end_invest_amount == "") {
+        top.layer.msg("请输入限投金额",{icon: 2,time: 1000});
+        return false;
+    }
+    var product_sum=$("#product_sum").val();
+    if (product_sum == "") {
+        top.layer.msg("请输入标的总额",{icon: 2,time: 1000});
+        return false;
+    }
+    if (start_invest_amount > end_invest_amount) {
+        top.layer.msg("起投金额不可大于限投金额",{icon: 2,time: 1000});
+        return false;
+    }
+    var product_sum = product_sum*10000;
+    if (end_invest_amount > product_sum) {
+        top.layer.msg("限投金额不可大于标的总额",{icon: 2,time: 1000});
+        return false;
+    }
+    var cq_rate=$("#cq_rate").val();
+    if (cq_rate == "") {
+        top.layer.msg("请输入赚乐扒加息",{icon: 2,time: 1000});
+        return false;
+    }
+    var thawing_method=$("#thawing_method").val();
+    if (thawing_method == "") {
+        top.layer.msg("请选择解冻方式",{icon: 2,time: 1000});
+        return false;
+    }
+    var flow_rebate=$("#flow_rebate").val();
+    if (flow_rebate == "") {
+        top.layer.msg("请选择流标返利",{icon: 2,time: 1000});
+        return false;
+    }
+    var re_cast=$("#re_cast").val();
+    if (re_cast == "") {
+        top.layer.msg("请选择复投方式",{icon: 2,time: 1000});
+        return false;
+    }
+    var bid_security_type=$("#bid_security_type").val();
+    if (bid_security_type == "") {
+        top.layer.msg("请选择投资保障",{icon: 2,time: 1000});
+        return false;
+    }
+    var interest_type=$("#interest_type").val();
+    if (interest_type == "") {
+        top.layer.msg("请选择计息方式",{icon: 2,time: 1000});
+        return false;
+    }
+    var rebate_type=$("#rebate_type").val();
+    if (rebate_type == "") {
+        top.layer.msg("请选择还款方式",{icon: 2,time: 1000});
+        return false;
+    }
+    return check_jump_link();
+}
+</script>
+<script type="text/javascript">
+laydate({
+    istime:true,
+    format: 'YYYY-MM-DD',
+    elem: '#online_time'
+});
+laydate({
+    istime:true,
+    format: 'YYYY-MM-DD',
+    elem: '#down_time'
+});
+
+function check_jump_link(){
+    var str = $('#jump_link').val();
+    str0 = str.match(/http:\/\/.+/);
+    str1 = str.match(/https:\/\/.+/);
+    if (str0 == null && str1 == null){ 
+        top.layer.msg('你输入的URL无效',{icon: 2,time: 1000});
+        return false; 
+    }else{
+        return true; 
+    } 
+}
+
+function check_target_name(){
+    var target_name=$("#target_name").val();
+    if(target_name.length > 0){
+        $.ajax({
+            type:'post',
+            url:App+'/Admin/Product/have_target_name',
+            dataType:'json',
+            async:true,
+            data:{target_name:target_name},
+            success:function(data){
+                if(data==1){
+                    $("#target_name").val("").focus();
+                    top.layer.msg('该标名已存在',{icon: 2,time: 1000});
+                }
+            }
+        });
+    }else{
+        return false;
+    }
+}
+</script>

@@ -1,0 +1,212 @@
+<include file="Public/head"/>
+<!-- 头部 -->
+<include file="Public/header"/>
+<!-- /头部 -->
+
+<content>
+    <div class="reg_banner">
+        <div class="reg_ban_cen">
+            <div class="form2">
+            <form id="speedRegForm">
+                <table style="padding:10px 28px; float: left; text-align: left;">
+                    <tbody>
+                    <input type="hidden" id="share_num" name="share_num" value="{$sharId}" />
+                    <input type="hidden" id="invitationCode" name="invitationCode" value="{$share_code}" >
+                    <tr>
+                        <td height="30px" class="text_thseven">快速注册</td>
+                        <td height="30px" width="148px" class="text_one">已注册，立即<a href="__APP__/login/login.html" class="text_thirty" style="color:#F60">登录</a></td>
+                    </tr>
+                    <tr>
+                        <td height="50px" colspan="2">
+                            <i class="icon phone"></i>
+                            <input class="in_1 form-control" type="text" id="mobile" name="mobile" placeholder="请输入手机号码" onblur="isEqualMobile();">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td height="15px" class="text_seventeen" id="mobile_false" colspan="2" style="display: none;">
+                            请输入正确的手机号
+                        </td>
+                    </tr>
+                    <tr>
+                        <td height="50px" colspan="2">
+                            <i class="icon lock"></i>
+                            <input class="in_1 form-control" type="password" id="password" name="password" placeholder="请输入密码" onblur="isEqualPasswords(this.value);">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td height="15px" class="text_seventeen" id="password_a_s" colspan="2" style="display: none;">
+                            请输入8-23位字母或数字
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input class="in_2" type="text" id="imgCode" name="imgCode" placeholder="请输入图形码" onblur="isEqualimgCode(this.value);">
+                        </td>
+                        <td>
+                            
+                            <span>
+                            <img src="__APP__/login/verify.html" id="kaptchaImage" width="133px" height="41px" style="padding-top:5px;padding-left: 15px;">
+                            </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td height="15px" class="text_seventeen" id="imgCode_false" colspan="2" style="display: none;">
+                            请输入正确的图形码
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" height="35px;">
+                            <span class="s_2 text_one">
+                                <lable><input name="checkbox" type="checkbox" id="checkboxID" onblur="checked">&nbsp;&nbsp;我已经阅读并同意</lable>
+                                <a href="javascript:void(0);" onclick="regxieyi();" class="a14" src="">《赚乐扒服务协议》</a>
+                            </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td height="50px" colspan="2">
+                            <a href="javaScript:void(0);" onclick="userRegister();" class="a20">立即注册</a>
+                        </td>
+                    </tr>
+                </tbody></table>
+                </form>
+            </div>
+        </div>
+    </div>
+</content>
+
+<!-- /底部 -->
+<include file = "Public/footer" />
+
+<script type="text/javascript">
+var verifyimg = $("#kaptchaImage").attr("src");
+$("#kaptchaImage").click(function(){
+    if( verifyimg.indexOf('?')>0){
+        $("#kaptchaImage").attr("src", verifyimg+'&random='+Math.random());
+    }else{
+        $("#kaptchaImage").attr("src", verifyimg.replace(/\?.*$/,'')+'?'+Math.random());
+    }
+}); 
+document.onkeydown=function() { 
+    if (event.keyCode==13){ 
+        userRegister();
+    }
+ }
+
+//验证手机号是否正确
+function isEqualMobile(){
+    var mobile=$("#mobile").val();
+    //先判断手机号是否为空
+    if(mobile==""){
+        $("#mobile_false").text("请输入手机号码！");
+        $("#mobile_false").show();
+        return false;
+    }else{
+        //再判断手机号格式是否正确
+        var phone = /^1[34578]\d{9}$/;
+        if(!phone.test($("#mobile").val())){
+            $("#mobile_false").text("请输入正确格式的手机号码！");
+            $("#mobile_false").show();
+            return false;
+        }else{
+            //判断该手机号是否已存在
+            $.ajax({
+                type:'post',
+                url:'login/checkmobile.html',
+                dataType:'json',
+                async:true,
+                data:{cur_phone:mobile},
+                success:function(msg){
+                    if(msg == 0){
+                        $("#mobile_false").text("该手机号已经存在！");
+                        $("#mobile_false").show();
+                        return false;
+                    }else{
+                        return true;
+                    }
+                }
+            })
+        }
+    }
+}
+//验证密码是否正确
+function isEqualPasswords(password){
+    var pa =/^[A-Za-z0-9]{8,23}$/;
+    if(!pa.test(password)){
+        $("#password_a_s").show();
+    }else{
+        $("#password_a_s").hide();
+    }
+}
+ 
+//验证图形码是否正确
+function isEqualimgCode(imgCode){ 
+
+    $.getJSON("__APP__/login/check_code.html?verify_code="+imgCode,function(code){
+            if(imgCode==""){
+                $("#imgCode_false").text("请输入图形码！");
+                $("#imgCode_false").show();
+                return false;
+            }else{
+                 if(code!="1"){
+                    $("#imgCode_false").text("请输入正确的图形码！");
+                    $("#imgCode_false").show();
+                    return false;
+                 }else{
+                    $("#imgCode_false").hide();
+                 }
+            }
+    }); 
+}
+
+function regxieyi(){
+    layer.open({
+        title:"赚乐扒站用户协议",
+        type: 2,
+        skin: 'layui-layer-rim', //加上边框
+        area: ['650px', '540px'], //宽高
+        maxmin: false,
+        offset:'auto',
+        content: '__APP__/login/agreement.html',
+    });
+} 
+function userRegister(){
+    var mobile=$("#mobile").val();
+    //先判断手机号是否为空
+    if(mobile==""){
+        $("#mobile_false").text("请输入手机号码！");
+        $("#mobile_false").show();
+        return false;
+    }else{
+        //再判断手机号格式是否正确
+        var phone = /^1[34578]\d{9}$/;
+        if(!phone.test($("#mobile").val())){
+            $("#mobile_false").text("请输入正确格式的手机号码！");
+            $("#mobile_false").show();
+            return false;
+        }
+    }
+    var checkbox = document.getElementById('checkboxID');
+
+    if(!checkbox.checked){
+        layer.alert("请确认您已阅读并同意赚乐扒的服务协议");
+        return false;
+    }
+    $.ajax({
+        type : "post",
+        url : '__APP__/userSpeedReg.html',
+        data : $("#speedRegForm").serialize(),
+        datetype:"json",
+        success : function(data) {
+            //处理 1、0
+              if(data=="1"){ 
+                 location.href = '__APP__/login/regSuc.html';
+                 return;
+              }else{
+                layer.alert(data);
+                return;
+              }
+        }
+    });
+}
+
+</script>

@@ -1,0 +1,274 @@
+<include file="Public/head"/>
+<!-- 头部 -->
+<include file="Public/header"/>
+<!-- /头部 -->
+<script type="text/javascript">
+	$(function(){
+		//账户信息
+		$("#nickNameli").hide();
+		$("#userpasswordli").hide();
+		$("#tradePasli").hide();
+		$("#userAddressli").hide();
+		$("#editImageDiv").hide();
+
+
+	});
+	//显示隐藏DIV
+	function accoutHideDiv(id){
+		if(!(id=="nickNameli")){
+			$("#nickNameli").fadeOut();
+		}
+		if(!(id=="userpasswordli")){
+			$("#userpasswordli").fadeOut();
+		}
+		if(!(id=="userEmailli")){
+			$("#userEmailli").fadeOut();
+		}
+		if(!(id=="userRenzhengli")){
+			$("#userRenzhengli").fadeOut();
+		}
+		if(!(id=="tradePasli")){
+			$("#tradePasli").fadeOut();
+		}
+		if(!(id=="userAddressli")){
+			$("#userAddressli").fadeOut();
+		}
+	  	$("#"+id).fadeToggle();
+	}
+	//隐藏DIV
+	function accoutShowDiv(id){
+	   $("#"+id).fadeOut();
+	}
+</script>
+<!---------------赚乐扒内容页面位置开始------------------>
+<div class="jflnr_wz">
+    <div class="jflnr_wz_tb"><img src="__PUBLIC__/images/newimages/wztb.png" width="45" height="45"> </div>
+    <div class="jflnr_wz_nr">位置：<a href="__ROOT__/">首页</a> > 提现申请 </div>
+</div>
+<!---------------赚乐扒内容页面位置结束------------------>
+
+<!---------------赚乐扒个人中心账户总阅开始------------------>
+<div class="jflgrzx_zhzy">
+    <div class="jflgrzx_zhzy_left">
+        <include file="Public/person_left"/>
+    </div>
+    <div class="jflgrzx_zhzy_right">
+       <div class="right_main">
+				<div class="right_top ">
+					<ul class="right_top_ul">
+						<li class="right_top_li2"><a class="text_twenty" href="javascript:void(0);" onclick="selectAccountInfoType(1,this);">提现申请</a></li>
+						<li class="right_top_li"><a class="text_nineteen" href="javascript:void(0);" onclick="selectAccountInfoType(2,this);">提现银行卡</a></li>
+					</ul>
+				</div>
+  <div id="accountDiv" class="sxxx_01">
+					<div class="bott_div clearfix">
+						<table class="bott_div_table sqtxyw_01">
+							<tbody><tr>
+								<td class="td_1 text_one" width="130" valign="top">选择提现银行</td>
+								<td class="td_2" width="700" id="bankId">
+								<ul class="" id="bank_card_id">
+								
+								<volist name="bank" id="vo" key="k">
+									<li id="li{$k-1}" class="td_li3 td_li_bg2"><a href="javaScript:void(0);" onclick="ChangeStyle({$vo.bank_id},{$k-1});"><div class="bank-lo2"><img class="li_img3" src="__PUBLIC__/{$vo.redundancy3}"></div><div class=""><div class=""><div class="bank-num-num">{$vo.bank_number}</div></div></div></a></li>
+								</volist>
+
+
+								<li class="td_li3 td_li_bg2"><a href="javaScript:void(0);" onclick="openAddBank();"><div class="bank-lo2"><img class="li_img3" src="__PUBLIC__/images/home/icon/self_11bang.png"></div><div class=""><div class=""><div class="bank-num-bang">绑定银行卡</div></div></div></a>
+								</li>
+								</ul></td>
+							</tr>
+							<tr>
+								<td class="td_1 text_one" width="130">可用余额</td>
+								<td class="td_3"><span class="td_3_span" id="spanId">{$personal.balance}</span>&nbsp;元</td>
+							</tr>
+							<tr>
+								<td class="td_1 text_one" width="130">提现金额</td>
+								<td class="td_3"><span class="tzpt_02"><input class="td_3_in" name="drawMoney" id="drawMoney_id" onKeyUp="this.value=this.value.replace(/[^\.\d]/g,'');this.value=this.value.replace('.','');"></span> <span class="sqtxyw_01_ys01">（元）</span></td>
+							</tr>
+							<tr>
+								<td class="td_1 text_one" width="130">交易密码</td>
+								<td class="td_3"><span class="tzpt_02"><input type="password" name="tradePassword" id="tradePassword_id" class="td_3_in"></span>&nbsp;&nbsp; 
+                                <span class="sqtxyw_01_ys01"><a class="td_6" target="_blank" href="/user/gotoTradePWD.html" style="color:#333">忘记密码</a></span></td>
+							</tr>
+							<tr style="padding-top:20px;">
+								<td width="130"></td>
+								<td class="td_3 td_padding1 tzpt_07"><a class="td_3_a" href="javascript:void(0);" onclick="saveCash();">提现</a></td>
+							</tr>
+							<tr>
+								<td colspan="4" valign="top" class="td_4 td_5 td_padding2 ">
+								  <div class="bdmx_04">
+								    <p>温馨提示：</p>
+								    <span class="warn_span">
+                                      1、当您在推荐的网站投资成功后，再行添加申报。<br>                                                                        
+								      2、申报规则：请您确保您填写的都是真实信息，方便我公司为您核实 ，信息有误，会导致申报失败。<br>                                
+					                </span>
+                                 </div></td>
+							  </tr>
+						</tbody></table>
+</div>
+				</div>
+				<div id="editImageDiv" style="display: none;">
+					<div class="right_main_bot clearfix">
+						<ul>
+							<volist name="bank" id="vk">
+							<li id="li13">
+								<div class="bank">
+									<div class="bank_logo ">
+										<img src="__PUBLIC__/{$vk.redundancy4}">
+									</div>
+									<div class="bank_name text_tnine">{$vk.dicsmall_name}</div>
+									<a class="bank_del text_teig" href="javaScript:void(0);" onclick="deleteBank({$vk.bank_id});">x</a>
+								</div>
+								<div class="bank_haoma text_tnine">{$vk.bank_number}</div>
+							</li>
+							</volist>
+						</ul>
+					</div>
+				</div>
+			</div>
+    </div>
+    <div class="line"></div>
+</div>
+<!---------------赚乐扒个人中心账户总阅结束------------------>
+
+	<script type="text/javascript">
+	$(function(){
+		changeClss();
+	});
+	function changeClss(){
+		var jspname = 'wdApply';
+		if(jspname!=null&&jspname!=''){
+			$("#"+jspname).attr("class","text_twenty");
+		}
+	}
+	function changeDivContext(obj,name,url){
+		openwin_self(url);
+	}
+	//DIV 切换
+	function selectAccountInfoType(type,obj){
+    $(".right_top_ul li").attr('class', 'right_top_li');
+	    $(".right_top_ul li a").attr('class', 'text_nineteen');
+		if(type==1){
+			$("#accountDiv").show();
+			$("#editImageDiv").hide();
+		}else if(type=2){
+		 	$("#accountDiv").hide();
+			$("#editImageDiv").show();
+		}
+		obj.parentNode.className="right_top_li2";
+		obj.className="text_twenty";
+	}
+	
+
+	var cardCode="";
+	//选中银行卡状态
+	function ChangeStyle(dicsmallNo, t) {
+		 var lilist=$("#bank_card_id").find("li");
+		 for(var i=0;i<lilist.length;i++){
+			var divList= $(lilist[i]).find("div");
+			 if(t==i){
+				 $(lilist[i]).attr("class","td_li4 td_li_bg2");
+				for(var j=0;j<divList.length;j++){
+					if(j==0){
+						$(divList[j]).attr("class","bank-lo");
+					}
+					if(j==1){
+						$(divList[j]).attr("class","bank-num");
+					}
+					if(j==2){
+						$(divList[j]).attr("class","bank-num-det");
+					}
+				}
+			 }else if(i!=lilist.length){
+				 $(lilist[i]).attr("class","td_li3 td_li_bg2");
+				 for(var j=0;j<divList.length;j++){
+						if(j==0){
+							$(divList[j]).attr("class","bank-lo2");
+						}
+						if(j==1){
+							$(divList[j]).attr("class","");
+						}
+						if(j==2){
+							$(divList[j]).attr("class","");
+						}
+					}
+			 }
+		 }
+		cardCode = dicsmallNo;
+	}
+	//删除银行卡	
+	function deleteBank(bankId){
+		layer.open({
+			title:"删除银行卡",
+		    type: 2,
+		    area: ['560px', '332px'],
+		    fix: false, //不固定
+			maxmin: false,
+			offset:'auto',
+			scrollbar: false,
+		    content: ['deleteBank.html?bankId='+bankId,'no']
+		});
+	}
+
+	//添加银行卡页面
+	function openAddBank(){
+		var identity={$personal.identity};
+		var tradePwd={$personal.trade_password};
+		if (identity==1 && tradePwd==1) {
+			layer.open({
+			  type: 2,
+			  title: '添加银行卡',
+			  shadeClose: true,
+			  shade: 0.8,
+			  area: ['730px', '600px'],
+			  content: 'addBank.html' //iframe的url
+			}); 
+		}else{
+			layer.open({
+				type:1,
+				title: '安全认证',
+				skin: 'layui-layer-rim', //加上边框
+				area: ['580px', '340px'], //宽高
+				content: '<div class="imdtbank"><div class="imdtbankmain"> 身份未验证，无法进行绑卡操作		<div class="imdtbankmain2">	为了保证账户安全，绑卡前需要先完成以下安全认证：</div><div class="imdtbankmainbtn">	<div class="renzhegn">实名认证</div><div class="shezhi">设置交易密码</div></div></div><div class="imdtbank-bot"><a href="accountInfo.html" class="imdtbank-bota">立即认证</a></div></div>'
+			});
+		}
+	}
+	//
+	function saveCash () {
+		if (!cardCode) {
+			top.layer.alert("请选中银行卡");
+			return false;
+		}
+		var balance=parseFloat($("#spanId").text().replace(/,/g,''));
+		var applyMoney = $("#drawMoney_id").val();
+		if(applyMoney < 50){
+			top.layer.alert("低于50的提现暂不受理");
+			return false;
+		}
+		if (balance < applyMoney) {
+			top.layer.alert("提现金额高于可用余额");
+			return false;
+		}
+		var trade_password=$("#tradePassword_id").val();
+		if (trade_password.length < 5) {
+			top.layer.alert("请输入正确的交易密码");
+			return false;
+		}
+		$.ajax({
+	  	type:'post',
+	  	url:App+'/userinfo/saveCash',
+	  	dataType:'json',
+	  	async:true,
+	  	data:{trade_password:trade_password,draw_cash:applyMoney,bank_id:cardCode},
+	  	success:function(data){
+	  		if (data==1) {
+	  			top.layer.msg('发送成功',{icon: 1,time: 2000});
+	  		}else{
+	  			top.layer.msg(data,{icon: 2,time: 2000});
+	  		}
+	  	}
+	});
+	}
+	</script>
+<!-- /底部 -->
+<include file = "Public/footer" />

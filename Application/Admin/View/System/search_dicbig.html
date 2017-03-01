@@ -1,0 +1,34 @@
+<div class="fanbox_add">
+	<h3>查询</h3>
+	<form id="role_search" action="" method="post">
+	<table width="100%" cellpadding="0" cellspacing="0" class="search_table">
+		<tr>
+			<td>&nbsp;&nbsp;大类编号：</td>
+			<td><input type="text" id='dicbig_id'></td>
+		</tr>
+		<tr>
+			<td>&nbsp;&nbsp;大类名称：</td>
+			<td><input type="text" id='dicbig_name'></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td>
+				<input type="button" class="btn" onclick="query_bigdic()" value="查询">
+				<input type="reset" class="btn" value="清除">
+				<input type="button" class="btn" onclick="javascript:$.fancybox.close();" value="关闭">
+			</td>
+		</tr>
+	</table>
+	</form>
+</div>
+<script type="text/javascript">
+function query_bigdic(){
+	var dicbig_id=$("#dicbig_id").val();
+	var dicbig_name=$("#dicbig_name").val();
+	$("#dicbig_show").jqGrid('setGridParam',{ 
+            url:"{:U('System/dicBigList')}", 
+            postData:{'dicbig_id':dicbig_id,'dicbig_name':dicbig_name}, //发送数据 
+            page:1 
+        }).trigger("reloadGrid"); //重新载入 
+}
+</script>

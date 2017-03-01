@@ -1,0 +1,26 @@
+
+<include file="Public/head" />
+<table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>日期</th>
+          <th>注册人数</th>
+          <th>投资人数</th>
+          <th>投资总额</th>
+        </tr>
+      </thead>
+      <tbody>
+       <volist name="list" id="vo">
+			<tr>
+				<td>{$vo['add_time']}</td>
+				<td>{$vo['reg_count']}</td>
+				<td>{$vo['buy_user_count']}</td>
+				<td>{$vo['buy_money_count']}</td>
+			</tr>
+		</volist>
+		<div>
+			{$page}
+		</div>
+      </tbody>
+    </table>
+

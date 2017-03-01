@@ -1,0 +1,79 @@
+<?php
+namespace Admin\Controller;
+use Think\Controller;
+class LoginController extends Controller {
+    public function index(){
+
+    }
+    public function login($USER_NAME = '', $PASSWORD = '', $verify = ''){
+
+    	if(IS_POST){ //登录验证
+
+				/* 检测验证码 */
+				if(!check_verify($verify)){
+					$this->error('验证码输入错误！');
+				}
+				/* 登录验证*/
+				$login = D('login');
+				$arr=array(
+				  'user_name' => $USER_NAME,
+				  'password' => $PASSWORD
+				);			
+				if(!$data = $login->create()){
+				// 防止输出中文乱码
+         		header("Content-type: text/html; charset=utf-8");
+      			$this->error($login->getError());
+				}
+				$pwd =  trim($PASSWORD);
+				$pwd=strtoupper(md5($pwd));
+				//组合查询条件
+				$where = array();
+				$where['BACK_USER_MOBILE'] = $USER_NAME;
+				$where['IS_DEL'] = 0;
+				$result = $login->where($where)->field('BACK_USER_ID,BACK_USER_NAME,BACK_USER_PASSWORD,BACK_USER_TYPE')->find();
+				
+				if($result && (strtoupper($result['back_user_password'])==$pwd)){
+					//登录成功
+					session('back_user_id',$result["back_user_id"]);
+					session('back_user_name',$result["back_user_name"]);
+					session('back_user_type',$result['back_user_type']);
+					if ($result['back_user_type']!=0) {
+						$opt['a.USER_ID']=$result['back_user_id'];
+						$opt['a.IS_DEL']=0;
+						$allR=M("lc_role_user a")->join("lc_role_right b on a.ROLE_ID=b.ROLE_ID")->where($opt)->field("RIGHT_ID")->select();
+						if ($allR) {
+							$rolelist="";
+							foreach ($allR as $key => $value) {
+								$rolelist.=$value['right_id'].",";
+							}
+							$rolelist=substr($rolelist, 0,-1);
+							F("roleArr",$rolelist);
+						}else{
+							$this->error('登录失败，未分配角色！');
+						}
+					}
+					$this->success("登录成功！", U('Index/index'));
+				}else{
+					$this->error('登录失败，用户名/密码错误！');
+				}
+				
+			}else{
+				$this->show();
+			}
+    	
+    }
+    /*退出登录*/
+    public function logout(){
+    	session("back_user_id",null);
+		session("back_user_name",null);
+		redirect(U('Index/index'),0);
+    }
+    
+    /* 验证码，用于登录和注册 */
+		public function verify(){
+			$verify = new \Think\Verify();
+			$verify->length   = 4;
+			$verify->fontSize = 80;
+			$verify->entry(1);
+		}
+}

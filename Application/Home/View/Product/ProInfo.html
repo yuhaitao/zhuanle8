@@ -1,0 +1,193 @@
+<include file="Public/head" />
+<include file="Public/header" />
+<div class="jflnr_wz">
+    <div class="jflnr_wz_tb"><img src="__PUBLIC__/images/newimages/wztb.png" width="45" height="45"> </div>
+    <div class="jflnr_wz_nr">位置：<a href="__ROOT__/">首页</a> > <if condition="$result.product_type eq 1">
+				<a href="__APP__/day.html">稳健型产品</a>
+			<elseif condition="$result.product_type eq 2" />
+				<a href="__APP__/super.html">精选产品</a>
+			<elseif condition="$result.product_type eq 3" />
+				<a href="__APP__/high.html">高收益产品</a>
+			</if> 
+				> {$result.target_name}
+            </div>
+</div>
+<!---------------赚乐扒内容页面位置结束------------------>
+
+<div class="jflnews_banner">{$list_ad}</div>
+<!---------------赚乐扒投资三级页面内容开始------------------>
+<div class="jfltzzzym">
+    <div class="jfltzzzym_top">
+        <div class="jfltzzzym_top_left">
+            <div class="jfltzzzym_top_left_top">{$result.target_name}</div>
+            <div class="jfltzzzym_top_left_top01">
+                <div class="nzhlys01 xtys01">
+                    <p class="p2 nzhlys02">年化收益</p>
+                    <p class="p12 nzhlys03">{$result.annual_income_rate}%</p>
+                </div>
+                <div class="nzhlys01 xtys01">
+                    <p class="p2 nzhlys02">平台加息</p>
+                    <p class="p12 nzhlys03">{$result.cq_rate}%</p>
+                </div>
+                <div class="nzhlys01 xtys01">
+                    <p class="p2 nzhlys02">综合年化</p>
+                    <p class="p12 nzhlys03">{$result.unit_rate}%</p>
+                </div>
+                <div class="nzhlys01">
+                    <p class="p2 nzhlys02">投标期限</p>
+                    <p class="p12 nzhlys03">{$time}</p>
+                </div>
+            </div>
+            <div class="jfltzzzym_top_left_top02">
+                <div class="nzhlys04">保障方式：{$guarantee}</div>
+                <div class="nzhlys04">计息方式：{$interest}</div>
+                <div class="nzhlys04">投标限额：{$result.end_invest_amount|intval}元</div>
+                <div class="nzhlys04">还款方式：{$repayment}	</div>
+                <div class="nzhlys04">标的总额：{$result.product_sum|intval}万元</div>
+                <div class="nzhlys04">起投金额：{$result.start_invest_amount|intval}元</div>
+            </div>
+            <div class="jfltzzzym_top_left_top03">
+                               <if condition="$click eq 1">
+                                <div class="nzhlys05">
+								<div class="td_right_div"><a onclick="gotoThirdPurchase({$user},'{$result.plat_shortname}');" href="javascript:void(0);">立即投资</a>
+								</div>
+                                <elseif condition="$click eq 2" />
+                                 <div class="nzhlys05" style="background:#999">
+								<div class="td_right_div"><a href="javascript:void(0);">已完成首投</a>
+                                </div>
+								<else />
+                                 <div class="nzhlys05" style="background:#999">
+								<div class="td_right_div"><a href="javascript:void(0);">已结束</a>
+                                </div>
+							   </if>
+                               
+                         </div>
+                <div class="nzhlys06">重要提示：网贷有风险,投资需谨慎</div>
+            </div>
+            <div class="jfltzzzym_top_left_top04">
+                <p>请认真仔细查看注意事项： 重要提示：网贷有风险,投资需谨慎</p>
+                <p>1、为了确保您的投资有返利，首次注册理财平台时，请保持手机号码、身份信息和赚乐扒一致（注册信息错误，不可获得返利）。</p>
+                <p>2、跳转后投资人必须核查标的信息是否正确，投错标的或超出标的限额部分不计算返利。</p>
+            </div>
+        </div>
+        <div class="jfltzzzym_top_right">
+            <div class="nzhlys07">{$result.target_name}
+				<input type="hidden" name="redInfo" id="redInfo_id" value=""></div>
+            <div class="nzhlys08"><img src="__ROOT__{$result.plat_logo}" width="100%"> </div>
+            <div class="nzhlys09">
+                <p>平台名称：{$result.plat_shortname}</p>
+                <p>平台网址：<span id="showAll" title="{$result.platform_site}" onmouseover="showAll(this.title)">{$result.platform_site}</span></p>
+                <p>注册资金：{$result.register_money}万元</p>
+                <p>上线时间：{$result.online_time}</p>
+                <p>所在地区： {$address}</p>
+            </div>
+        </div>
+    </div>
+    <div class="jfltzzzym_bottom plat_info">
+        <div class="jfltzzzym_bottom_top ">
+        <div class="hd"><ul>
+            <li>平台信息</li>
+            <li>返利说明</li>
+            <li>投资攻略</li>
+            </ul></div>
+        </div>
+        <div class="jfltzzzym_bottom_bottom">
+           <div class="bd">
+            <ul>
+              <li>
+                 <div class="nzhlys10">
+                <div class="nzhlys10_top">基本信息</div>
+                <div class="nzhlys10_bottom">
+                    <div class="nzhlys10_bottom_01">公司名称： {$result.company_name}</div>
+                    <div class="nzhlys10_bottom_01">法人代表：{$result.cor_represent}</div>
+                    <div class="nzhlys10_bottom_01">风险储备金：{$result.risk_money}</div>
+                    <div class="nzhlys10_bottom_01">充值费用：{$result.recharge_cost}</div>
+                    <div class="nzhlys10_bottom_01">提现费用：{$result.cash_cost} </div>
+                    <div class="nzhlys10_bottom_01">债权转让：{$result.tranfer} </div>
+                    <div class="nzhlys10_bottom_01">资金托管：{$result.finance_deposit}</div>
+                    <div class="nzhlys10_bottom_02">公司地址：{$result.company_address}</div>
+                </div>
+            </div>
+            <div class="nzhlys11">
+                <div class="nzhlys10_top">平台介绍</div>
+                <div class="nzhlys11_bottom">
+                   {$plat_info}
+                </div>
+            </div>
+          
+              </li>
+           </ul>
+           
+           <ul>
+           <li>
+<table cellspadding="0" cellspacing="0">
+					<tbody><tr class="text_two">
+						<td colspan="4" style="line-height: 30px;">
+					1、为了确保您的投资有返利，首次注册理财平台时，请保持手机号码、身份信息和赚乐扒一致（注册信息错误不可获得返利）；
+						</td>
+					</tr>
+					<tr class="text_two">
+					<td colspan="4" style="line-height: 30px;">
+					2、用户通过赚乐扒注册理财平台时请勿填写邀请码，否则不可获得赚乐扒返利；
+						</td>
+					</tr>
+					<tr class="text_two">
+						<td colspan="4" style="line-height: 30px;">
+					3、用户在理财平台注册、认证、充值成功后，请再次从赚乐扒跳转投资；
+						</td>
+					</tr>
+					<tr class="text_two">
+						<td colspan="4" style="line-height: 30px;">
+					4、用户必须通过赚乐扒PC端跳转到理财平台PC端投资，通过理财平台APP端投资不可获得赚乐扒返利；
+						</td>
+					</tr>
+					<tr class="text_two">
+						<td colspan="4" style="line-height: 30px;">
+					5、跳转后投资人必须核查标的信息是否正确，投错标的或超出标的限额部分不计算返利；
+						</td>
+					</tr>
+					<tr class="text_two">
+						<td colspan="4" style="line-height: 30px;">
+					6、用户购买成功获得的返利待解冻后方可提现；
+						</td>
+					</tr>
+					<tr class="text_two">
+						<td colspan="4" style="line-height: 30px;">
+						7、解冻时间根据标的信息不同而解冻时间不同，实际解冻时间以【个人中心】→【投资记录】解冻时间为准。
+						</td>
+					</tr>				
+				</tbody></table>
+</li></ul>
+           <ul><li><p>{$invest_guide}</p></li></ul>
+           </div>
+        </div>
+        <script type="text/javascript">jQuery(".plat_info").slide({trigger:"click"}); </script>
+    </div>
+</div>
+<!---------------赚乐扒投资三级页面内容结束------------------>
+
+
+<script type="text/javascript">
+function showAll(str){
+	layer.tips(str,'#showAll',{
+		tips: [1, '#f27403']
+	});
+}
+function regOther () {
+	var regLink="{$regLink}";
+	window.open(regLink,"_blank");
+}
+function thiedPlatSpend () {
+	var investLink="{$result.jump_link}";
+	var product_id="{$product_id}";
+	window.open(investLink,"_blank");
+	$.ajax({
+		type:'get',
+ 		url:App+'/saveInvestRecord',
+	  	dataType:'json',
+	  	data:{product_id:product_id}
+	  	//async:true,
+	});
+}
+</script>
+<include file= "Public/footer" />

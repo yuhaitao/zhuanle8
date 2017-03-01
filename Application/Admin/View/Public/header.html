@@ -1,0 +1,64 @@
+<!-- 导航条 -->
+<div class="top_nav">
+   <div class="nav_left"><a id="jumpA" href="/"><img src="__PUBLIC__/images/logo.png" title="赚乐扒系统首页"></a></div>
+   <div class="nav_center">
+      <ul>
+        <volist name="header_list" id="vo">
+          <li><a href="javascript:selectBranch({$vo.right_id});"><img src="__PUBLIC__{$vo.icon_cls}" /><em>{$vo.right_name}</em></a></li>
+       </volist>
+      </ul>
+   </div>
+   <div class="nav_rig">
+      <ul>
+        <li><span><em class="glyphicon glyphicon-question-sign"></em></span><a href="#">帮助</a></li>
+        <li><a href="#">关于</a></li>
+        <li><a href="{:U('Admin/Login/logout')}" target="_parent">退出</a></li>
+      </ul>
+      <div class="user">
+        <span><i class="glyphicon glyphicon-user"></i>{$admin_name}</span>
+      </div>
+   </div>
+</div>
+<script type="text/javascript">
+ $(function(){
+     $('.nav_center> ul > li').eq(0).addClass('selected');
+     $('.nav_center> ul > li').on('click',function(){
+        $(this).addClass('selected').siblings().removeClass('selected');
+     });
+     $('.list-group> .list-group-item').eq(0).addClass('list-group-item_hover');
+     $('.list-group> .list-group-item').on('click',function(){
+        $(this).addClass('list-group-item_hover').siblings().removeClass('list-group-item_hover');
+     });
+ });
+ function selectBranch(mid){
+   $.ajax({
+      type:'post',
+      url:"{:U('Index/left_list')}",
+      data:{'mid':mid},
+      success:function(data){
+        var menu = eval(data);
+        var left_html="";
+        var iframe_url=""
+        for (var i=0;i < menu.length;i++ ) {
+          if(i==0){
+            left_html+="<div class=\"panel-top\" role=\"tab"+i+"\" id=\"collapseListGroupHeading"+i+"\"><a class=\"\" role=\"button\" data-toggle=\"collapse\" href=\"#collapseListGroup"+i+"\" aria-expanded=\"true\" aria-controls=\"collapseListGroup1\">"+menu[i]['right_name']+"<i class=\"icon-angle-left fz18 icon_r\"></i></a></div><div id=\"collapseListGroup"+i+"\" style=\"border-bottom: solid 1px #95b8e7;\" class=\"panel-collapse collapse in\" role=\"tabpane"+i+"\" aria-labelledby=\"collapseListGroupHeading"+i+"\" aria-expanded=\"true\"><ul class=\"list-group\">";
+          }else{
+            left_html+="<div class=\"panel-top\" role=\"tab"+i+"\" id=\"collapseListGroupHeading"+i+"\"><a class=\"\" role=\"button\" data-toggle=\"collapse\" href=\"#collapseListGroup"+i+"\" aria-expanded=\"true\" aria-controls=\"collapseListGroup1\">"+menu[i]['right_name']+"<i class=\"icon-angle-left fz18 icon_r\"></i></a></div><div id=\"collapseListGroup"+i+"\" style=\"border-bottom: solid 1px #95b8e7;\" class=\"panel-collapse collapse\" role=\"tabpane"+i+"\" aria-labelledby=\"collapseListGroupHeading"+i+"\" aria-expanded=\"true\"><ul class=\"list-group\">";
+          }
+          
+          var menu_0=menu[i]['sub_menu'];
+          for(var j=0;j < menu_0.length;j++){
+            if(i==0 && j==0){
+              iframe_url="__APP__"+menu_0[j]['right_url'];
+            }
+            left_html+="<li class=\"list-group-item\"><a href=\"__APP__"+menu_0[j]['right_url']+"\" target='rightContent'><cite></cite>"+menu_0[j]['right_name']+"</a></li>";
+          }
+          left_html+="</ul></div>";
+        }
+        $(".panel").html(left_html);
+        $("#rightContent").attr("src",iframe_url);
+      },
+      dataType:'json'
+    });
+ }
+</script>

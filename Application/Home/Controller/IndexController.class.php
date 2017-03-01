@@ -1,0 +1,491 @@
+<?php
+namespace Home\Controller;
+
+use Think\Controller;
+
+class IndexController extends BaseController
+{
+
+    public function index()
+    {
+        header('Content-Type:text/html;charset=UTF-8');
+        $this->lc_log();
+        $this->WebBanner();
+        $this->CaiqiNotice();
+        $this->PlatAnalysis();
+        $this->FlashSale();
+        $this->WangDaiList();
+        $this->SuperRebate();
+        $this->TianTianList();
+        $this->slideShow();
+        $this->FriendLinks();
+        $this->information();
+        $this->display();
+    }
+    // 添加 跳转记录
+    public function lc_log()
+    {
+        $ip = get_client_ip(); // IP地址获取
+        $user_info = session("user_info");
+        $user_id = $user_info['user_id']; // 获取用户id
+        if ($user_id) {
+            $data['USER_ID'] = $user_id;
+        }
+        $data['USER_IP'] = $ip;
+        $data['USER_LOG'] = "首页";
+        $data['LOG_DATE'] = date("Y-m-d H:i:s") . " " . substr(date("l"), 0, 3);
+        $data['LOG_MTHOD'] = "home";
+        $data['LOG_URL'] = "www.zhuanle8.com";
+        M('lc_log')->add($data);
+    }
+    
+    // 首页赚乐扒公告
+    public function CaiqiNotice()
+    {
+        $model = M('lc_announ');
+        $list = $model->field('ANNOUN_ID,ANNOUN_TITLE,ADD_TIME')
+            ->where('IS_DEL = 0')
+            ->order('ANNOUN_ID desc')
+            ->limit('3')
+            ->select();
+        $this->assign('notice_list', $list);
+    }
+    
+
+    
+    
+    // 首页赚乐扒平台统计数据
+    public function PlatAnalysis()
+    {
+        // 安全运营826天到20170216为止
+        $endtime=time();
+        $starttime=strtotime('2017-02-16');
+        
+        $timediff = $endtime - $starttime;
+        
+        $Dataresult = M('lc_analysis_data')->field("ID,TOTAL_USER_EARN,BASE_TOTAL_DAYS,TOTAL_INVEST,USER_COUNT")->select();
+        $days = intval( $timediff / 86400 )+$Dataresult[0]['base_total_days'];
+        
+        $this->assign('totalDays', $days);
+        
+        $model = M('lc_user');
+        // 注册用户数
+        $userCount = $model->where('USER_TYPE = 1')->count();
+        $this->assign('userCount', $userCount+$Dataresult[0]['user_count']);
+        
+        $m = M("cq_plat"); // 平台
+        $where = array();
+        
+        $list = $m->field("PLAT_ID,PLAT_SHORTNAME")
+            ->where($where)
+            ->select();
+        
+        // 总投资金额
+        $totalInvest = $Dataresult[0]['total_invest'];
+        
+        // 投资人数
+        $totalInvestUser = 0;
+        
+        // 投资人赚取钱数
+        $totalUserEarn = $Dataresult[0]['total_user_earn'];
+        
+        foreach ($list as $key => $value) {
+            $i = $key;
+            
+            // 平台id
+            $plat_id = $value['plat_id'];
+            
+            /* 操作产品表 */
+            $m_product = M("cq_product");
+            $condition = array(); // 查询条件添加
+            $condition["PLAT_SHORTNAME"] = $plat_id;
+            $product_arr = $m_product->field("PRODUCT_ID")
+                ->where($condition)
+                ->select();
+            $pro_arr = array();
+            foreach ($product_arr as $key => $value) {
+                array_push($pro_arr, $value['product_id']);
+            }
+            /* 产品表结束---查询产品购买表 */
+            $cond = array();
+            // 条件：所有购买这些产品的记录
+            $cond['PRODUCT_ID'] = array(
+                'in',
+                implode(',', $pro_arr)
+            );
+            $cond['HANDLE_STATUS'] = 1; // 已处理的
+            $m_p_buy = M("cq_product_buy");
+            $p_buy = $m_p_buy->field("USER_ID,BUY_MONEY,SERIAL_NO")
+                ->where($cond)
+                ->select();
+            $u_arr = $s_arr = array();
+            $buy_money = 0;
+            foreach ($p_buy as $key => $value) {
+                $u_id = $value['user_id'];
+                $buy_money += $value['buy_money'];
+                $s_no = $value['serial_no'];
+                if (! in_array($u_id, $u_arr)) { // 统计投资人数
+                    array_push($u_arr, $u_id);
+                }
+                array_push($s_arr, $s_no);
+            }
+            // 投资人数
+            $totalInvestUser = $totalInvestUser + count($u_arr);
+            
+            // 投资金额
+            $totalInvest = $totalInvest + $buy_money;
+            
+            /* 产品购买表结束-----查询返利 */
+            $m_finance = M("cq_user_finance_record");
+            $term = array();
+            $term['SERIAL_NO'] = array(
+                'in',
+                implode(',', $s_arr)
+            );
+            /* 统计返利金额 */
+            $f_money = $m_finance->where($term)->sum('CASH_MONEY');
+            $totalUserEarn = $totalUserEarn + $f_money;
+        }
+        $this->assign('totalUserEarn', $totalUserEarn);
+        $this->assign('totalInvestUser', $totalInvestUser);
+        $this->assign('totalInvest', round($totalInvest/10000));
+        
+    }
+    // 首页限时抢购
+    public function FlashSale()
+    {
+        $model = M('cq_product');
+        $where = array();
+        $where['IS_DEL'] = 0;
+        $where['PRODUCT_TYPE'] = 3;
+        $where['RELEASE_STATUS'] = 0;
+        
+        $result = $model->field('PRODUCT_ID,TARGET_NAME,ANNUAL_INCOME_RATE,CQ_RATE,UNIT_RATE,ONLINE_TIME,RE_CAST')
+            ->where($where)
+            ->order('ADD_TIME desc')
+            ->find();
+        if ($result['re_cast'] == 1) {
+            $result['re_cast'] = "<i><img src='" . __ROOT__ . "/Public/images/home/icon/futou.png' /></i>";
+        } else {
+            $result['re_cast'] = '';
+        }
+        // dump($result);exit;
+        $this->assign('superlist', $result);
+    }
+    // 首页幻灯片
+    public function WebBanner()
+    {
+        $model = M('lc_banner');
+        $bannerList = $model->field('BANNER_IMG,BANNER_JUMP')
+            ->where('IS_DEL = 0')
+            ->order('BANNER_ID desc')
+            ->limit(5)
+            ->select();
+        // dump($bannerList);exit;
+        $this->assign('bannerList', $bannerList);
+    }
+    
+    // 首页稳健型产品
+    public function WangDaiList()
+    {
+        $model = M('cq_product_homepage');
+        $where = array();
+        
+        $where['b.PRODUCT_TYPE'] = 1;
+        $where['b.RELEASE_STATUS'] = 0;
+        $where['a.IS_DEL'] = 0;
+        
+        $wdList = $model->table('cq_product_homepage a')
+            ->join('cq_product as b ON a.PRODUCT_ID = b.PRODUCT_ID')
+            ->join('cq_plat  as c ON b.PLAT_SHORTNAME = c.PLAT_ID')
+            ->field('b.PRODUCT_ID,b.TARGET_NAME,b.ANNUAL_INCOME_RATE,b.CQ_RATE,b.UNIT_RATE,b.START_INVEST_AMOUNT,b.INVEST_MONTH,b.INVEST_DAY,c.PLAT_LOGO,c.PLAT_TYPE,c.PLAT_LEVEL')
+            ->where($where)
+            ->order("b.ADD_TIME desc")
+            ->limit(4)
+            ->select();
+        $wdArr = M("cq_product b")->join("cq_plat c on b.PLAT_SHORTNAME = c.PLAT_ID")
+            ->field("b.PRODUCT_ID,b.TARGET_NAME,b.ANNUAL_INCOME_RATE,b.CQ_RATE,b.UNIT_RATE,b.START_INVEST_AMOUNT,b.INVEST_MONTH,b.INVEST_DAY,c.PLAT_LOGO,c.PLAT_TYPE,c.PLAT_LEVEL")
+            ->where("b.PRODUCT_TYPE = 1 and b.RELEASE_STATUS=0 and b.IS_DEL= 0")
+            ->order("b.ADD_TIME desc")
+            ->select();
+        $wdList = array_merge($wdList, $wdArr);
+        $newWD = array();
+        foreach ($wdList as $key => $value) {
+            $newWD[] = $value;
+            if ($key == 3) {
+                break;
+            }
+        }
+        $wdList = $newWD;
+        foreach ($wdList as $key => $value) {
+            $invest_time = '';
+            if (! $value['invest_month'] == '') {
+                $invest_time = '<span class="list1_text2_div3_left_s1">' . $value['invest_month'] . '</span>个月';
+            } elseif (! $value['invest_day'] == '') {
+                $invest_time = '<span class="list1_text2_div3_left_s1">' . $value['invest_day'] . '</span>天';
+            }
+            $wdList[$key]['invest_month'] = $invest_time;
+            
+            // 平台年化
+            if (! is_float($value['annual_income_rate'])) {
+                $wdList[$key]['annual_income_rate'] = number_format($value['annual_income_rate'], 1);
+            }
+            // 赚乐扒加息
+            if (! is_float($value['cq_rate'])) {
+                $wdList[$key]['cq_rate'] = number_format($value['cq_rate'], 1);
+            }
+            // 综合年化
+            if (! is_float($value['unit_rate'])) {
+                $wdList[$key]['unit_rate'] = number_format($value['unit_rate'], 1);
+            }
+        }
+        // dump($model->getLastSql());exit;
+        $this->assign('wdList', $wdList);
+    }
+    // 首页精选产品
+    public function TianTianList()
+    {
+        $model = M('cq_product_homepage');
+        $where = array();
+        
+        $where['b.PRODUCT_TYPE'] = 2;
+        $where['b.RELEASE_STATUS'] = 0;
+        $where['a.IS_DEL'] = 0;
+        
+        $ttList = $model->table('cq_product_homepage a')
+            ->join('cq_product as b ON a.PRODUCT_ID = b.PRODUCT_ID')
+            ->join('cq_plat  as c ON b.PLAT_SHORTNAME = c.PLAT_ID')
+            ->field('b.PRODUCT_ID,b.TARGET_NAME,b.ANNUAL_INCOME_RATE,b.CQ_RATE,b.UNIT_RATE,b.START_INVEST_AMOUNT,b.INVEST_MONTH,b.INVEST_DAY,c.PLAT_LOGO,c.PLAT_TYPE,c.PLAT_LEVEL')
+            ->where($where)
+            ->order("b.ADD_TIME desc")
+            ->select();
+        $wdArr = M("cq_product b")->join("cq_plat c on b.PLAT_SHORTNAME = c.PLAT_ID")
+            ->field("b.PRODUCT_ID,b.TARGET_NAME,b.ANNUAL_INCOME_RATE,b.CQ_RATE,b.UNIT_RATE,b.START_INVEST_AMOUNT,b.INVEST_MONTH,b.INVEST_DAY,c.PLAT_LOGO,c.PLAT_TYPE,c.PLAT_LEVEL")
+            ->where("b.PRODUCT_TYPE = 2 and b.RELEASE_STATUS=0 and b.IS_DEL= 0")
+            ->order("b.ADD_TIME desc")
+            ->select();
+        $ttList = array_merge($ttList, $wdArr);
+        $newWD = array();
+        foreach ($ttList as $key => $value) {
+            $newWD[] = $value;
+            if ($key == 3) {
+                break;
+            }
+        }
+        $ttList = $newWD;
+        foreach ($ttList as $key => $value) {
+            $invest_time = '';
+            if (! $value['invest_month'] == '') {
+                $invest_time = '<span class="list1_text2_div3_left_s1">' . $value['invest_month'] . '</span>个月';
+            } elseif (! $value['invest_day'] == '') {
+                $invest_time = '<span class="list1_text2_div3_left_s1">' . $value['invest_day'] . '</span>天';
+            }
+            $ttList[$key]['invest_month'] = $invest_time;
+            
+            // 平台年化
+            if (! is_float($value['annual_income_rate'])) {
+                $ttList[$key]['annual_income_rate'] = number_format($value['annual_income_rate'], 1);
+            }
+            // 赚乐扒加息
+            if (! is_float($value['cq_rate'])) {
+                $ttList[$key]['cq_rate'] = number_format($value['cq_rate'], 1);
+            }
+            // 综合年化
+            if (! is_float($value['unit_rate'])) {
+                $ttList[$key]['unit_rate'] = number_format($value['unit_rate'], 1);
+            }
+        }
+        // dump($model->getLastSql());exit;
+        $this->assign('ttList', $ttList);
+    }
+    // 首页高收益产品
+    public function SuperRebate()
+    {
+        $model = M('cq_product_homepage');
+        $where = array();
+        
+        $where['b.PRODUCT_TYPE'] = 3;
+        $where['b.RELEASE_STATUS'] = 0;
+        $where['a.IS_DEL'] = 0;
+        
+        $SuperList = $model->table('cq_product_homepage a')
+            ->join('cq_product as b ON a.PRODUCT_ID = b.PRODUCT_ID')
+            ->join('cq_plat  as c ON b.PLAT_SHORTNAME = c.PLAT_ID')
+            ->field('b.PRODUCT_ID,b.TARGET_NAME,b.ANNUAL_INCOME_RATE,b.CQ_RATE,b.UNIT_RATE,b.START_INVEST_AMOUNT,b.INVEST_MONTH,b.INVEST_DAY,c.PLAT_LOGO,c.PLAT_TYPE,c.PLAT_LEVEL')
+            ->where($where)
+            ->order("b.ADD_TIME desc")
+            ->limit(4)
+            ->select();
+        $wdArr = M("cq_product b")->join("cq_plat c on b.PLAT_SHORTNAME = c.PLAT_ID")
+            ->field("b.PRODUCT_ID,b.TARGET_NAME,b.ANNUAL_INCOME_RATE,b.CQ_RATE,b.UNIT_RATE,b.START_INVEST_AMOUNT,b.INVEST_MONTH,b.INVEST_DAY,c.PLAT_LOGO,c.PLAT_TYPE,c.PLAT_LEVEL")
+            ->where("b.PRODUCT_TYPE = 3 and b.RELEASE_STATUS=0 and b.IS_DEL= 0")
+            ->order("b.ADD_TIME desc")
+            ->select();
+        $SuperList = array_merge($SuperList, $wdArr);
+        $newWD = array();
+        foreach ($SuperList as $key => $value) {
+            $newWD[] = $value;
+            if ($key == 3) {
+                break;
+            }
+        }
+        $SuperList = $newWD;
+        
+        foreach ($SuperList as $key => $value) {
+            $invest_time = '';
+            if (! $value['invest_month'] == '') {
+                $invest_time = '<span class="list3_zhong_span3">' . $value['invest_month'] . '个月</span>';
+            } elseif (! $value['invest_day'] == '') {
+                $invest_time = '<span class="list3_zhong_span3">' . $value['invest_day'] . '天</span>';
+            }
+            $SuperList[$key]['invest_month'] = $invest_time;
+            
+            // 平台年化
+            if (! is_float($value['annual_income_rate'])) {
+                $SuperList[$key]['annual_income_rate'] = number_format($value['annual_income_rate'], 1);
+            }
+            // 赚乐扒加息
+            if (! is_float($value['cq_rate'])) {
+                $SuperList[$key]['cq_rate'] = number_format($value['cq_rate'], 1);
+            }
+            // 综合年化
+            if (! is_float($value['unit_rate'])) {
+                $SuperList[$key]['unit_rate'] = number_format($value['unit_rate'], 1);
+            }
+        }
+        // dump($SuperList);exit;
+        $this->assign('SuperList', $SuperList);
+    }
+    
+    // 理财专栏
+    public function slideShow()
+    {
+        $model = M('cq_slide');
+        $where = array();
+        $where['IS_DEL'] = 0;
+        $result = $model->field('SLIDE_ID,SLIDE_TITLE,SLIDE_DESCRIPTION,SLIDE_IMAGE')
+            ->where($where)
+            ->limit(7)
+            ->order('SLIDE_ID desc')
+            ->select();
+        $this->assign('slideShow', $result);
+    }
+    
+    // 合作伙伴-友情链接
+    public function FriendLinks()
+    {
+        $model = M('lc_friendly_link');
+        $where = array();
+        $where['IS_DEL'] = 0;
+        
+        $links = $model->field('FRIENDLY_LINK,FL_NAME,FL_PIC,FL_TYPE')
+            ->where($where)
+            ->select();
+        
+        foreach ($links as $key => $value) {
+            if ($value['fl_type'] == 1) {
+                $hezuo[] = array(
+                    'fl_pic' => $value['fl_pic'],
+                    'fl_name' => $value['fl_name']
+                );
+            } else {
+                $friends[] = array(
+                    'fl_name' => $value['fl_name'],
+                    'friendly_link' => $value['friendly_link']
+                );
+            }
+        }
+        $this->assign('hezuo', $hezuo);
+        $this->assign('friends', $friends);
+    }
+    // 理财资讯
+    public function information()
+    {
+        $model = M('cq_news');
+        // 要闻六条
+        $where = array();
+        $where['IS_DEL'] = 0;
+        $where['IS_HOME'] = 1;
+        $where['IS_HOT'] = 1;
+        $result = $model->field('NEWS_ID,NEWS_NAME,ADD_TIME')
+            ->where($where)
+            ->limit(6)
+            ->order('NEWS_ID desc')
+            ->select();
+        $this->assign('news_yaowen', $result);
+        
+        // 带图片头条
+        $parm = array();
+        $parm['IS_DEL'] = 0;
+        $parm['IS_HOME'] = 1;
+        $parm['IS_HEADLINE'] = 1;
+        $result2 = $model->field('NEWS_ID,NEWS_NAME,ADD_TIME,PICTURE_LINK,NEWS_DESCRIPTION')
+            ->where($parm)
+            ->limit(1)
+            ->order('NEWS_ID desc')
+            ->select();
+        $this->assign('news_toutiao', $result2);
+        
+        // 带简述置顶新闻
+        $parm = array();
+        $parm['IS_DEL'] = 0;
+        $parm['IS_HOME'] = 1;
+        $parm['IS_HOT'] = 1;
+        $result2 = $model->field('NEWS_ID,NEWS_NAME,ADD_TIME,NEWS_DESCRIPTION')
+            ->where($parm)
+            ->limit(1)
+            ->order('NEWS_ID desc')
+            ->select();
+        $this->assign('news_zhiding', $result2);
+    }
+    
+    // 统计昨天的注册人数、投资人数、投资金额
+    public function everyDayCount()
+    {
+        // 当前时间
+        $nowTime = date("Y-m-d H:i:s", time());
+        $today = date("Y-m-d", time());
+        // 昨天
+        $yesToday = date("Y-m-d", strtotime("-1 day"));
+        // 统计昨天注册人数
+        $where = array();
+        $where['IS_DEL'] = 0;
+        $where['ADD_TIME'] = array(
+            'between',
+            array(
+                $yesToday,
+                $today
+            )
+        );
+        $where['USER_TYPE'] = 1;
+        $reg_count = M('lc_user')->where($where)->count();
+        // 统计昨天的投资人数和投资金额
+        $param = array();
+        $param['IS_DEL'] = 0;
+        $param['UP_TIME'] = array(
+            'between',
+            array(
+                $yesToday,
+                $today
+            )
+        );
+        $param['BUY_MONEY'] = array(
+            'gt',
+            0
+        );
+        $result = M('cq_product_buy')->where($param)->sum("BUY_MONEY");
+        $people = M('cq_product_buy')->where($param)
+            ->group("USER_ID")
+            ->field("count(*)")
+            ->select();
+        $user_count = count($people);
+        $model = M('cq_count');
+        
+        $data['REG_COUNT'] = $reg_count * 1;
+        $data['BUY_USER_COUNT'] = $user_count * 1;
+        $data['BUY_MONEY_COUNT'] = $result * 1;
+        $data['ADD_TIME'] = $yesToday;
+        
+        $info = $model->add($data);
+    }
+}

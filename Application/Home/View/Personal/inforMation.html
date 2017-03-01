@@ -1,0 +1,258 @@
+<include file="Public/head"/>
+<!-- 头部 -->
+<include file="Public/header"/>
+<!-- /头部 -->
+<!---------------赚乐扒内容页面位置开始------------------>
+<div class="jflnr_wz">
+    <div class="jflnr_wz_tb"><img src="__PUBLIC__/images/newimages/wztb.png" width="45" height="45"> </div>
+    <div class="jflnr_wz_nr">位置：<a href="__ROOT__/">首页</a> > 消息中心 </div>
+</div>
+<!---------------赚乐扒内容页面位置结束------------------>
+
+<!---------------赚乐扒个人中心投资记录开始------------------>
+
+<!---------------赚乐扒个人中心投资记录开始------------------>
+<div class="jflgrzx_zhzy">
+    <div class="jflgrzx_zhzy_left">
+        <include file="Public/person_left"/>
+    </div>
+    <div class="jflgrzx_zhzy_right">
+       
+                <div class="right_top">
+					<ul class="right_top_ul">
+						<li class="right_top_li text_nineteen">消息中心</li>
+					</ul>
+				</div>
+                <div class="xuankuang_div">
+                    <div class="state_xialainfo">
+                        <span class="xiaoxi_state">消息状态</span>
+                        <select class="_state_top" id="examineStatus_id" onchange="getData(1)">
+                            <option value="-1" selected="selected">全部</option>
+                            <option value="1">已读</option>
+                            <option value="0">未读</option>
+                        </select>
+                    </div>
+                    <div class="readed">
+                        <a class="text_two" href="javascript:void(0);" onclick="updateLook();">标为已读</a>
+                    </div>
+                </div>
+                <div class="right_main_bot5">
+                    <div class="platform_list" id="cashid">
+                        <table id="ul_lists" cellspadding="0" cellspacing="0" class="table-hover" style="border-collapse:collapse " width="870px;">
+                        </table>
+                    </div>
+                    <div class="page" id="page"></div>
+                </div>
+                
+                   
+    </div>
+    <div class="line"></div>
+</div>
+<!---------------赚乐扒个人中心投资记录结束------------------>
+
+	<script type="text/javascript">
+	$(function(){
+		changeClss();
+	});
+	function changeClss(){
+		var jspname = 'inforMation';
+		if(jspname!=null&&jspname!=''){
+			$("#"+jspname).attr("class","text_twenty");
+		}
+	}
+	function changeDivContext(obj,name,url){
+		openwin_self(url);
+	}
+	</script>
+	<script type="text/javascript">
+            var page_cur = 1; //当前页
+            var total_num, page_size, page_total_num;//总记录数,每页条数,总页数
+            var toptr = "<tr class='platformtr3 text_one'><td width='10px' class='platformtd1 td_bor2'></td> <td class='platformtd1 td_bor2' width='130px'><input type='checkbox' id='all_id' value='全选' onclick='checkAll()'>&nbsp;&nbsp;消息类型</td><td class='platformtd1 td_bor2' width='400px'>内容</td><td class='platformtd1 td_bor2' width='150px'>发送时间</td><td class='platformtd1 td_bor2' width='90px'>操作</td><td width='10px' class='platformtd1 td_bor2'></td></tr>";
+
+            function getData(page) { //获取当前页数据
+                var st=$("#start").val();
+                var et=$("#end").val();
+                var ta=$("#examineStatus_id").val();
+                $.ajax({
+                    type: 'GET',
+                    url: 'information_list.html',
+                    data: {'page': page - 1,'start_time':st,'end_time':et,'status':ta},
+                    dataType: 'json',
+                    success: function(json) {
+    
+                        $("#ul_lists").empty();
+                        total_num = json.total_num;//总记录数
+                        page_size = json.page_size;//每页数量
+	                    page_cur = page;//当前页
+	                    page_total_num = json.page_total_num;//总页数
+                        $("#ul_lists").append(toptr);
+                        if (total_num > 0) {
+	                        var tr = "";
+	                        var list = json.list;
+	                        $.each(list, function(index, array) { //遍历返回json
+                            var  shotstr = getSubstr(array['mes_content'],0,40);
+                            var restr = array['mes_content'].replace(/\s+/g,'&nbsp');   //将空格替换成&nbsp;
+
+                            if(array['look_type'] ==1){
+                                tr += "<tr id='"+array['mes_id']+"' class='platformtr6 text_thsix'><td class='platformtd1 td_bor2'></td><td class='platformtd1 td_bor2'><label><input type='checkbox' name='mesId' value='"+array['mes_id']+"'>&nbsp;&nbsp;&nbsp;"+array['mes_type']+"</label></td><td class='platformtd1 td_bor2' style='cursor:pointer;text-align: left;padding-left: 20px;' onclick=mesContent('"+restr+"','"+array['mes_id']+"',"+array['look_type']+");>"+shotstr+"</td><td class='platformtd1 td_bor2'>"+array['mes_time']+"</td><td class='platformtd1 td_bor2'><a href='javascript:void(0);' onclick='deletes("+array['mes_id']+");' class='text_thfive'>删除</a></td><td class='platformtd1 td_bor2'></td></tr>";
+                            }else{
+                                tr += "<tr id='"+array['mes_id']+"' class='platformtr6 text_ththree'><td class='platformtd1 td_bor2'></td><td class='platformtd1 td_bor2'><label><input type='checkbox' name='mesId' value='"+array['mes_id']+"'>&nbsp;&nbsp;&nbsp;"+array['mes_type']+"</label></td><td class='platformtd1 td_bor2' style='cursor:pointer;text-align: left;padding-left: 20px;' onclick=mesContent('"+restr+"','"+array['mes_id']+"',"+array['look_type']+");>"+shotstr+"</td><td class='platformtd1 td_bor2'>"+array['mes_time']+"</td><td class='platformtd1 td_bor2'><a href='javascript:void(0);' onclick='deletes("+array['mes_id']+");' class='text_thfive'>删除</a></td><td class='platformtd1 td_bor2'></td></tr>";
+
+                            }
+	                           
+                            
+	                        });
+	                        $("#ul_lists").append(tr);
+                        }else{
+                        	$("#ul_lists").append("<tr><td class='platformtd1 td_bor2' colspan='8'>没有数据</td></tr>");
+                        }
+                        
+                    },
+                    complete: function() {
+                        getPageBar();//js生成分页，可用程序代替
+                    },
+                    error: function() {
+                        alert("数据异常,请检查是否json格式");
+                    }
+                });
+            }
+
+            function getPageBar() { //js生成分页
+                if (page_cur > page_total_num)
+                    page_cur = page_total_num;//当前页大于最大页数
+                if (page_cur < 1){
+                	page_cur = 1;//当前页小于1
+                }
+                page_str = "<span>共" + total_num + "条</span><span>" + page_cur + "/" + page_total_num + "</span>";
+                
+                //若是第一页
+                if (page_cur == 1) {
+                	page_str += "<span class='pageall'>首页</span><span class='pageall'>上一页</span>";
+                } else {
+                    page_str += "<span class='pageall'><a href='javascript:void(0)' data-page='1'>首页</a></span><span class='pageall'><a href='javascript:void(0)' data-page='" + (page_cur - 1) + "'>上一页</a></span>";
+                }
+                //若是最后页
+                if (page_cur >= page_total_num) {
+                    page_str += "<span class='pageall'>下一页</span><span class='pageall'>尾页</span>";
+                } else {
+                    page_str += "<span class='pageall'><a href='javascript:void(0)' data-page='" + (parseInt(page_cur) + 1) + "'>下一页</a></span><span class='pageall'><a href='javascript:void(0)' data-page='" + page_total_num + "'>尾页</a></span>";
+                }
+                $("#page").html(page_str);
+            }
+
+            $(function() {
+                getData(1);//默认第一页
+                $("#page").on('click','a',function() { 
+                    var page = $(this).attr("data-page");//获取当前页
+                    getData(page);
+                });
+            });
+            //提示弹出DIV
+           function mesContent(content,mesId,type) {
+            
+            if(content!=null&&content!=""){
+                layer.open({
+                    type: 1, //page层
+                    title:'消息',
+                    shade: 0.6, //遮罩透明度
+                    skin : 'layui-layer-demo', //样式类名
+                    closeBtn : 1, //不显示关闭按钮
+                    area : [ '540px', '160px' ], //宽高
+                    moveType: 1,//拖拽风格，0是默认，1是传统拖动
+                    shift: 5,//0-6的动画形式，-1不开启
+                    content :'<div class = "warn_info text_two" style="padding:0px 20px" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+content+'</div>'
+                });
+                if(type==0){
+                        var data={"mesId":mesId};
+                        $.ajax({
+                            type:'post',
+                            url:'changeState',
+                            dataType:'json',
+                            async:true,
+                            data:{changeId:data['mesId']},
+                            success:function(data){
+                                if(data == 1){
+                                    getData(1);
+                                }
+                            }
+                        });
+                    }
+                }
+            }
+    
+            //截取字符串
+            function getSubstr(string, start, length) {
+                if (string==""||string==null) {
+                    return string;
+                }
+              if(string.length > length){
+                  var str = string.substr(start,length);
+                  return str+'...';
+              }else{
+                  return string;
+              }
+            }
+           //全选
+           function checkAll() {
+                var checkObj = document.all("mesId");
+                for (var i = 0; i < checkObj.length; i++) {
+                    if ($("#all_id").prop("checked")) {
+                        checkObj[i].checked = true;
+                    } else {
+                        checkObj[i].checked = false;
+                    }
+                }
+            }
+            //标记为已读
+            function updateLook() {
+                var id="";
+                var checkObj = document.getElementsByName("mesId");
+                console.log(checkObj.length);
+                for(var i = 0;i<checkObj.length;i++){
+                    if(checkObj[i].checked == true){
+                        id+=$(checkObj[i]).val()+","; 
+                    }
+                }
+              
+                if(id=="")
+                {
+                    layer.alert('你没有选择任何内容！');
+                }else
+                {
+                    var data={"mesId":id};
+                    $.ajax({
+                            type:'post',
+                            url:'signState',
+                            dataType:'json',
+                            async:true,
+                            data:{changeId:data['mesId']},
+                            success:function(data){
+                                if(data == 1){
+                                    getData(1);
+                                }
+                            }
+                        });
+                }
+            }
+            //删除
+            function deletes(mesId)
+                {   
+                    
+                    var data={"mesId":mesId};
+                    $.ajax({
+                            type:'post',
+                            url:'deleteState',
+                            dataType:'json',
+                            async:true,
+                            data:{delId:data['mesId']},
+                            success:function(data){
+                                if(data == 1){
+                                    getData(1);
+                                }
+                            }
+                        });
+                } 
+
+        </script>
+<!-- /底部 -->
+<include file = "Public/footer" />

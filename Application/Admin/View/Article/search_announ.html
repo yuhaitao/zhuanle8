@@ -1,0 +1,30 @@
+<div class="fanbox_add">
+	<h3>查询</h3>
+	<form id="role_search" action="" method="post">
+	<table width="100%" cellpadding="0" cellspacing="0" class="search_table">
+		<tr>
+			<td>&nbsp;&nbsp;标题：</td>
+			<td><input type="text" id='announ_title' style="width: 250px;"></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td>
+				<input type="button" class="btn" onclick="query_announ()" value="查询">
+				<input type="reset" class="btn" value="清除">
+				<input type="button" class="btn" onclick="javascript:$.fancybox.close();" value="关闭">
+			</td>
+		</tr>
+	</table>
+	</form>
+</div>
+<script type="text/javascript">
+function query_announ(){
+
+	var announ_title=$("#announ_title").val();
+	$("#caiqiNotice").jqGrid('setGridParam',{ 
+            url:"{:U('Article/caiqiNoticeList')}", 
+            postData:{'serarch_announ':announ_title}, //发送数据 
+            page:1 
+        }).trigger("reloadGrid"); //重新载入 
+}
+</script>

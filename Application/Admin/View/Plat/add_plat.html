@@ -1,0 +1,298 @@
+<script type="text/javascript" src="__ROOT__/ueditor/ueditor.config.js"></script>
+<script type="text/javascript" src="__ROOT__/ueditor/ueditor.all.js"></script>
+<script type="text/javascript" src="__PUBLIC__/static/jquery.form.js"></script>
+<script type="text/javascript">
+$(function(){
+    $('#plat_add_form').ajaxForm({
+        beforeSubmit: check_data,
+        success: function(msg){
+            var reg = /<pre.+?>(.+)<\/pre>/g;    
+            var result = msg.match(reg);    
+            msg = RegExp.$1;
+            if(msg == "1"){
+                layer.alert('添加成功',function(){
+                    rightContent.window.reload_plat_show();
+                    $.fancybox.close();
+                    layer.closeAll();
+                });
+            }else{
+                layer.alert('添加失败');
+            }
+        }
+    }); 
+});
+function check_data(){
+    var region_province=$("#region_province").val();
+    if (region_province == "") {
+        top.layer.msg("请选择 省",{icon: 2,time: 1000});
+        return false;
+    }
+    var region_city=$("#region_city").val();
+    if (region_city == "") {
+        top.layer.msg("请选择 市",{icon: 2,time: 1000});
+        return false;
+    }
+    var check_account=$("#check_account").val();
+    if (check_account == "") {
+        top.layer.msg("请选择手工对账",{icon: 2,time: 1000});
+        return false;
+    }
+    var re_cast=$("#re_cast").val();
+    if (re_cast == "") {
+        top.layer.msg("请选择复投方式",{icon: 2,time: 1000});
+        return false;
+    }
+    var recharge_cost=$("#recharge_cost").val();
+    if (recharge_cost == "") {
+        top.layer.msg("请选择充值费用",{icon: 2,time: 1000});
+        return false;
+    }
+    var cash_cost=$("#cash_cost").val();
+    if (cash_cost == "") {
+        top.layer.msg("请选择提现费",{icon: 2,time: 1000});
+        return false;
+    }
+    var tranfer=$("#tranfer").val();
+    if (tranfer == "") {
+        top.layer.msg("请选择转让功能",{icon: 2,time: 1000});
+        return false;
+    }
+    var risk_money=$("#risk_money").val();
+    if (risk_money == "") {
+        top.layer.msg("请选择储备金",{icon: 2,time: 1000});
+        return false;
+    }
+
+}
+</script>
+<div class="fanbox_proView">
+    <h3>查看</h3>
+    <form id="plat_add_form" action="{:U('Admin/Plat/save_new_plat')}" method="post" enctype="multipart/form-data">
+        <table width="100%" cellpadding="0" cellspacing="0" class="view_table table">
+            <tr>
+                <td colspan=3 class="fb">一、基本信息：</td>
+            </tr>
+            <tr>
+                <td width="30%" align="left">平台简称：
+                    <input type="text" class="input2" id="plat_shortname" name="plat_shortname" onblur="check_shortname()" required="required"/>
+                </td>
+                <td>
+                    <span style="display:block;float: left;line-height: 30px;">平台LOGO：</span>
+                    <a href="javascript:;" class="file"><i class="upload_img glyphicon glyphicon-picture"></i>选择文件<input type="file" id="plat_logo"  name="plat_logo" required/></a>
+                </td>
+                <td>
+                    上线时间：
+                    <input id="online_time" name="online_time" type="text" required />
+                    <!--<span  class="add-on"><i class="icon-calendar"></i></span>-->
+                </td>
+            </tr>
+            <tr>
+                <td width="30%" align="left">注册资金：
+                    <input type="text" class="input2" id="register_money" name="register_money" required/>&nbsp;万元
+                </td>
+                <td colspan=2>
+                    所属公司：
+                    <input type="text" class="input2" id="company_name" name="company_name" required/>
+                </td>
+                
+            </tr>
+            <tr>
+                <td width="30%" align="left">法人代表：
+                    <input type="text" class="input2" id="cor_represent" name="cor_represent" required/>
+                </td>
+                <td colspan=2>
+                    公司地址：
+                    <input type="text" class="input2" id="company_address" name="company_address" />
+                </td>
+                
+            </tr>
+            <tr>
+                <td width="30%" align="left">所在地区：
+                    <select name="region_province" id="region_province" onchange="province_change()" required>
+                        <option disabled selected>---省---</option>
+                        <volist name="province" id="vo">
+                            <option value="{$vo.area_id}">{$vo.area_name}</option>
+                        </volist>
+                    </select>
+                </td>
+                <td colspan=2>
+                    <select name="region_city" id="region_city" required>
+                        <option disabled selected>---市---</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td width="30%" align="left" >平台网址：
+                    <input type="text" class="input2" id="platform_site" name="platform_site" required/>
+                </td>
+                <td>
+                    <span style="display:block;float: left;line-height: 30px;">平台类别(民营或其他自定义)：</span>
+                    <input type="text" class="input2" id="plat_type"  name="plat_type" value="{$list.plat_type}"/>
+                </td>
+                <td>
+                    平台级别(A+/B/..)：
+                    <input id="plat_level" name="plat_level" type="text" required value="{$list.plat_level}">
+                </td>
+            </tr>
+            <tr>
+                <td colspan=3 class="fb">二、平台对账：</td>
+            </tr>
+            <tr>
+                <td colspan=3>
+                    手工对账：
+                    <select name='check_account' id='check_account' style="width: 80px;" required>
+                            <option disabled selected> </option>
+                            <option value=1>有</option>
+                            <option value=2 >无</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td colspan=3 class="fb">三、复投方式：</td>
+            </tr>
+            <tr>
+                <td colspan=3>
+                    复投方式：
+                    <select name="re_cast" id="re_cast" style="width: 80px;" required>
+                        <option disabled selected> </option>
+                        <option value=1>是</option>
+                        <option value=2 >否</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td colspan=3 class="fb">四、费用信息：</td>
+            </tr>
+            <tr>
+                <td align="left">
+                    充值费用：
+                    <select name='recharge_cost' id='recharge_cost' style="width: 80px;" required>
+                        <option disabled selected></option>
+                        <option value=1>有</option>
+                        <option value=2 >无</option>
+                    </select>
+                </td>
+                <td colspan=2>
+                    提现费：
+                    <select name="cash_cost" id="cash_cost" style="width: 80px;" required>
+                        <option disabled selected> </option>
+                        <option value=1>有</option>
+                        <option value=2 >无</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td colspan=3 class="fb">五、债权转让：</td>
+            </tr>
+            <tr>
+                <td colspan=3>
+                    转让功能：
+                    <select name="tranfer" id="tranfer" style="width: 80px;"  required>
+                        <option disabled selected> </option>
+                        <option value=1>有</option>
+                        <option value=2 >无</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td colspan=3 class="fb">六、风险管理：</td>
+            </tr>
+            <tr>
+                <td align="left">
+                    储备金：
+                    <select name="risk_money" id="risk_money" style="width: 80px;" required>
+                        <option disabled selected> </option>
+                        <option value=1>有</option>
+                        <option value=2 >无</option>
+                    </select>
+                </td>
+                <td colspan=2>
+                    资金托管：
+                    <input type="text" class="input2" id="finance_deposit" name="finance_deposit" required/>
+                </td>
+            </tr>
+            <tr>
+                <td colspan=3 class="fb">七、标的优惠信息：</td>
+            </tr>
+            <tr>
+                <td colspan=3>
+                    首投奖励：
+                    <input type="text" class="input2" id="cq_red" name="cq_red" placeholder='可选填' />&nbsp;元
+                </td>
+            </tr>
+            <tr>
+                <td colspan=3 class="fb">八、投资攻略：</td>
+            </tr>
+            <tr>
+                <td colspan=3>
+                     <script id="invest_guide" name="invest_guide" type="text/plain">
+                        
+                    </script>
+                </td>
+            </tr>
+            <tr>
+                <td colspan=3 class="fb">九、公司介绍：</td>
+            </tr>
+            <tr>
+                <td colspan=3>
+                    <script id="plat_brief" name="plat_brief" type="text/plain">
+                        
+                    </script>
+                </td>
+            </tr>
+        </table>
+        <div style="text-align: right; margin-top: 6px;">
+            <input type="submit" value="提交" class="btn">
+            <input type="reset" value="重置" class="btn">
+            <input type="button" onclick="javascript:$.fancybox.close();" value="取消" class="btn">
+        </div>
+    </form>
+</div>
+
+<script type="text/javascript">
+var invest_guide = UE.getEditor('invest_guide');
+var plat_brief = UE.getEditor('plat_brief');
+laydate({
+    istime:true,
+    format: 'YYYY-MM-DD',
+    elem: '#online_time'
+});
+function province_change () {
+    var p_id=$("#region_province").val();
+    $.ajax({
+        type:'post',
+        url:App+'/Admin/Plat/itscity',
+        dataType:'json',
+        async:true,
+        data:{area_id:p_id},
+        success:function(data){
+            var city_arr=eval(data);
+            var html="";
+            for (var i = 0; i < city_arr.length; i++) {
+                html+="<option value="+city_arr[i]['area_id']+">"+city_arr[i]['area_name']+"</option>";
+            }
+            $("#region_city").html(html);
+        }
+    });
+}
+function check_shortname(){
+    var plat_shortname=$("#plat_shortname").val();
+    if(plat_shortname.length > 0){
+        $.ajax({
+            type:'post',
+            url:App+'/Admin/Plat/have_shortname',
+            dataType:'json',
+            async:true,
+            data:{plat_shortname:plat_shortname},
+            success:function(data){
+                if(data==1){
+                    $("#plat_shortname").val("");
+                    top.layer.msg('平台已存在',{icon: 2,time: 1000});
+                }
+            }
+        });
+    }else{
+        return false;
+    }
+}
+</script>

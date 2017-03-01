@@ -1,0 +1,355 @@
+<include file="Public/head"/>
+<!-- 头部 -->
+<include file="Public/header"/>
+<!-- /头部 -->
+<script type="text/javascript">
+	$(function(){
+		//账户信息
+		$("#nickNameli").hide();
+		$("#userpasswordli").hide();
+		$("#tradePasli").hide();
+		$("#userAddressli").hide();
+		$("#editImageDiv").hide();
+
+
+	});
+	//显示隐藏DIV
+	function accoutHideDiv(id){
+		if(!(id=="nickNameli")){
+			$("#nickNameli").fadeOut();
+		}
+		if(!(id=="userpasswordli")){
+			$("#userpasswordli").fadeOut();
+		}
+		if(!(id=="userEmailli")){
+			$("#userEmailli").fadeOut();
+		}
+		if(!(id=="userRenzhengli")){
+			$("#userRenzhengli").fadeOut();
+		}
+		if(!(id=="tradePasli")){
+			$("#tradePasli").fadeOut();
+		}
+		if(!(id=="userAddressli")){
+			$("#userAddressli").fadeOut();
+		}
+	  	$("#"+id).fadeToggle();
+	}
+	//隐藏DIV
+	function accoutShowDiv(id){
+	   $("#"+id).fadeOut();
+	}
+
+
+</script>
+<!---------------赚乐扒内容页面位置开始------------------>
+<div class="jflnr_wz">
+    <div class="jflnr_wz_tb"><img src="__PUBLIC__/images/newimages/wztb.png" width="45" height="45"> </div>
+    <div class="jflnr_wz_nr">位置：<a href="__ROOT__/">首页</a> > 投资申报 </div>
+</div>
+<!---------------赚乐扒内容页面位置结束------------------>
+
+
+<!---------------赚乐扒个人中心投资记录开始------------------>
+<div class="jflgrzx_zhzy">
+    <div class="jflgrzx_zhzy_left">
+        <include file="Public/person_left"/>
+    </div>
+    <div class="jflgrzx_zhzy_right">
+        <div class="right_top">
+					<ul class="right_top_ul">
+                        <li class="right_top_li2"><a class="text_twenty" href="javascript:void(0);" onclick="selectInvestType(1,this);">投资申报</a></li>
+						<li class="right_top_li"><a class="text_nineteen" href="javascript:void(0);" onclick="selectInvestType(2,this);">申报记录</a></li>
+                    </ul>
+		</div>
+                <div class="xuankuang_div">
+					<!--投资平台-->
+				<div id="investPlatDiv" class="right_main_bot5 clearfix">
+					<ul class="decorationul clearfix">
+						<li class="decorationuli decliw1">
+							<span class="namexing">投资平台</span><br>
+							<span class="namexing">平台用户名</span><br>
+							<span class="namexing">平台手机号</span><br>
+							<span class="namexing">投资标名称</span><br>
+							<span class="namexing">投资金额</span><br>
+							<span class="namexing">投标时间</span><br>
+							<span class="namexing">验证码</span>
+						</li>
+						<li class="decorationuli decliw2">
+							<form id="investRepairForm">
+								<select id="platId" name="platId" class="zhonglisel">
+									<option value="0">--请选择投资平台--</option>
+										<foreach name="plat_arr" item="vo">
+											<option value="{$vo.plat_id}">{$vo.plat_shortname}</option>
+										</foreach>
+								</select>
+								<br>
+								<input id="userName" name="userName" type="text" class="zhonglinp">
+								<input type="text" value="{$personal.mobile}" class="zhonglinp" disabled="disabled">
+								<input id="mobile" name="mobile" type="hidden" value="{$personal.mobile}">
+								<input id="targetName" name="targetName" type="text" class="zhonglinp" >
+								<input id="investAmount" name="investAmount" type="text" class="zhonglinp jine" >
+								<input class="laydate-icon zhonglinp" id="investTime" name="investTime" style="width:250px;padding: 0 15px;height:36px;line-height: 36px; border: 1px solid #ddd; " readonly="" > <!-- style = "width:90px; height:30px; line-height:30px; color: #666666; padding-left:10px;"  -->
+								<input id="code" name="code" type="text" class="zhonglinp2 " placeholder="输入验证码">
+							</form>
+							<div><a id="validateNewMobile" class="zhongliyan " href="javaScript:void(0);" onclick="getMobileCode();" style="color:#8E8E8E;">获取验证码</a></div><br>
+							<div><a href="javaScript:void(0);" onclick="addInvestRepair();" class="zhongsub">提交</a></div>
+						</li>
+						<li class="decorationuli decliw3">
+							<span id="platIdError" class="cuowuli" style="display: none;">投资平台不能为空</span><br>
+							<span id="userNameError" class="cuowuli" style="display: none;">平台用户名不能为空</span><br>
+							<span id="mobileError" class="cuowuli" style="display: none;">平台手机号不能为空</span><br>
+							<span id="targetNameError" class="cuowuli" style="display: none;">投资标名不能为空</span><br>
+							<span id="investAmountError" class="cuowuli" style="display: none;">投资金额不能为空</span><br>
+							<span id="investTimeError" class="cuowuli" style="display: none;">投标时间不能为空</span><br>
+							<span id="codeError" class="cuowuli" style="display: none;">验证码不能为空</span>
+						</li>
+                        <div class="clear"></div>
+					</ul>
+					<div class="decwenxin">
+						<p>温馨提示：1. 当您在推荐的网站投资成功后，再行添加申报。</p>
+						<p class="decwenxinp2">2. 申报规则：请您确保您填写的都是真实信息，方便我公司为您核实 ，信息有误，会导致申报失败。</p>
+					</div>
+				</div>
+				<!--end-->
+				<!--标的明细-->
+				<div id="platFormDiv" style="display: none;">
+					<div class="xuankuang_div">
+						<div class="state_xiala3">
+							<span class="xiaoxi_state">平台名称</span>
+							<select id="platIdStatusSelect" class="_state_top" onchange="getData(1);">
+								<option value="0">全部</option>
+								<foreach name="plat_arr" item="vo">
+									<option value="{$vo.plat_id}">{$vo.plat_shortname}</option>
+								</foreach>
+							</select>
+						</div>
+						<div class="state_xiala">
+							<span class="xiaoxi_state">申请状态</span>
+							<select id="checkStatusSelect" class="_state_top" onchange="getData(1);">
+								<option value="0">全部</option>
+								<option value="1">已提交</option>
+								<option value="2">处理中</option>
+								<option value="3">审核通过</option>
+								<option value="4">审核失败</option>
+							</select>
+						</div>
+					</div>
+						<div class="right_main_bot5">
+							<div class="bott_div">
+		                        <div class="platform_list" id="cashid">
+		                        <table id="ul_lists" cellspadding="0" cellspacing="0" class="table-hover" style="border-collapse:collapse " width="870px;">
+		                        </table>
+		                        </div>
+		                        <div class="page" id="page"></div>
+		                    </div>
+						</div>
+					</div>
+				<!--end-->
+				</div>
+				
+    </div>
+    <div class="line"></div>
+</div>
+<!---------------赚乐扒个人中心投资记录结束------------------>
+
+
+	<script type="text/javascript">
+            laydate({
+                istime:true,
+                format: 'YYYY-MM-DD hh:mm:ss',
+                elem: '#investTime'
+            });
+	</script>
+	<script type="text/javascript">
+	$(function(){
+		changeClss();
+	});
+	function changeClss(){
+		var jspname = 'investRepair';
+		if(jspname!=null&&jspname!=''){
+			$("#"+jspname).attr("class","text_twenty");
+		}
+	}
+	function changeDivContext(obj,name,url){
+		openwin_self(url);
+	}
+	//DIV 切换
+	function selectAccountInfoType(type,obj){
+    $(".right_top_ul li").attr('class', 'right_top_li');
+	    $(".right_top_ul li a").attr('class', 'text_nineteen');
+		if(type==1){
+			$("#accountDiv").show();
+			$("#editImageDiv").hide();
+		}else if(type=2){
+		 	$("#accountDiv").hide();
+			$("#editImageDiv").show();
+		}
+		obj.parentNode.className="right_top_li2";
+		obj.className="text_twenty";
+	}
+	function selectInvestType(type,obj){
+		$(".right_top_ul li").attr("class","right_top_li");
+		$(".right_top_ul li a").attr("class","text_nineteen");
+		obj.parentNode.className="right_top_li2";
+		obj.className="text_twenty";
+		if(type==1){
+			$("#investPlatDiv").show();
+			$("#platFormDiv").hide();
+		}else if(type==2){
+			$("#platFormDiv").show();
+			$("#investPlatDiv").hide();
+		}
+		
+	}
+	//获取验证码
+function getMobileCode () {
+	var mobile=$("#mobile").val();
+	if (mobile=="") {
+		top.layer.msg("手机号不可为空",{icon: 2,time: 2000});
+		return false;
+	}
+	settime();
+	$.ajax({
+	  	type:'post',
+	  	url:App+'/userinfo/sendCode',
+	  	dataType:'json',
+	  	async:true,
+	  	data:{mobile:mobile,action:'investRepair'},
+	  	success:function(data){
+	  		if (data==1) {
+	  			top.layer.msg('发送成功',{icon: 1,time: 2000});
+	  		}else{
+	  			top.layer.msg(data,{icon: 2,time: 2000});
+	  		}
+	  	}
+	});
+}
+var countdown=60; 
+function settime() { 
+    if (countdown == 0) { 
+        countdown = 60; 
+
+        $('#validateNewMobile').removeAttr("disabled"); 
+        $('#validateNewMobile').attr('onclick','getMobileCode()');
+        $('#validateNewMobile').addClass('code_hover');
+        $('#validateNewMobile').html('获取验证码');
+        return;
+    } else { 
+        $('#validateNewMobile').attr('disabled', true); 
+        $('#validateNewMobile').removeAttr('onclick');
+        $('#validateNewMobile').removeClass('code_hover');
+        // obj.value="重新发送(" + countdown + ")"; 
+        countdown--; 
+        $('#validateNewMobile').html("验证码("+countdown+")");
+    } 
+    setTimeout(function() { 
+        settime() },1000);
+}
+	//投资申报
+	function addInvestRepair () {
+		var plat_id=$("#platId").val();
+		var userName=$("#userName").val();
+		var mobile=$("#mobile").val();
+		var targetName=$("#targetName").val();
+		var investAmount=$("#investAmount").val();
+		var investTime=$("#investTime").val();
+		var code=$("#code").val();
+		if (plat_id==0||userName==""||mobile==""||targetName==""||investAmount==""||investTime==""||code=="") {
+			top.layer.msg('请将资料填写完全',{icon: 2,time: 2000});
+			return false;
+		}
+		$.ajax({
+	  	type:'post',
+	  	url:App+'/addInvestRepair',
+	  	dataType:'json',
+	  	async:true,
+	  	data:{plat_id:plat_id,userName:userName,mobile:mobile,targetName:targetName,investAmount:investAmount,investTime:investTime,code:code},
+	  	success:function(data){
+	  		if (data==1) {
+	  			top.layer.msg('提交成功',{icon: 1,time: 2000});
+	  			location=location;
+	  		}else{
+	  			top.layer.msg(data,{icon: 2,time: 2000});
+	  		}
+	  	}
+	});
+	}
+	</script>
+	<script type="text/javascript">
+            var page_cur = 1; //当前页
+            var total_num, page_size, page_total_num;//总记录数,每页条数,总页数
+            var toptr = "<tr class='platformtr3 text_one'><td width='10px' class='platformtd1 td_bor2'></td> <td class='platformtd1 td_bor2' width='200px'>标的名称</td><td class='platformtd1 td_bor2' width='200px'>投资金额</td><td class='platformtd1 td_bor2' width='200px'>标的时间</td><td class='platformtd1 td_bor2' width=''>平台用户名</td><td class='platformtd1 td_bor2' width='200px'>状态</td><td width='10px' class='platformtd1 td_bor2'></td></tr>";
+
+            function getData(page) { //获取当前页数据
+            	var plat_id=$("#platIdStatusSelect").val();
+            	var status=$("#checkStatusSelect").val();
+                $.ajax({
+                    type: 'GET',
+                    url: 'investrepair_list.html',
+                    data: {'page': page - 1,plat_id:plat_id,status:status},
+                    dataType: 'json',
+                    success: function(json) {
+                        $("#ul_lists").empty();
+                        total_num = json.total_num;//总记录数
+                        page_size = json.page_size;//每页数量
+                        page_cur = page;//当前页
+                        page_total_num = json.page_total_num;//总页数
+                        $("#ul_lists").append(toptr);
+                        if (total_num > 0) {
+                            var tr = "";
+                            var list = json.list;
+                            $.each(list, function(index, array) { //遍历返回json
+                            tr += "<tr class='platformtr7 text_ththree'><td width='15px'></td><td class='platformtd1 td_bor2 tdleft' colspan='5'><div class='tdimg'><img class='imgwh' src='__ROOT__"+array['plat_logo']+"'></div><div class='tdlogodate'>"+array['add_time']+"</div><div class='tdtextdiv'></div></td><td width='15px'></td>	</tr><tr class='platformtr8 text_ththree'><td></td><td class='td_bor2 tdleft' width='150px'>"+array['target_name']+"</td><td class=' td_bor2' width='128px'>"+array['invest_amount']+"元</td><td class='td_bor2' width='128px'>"+array['invest_time']+"</td><td class='td_bor2' width='128px'>"+array['user_name']+"</td><td class='td_bor2' width='128px'>"+array['check_type']+"</td><td></td></tr>";
+                            });
+                            $("#ul_lists").append(tr);
+                        }else{
+                            $("#ul_lists").append("<tr><td colspan='7' class='platformtd1 td_bor2'>没有数据</td></tr>");
+                        }
+                        
+                    },
+                    complete: function() {
+                        getPageBar();//js生成分页，可用程序代替
+                    },
+                    error: function() {
+                        alert("数据异常,请检查是否json格式");
+                    }
+                });
+            }
+
+            function getPageBar() { //js生成分页
+                if (page_cur > page_total_num)
+                    page_cur = page_total_num;//当前页大于最大页数
+                if (page_cur < 1){
+                    page_cur = 1;//当前页小于1
+                }
+                page_str = "<span>共" + total_num + "条</span><span>" + page_cur + "/" + page_total_num + "</span>";
+                
+                //若是第一页
+                if (page_cur == 1) {
+                    page_str += "<span class='pageall'>首页</span><span class='pageall'>上一页</span>";
+                } else {
+                    page_str += "<span class='pageall'><a href='javascript:void(0)' data-page='1'>首页</a></span><span class='pageall'><a href='javascript:void(0)' data-page='" + (page_cur - 1) + "'>上一页</a></span>";
+                }
+                //若是最后页
+                if (page_cur >= page_total_num) {
+                    page_str += "<span class='pageall'>下一页</span><span class='pageall'>尾页</span>";
+                } else {
+                    page_str += "<span class='pageall'><a href='javascript:void(0)' data-page='" + (parseInt(page_cur) + 1) + "'>下一页</a></span><span class='pageall'><a href='javascript:void(0)' data-page='" + page_total_num + "'>尾页</a></span>";
+                }
+                $("#page").html(page_str);
+            }
+
+            $(function() {
+                getData(1);//默认第一页
+                $("#page").on('click','a',function() { 
+                    var page = $(this).attr("data-page");//获取当前页
+                    getData(page);
+                });
+                // $('#start,#end').bind('input propertychange',function(){
+                //     getData(1);
+                // });
+            });
+	</script>
+<!-- /底部 -->
+<include file = "Public/footer" />

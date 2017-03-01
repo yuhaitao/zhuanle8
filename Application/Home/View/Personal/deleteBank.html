@@ -1,0 +1,52 @@
+<include file="Public/head"/>
+<div class="shade_mian2">
+	<div class="warn text_tt">
+		为了保证您的账号安全，删除银行卡之前请先进行验证
+	</div>
+	<table style="margin-top:10px;">
+		<tbody><tr>
+			<td class="h5 text_tf" width="185px;">
+				交易密码：
+			</td>
+			<td width="190px" class="text_nineteen">
+				<input class="in_shade2" name="password" id="password_id" type="password">
+			</td>
+			<td width="150px">
+				<a href="__APP__/user/gotoTradePWD.html" target="_blank" class="text_thirty" style="color:#333">忘记密码？</a>
+			</td>
+		</tr>
+		<tr>
+			<td class="h6 text_tf" width="185px;"></td>
+			<td width="190px" class="text_nineteen">
+				<a href="javascript:void(0);" onclick="saveDeleteBank('{$bankId}');" class="shade_btn a12">确定</a>
+			</td>
+			<td width="150px"></td>
+		</tr>	
+	</tbody></table>
+</div>
+<script type="text/javascript">
+function saveDeleteBank (bankId) {
+	var trade_pwd=$("input[name=password]").val();
+	console.log(trade_pwd);
+	if (trade_pwd!="") {
+		$.ajax({
+		  	type:'post',
+		  	url:App+'/userinfo/saveDelBank',
+		  	dataType:'json',
+		  	async:true,
+		  	data:{bankId:bankId,trade_pwd:trade_pwd},
+		  	success:function(data){
+		  		if (data=="1") {
+		  			layer.msg("删除成功",{icon: 1,time: 2000});
+		  			top.location.reload();
+		  		}else{
+		  			layer.msg(data,{icon: 2,time: 2000});
+		  		}
+		  	}
+		});
+	}
+	else{
+		top.layer.msg('请输入交易密码',{icon: 2,time: 2000});
+	}
+}
+</script>

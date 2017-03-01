@@ -1,0 +1,142 @@
+<include file="Public/head" />
+<div class="fanbox_revise">
+    <form id="bank_revise_form" action="{:U('Admin/Bank/save_update')}" method="post" >
+        <input type="hidden" name="revise_id" value="{$bank_id}" />
+        <table width="100%" cellpadding="0" cellspacing="0" class="post_table">
+            <tr>
+                <td width="30%" align="right">银行：</td>
+                <td>
+                    <select id="bank_type" name="bank_type">
+                        {$options}
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td align="right">银行卡号：</td>
+                <td><input type="text" class="input2" id="bank_num" name="bank_num" value="{$bank_number}" /></td>
+            </tr>
+            <tr>
+                <td height="60">&nbsp;</td>
+                <td style="text-align: right;">
+                <input type="submit" style="float:none;" class="btn" value="提交"/> 
+                <input type="reset" style="float:none;" class="btn" value="取消"/></td>
+            </tr>
+        </table>
+    </form>
+</div>
+<script type="text/javascript" src="__PUBLIC__/static/jquery.form.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+    $("#bank_type").change(function(){
+        $("#bank_revise_form").data("changed",true);
+    });
+    $("#bank_num").change(function() {
+        $("#bank_revise_form").data("changed",true);
+    });
+});
+$(function(){
+    $('#bank_revise_form').ajaxForm({
+        beforeSubmit: beforesub,
+        success: function(msg){
+            if(msg == 1){
+                layer.alert('修改成功！',function(){
+                    top.layer.closeAll();
+                });
+            }else{
+                layer.alert(msg, {
+                    closeBtn: 0 ,
+                  },function(){
+                });
+            }
+        }
+    }); 
+});
+function beforesub(){
+    //提交前判断
+    if ($("#bank_revise_form").data("changed")) {
+        return luhmCheck();
+    }else{
+        top.layer.msg('你未做任何修改',{icon: 2,time: 1000});
+        return false;
+    }
+}
+function luhmCheck(){
+var bankno=$("#bank_num").val();
+if (bankno.length < 16 || bankno.length > 19) {
+top.layer.msg('银行卡号长度必须在16到19之间',{icon: 2,time: 1000});
+return false;
+}
+var num = /^\d*$/;  //全数字
+if (!num.exec(bankno)) {
+top.layer.msg('银行卡号必须全为数字',{icon: 2,time: 1000});
+return false;
+}
+//开头6位
+var strBin="10,18,30,35,37,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,58,60,62,65,68,69,84,87,88,94,95,98,99";    
+if (strBin.indexOf(bankno.substring(0, 2))== -1) {
+top.layer.msg('银行卡号开头6位不符合规范',{icon: 2,time: 1000});
+return false;
+}
+        var lastNum=bankno.substr(bankno.length-1,1);//取出最后一位（与luhm进行比较）
+    
+        var first15Num=bankno.substr(0,bankno.length-1);//前15或18位
+        var newArr=new Array();
+        for(var i=first15Num.length-1;i>-1;i--){    //前15或18位倒序存进数组
+            newArr.push(first15Num.substr(i,1));
+        }
+        var arrJiShu=new Array();  //奇数位*2的积 <9
+        var arrJiShu2=new Array(); //奇数位*2的积 >9
+        
+        var arrOuShu=new Array();  //偶数位数组
+        for(var j=0;j<newArr.length;j++){
+            if((j+1)%2==1){
+                if(parseInt(newArr[j])*2<9){
+        arrJiShu.push(parseInt(newArr[j])*2);
+    }else{
+        arrJiShu2.push(parseInt(newArr[j])*2);
+    }
+                
+            }else{
+                arrOuShu.push(newArr[j]);
+}
+        }
+        
+        var jishu_child1=new Array();//奇数位*2 >9 的分割之后的数组个位数
+        var jishu_child2=new Array();//奇数位*2 >9 的分割之后的数组十位数
+        for(var h=0;h<arrJiShu2.length;h++){
+            jishu_child1.push(parseInt(arrJiShu2[h])%10);
+            jishu_child2.push(parseInt(arrJiShu2[h])/10);
+        }        
+        
+        var sumJiShu=0; //奇数位*2 < 9 的数组之和
+        var sumOuShu=0; //偶数位数组之和
+        var sumJiShuChild1=0; //奇数位*2 >9 的分割之后的数组个位数之和
+        var sumJiShuChild2=0; //奇数位*2 >9 的分割之后的数组十位数之和
+        var sumTotal=0;
+        for(var m=0;m<arrJiShu.length;m++){
+            sumJiShu=sumJiShu+parseInt(arrJiShu[m]);
+        }
+        
+        for(var n=0;n<arrOuShu.length;n++){
+            sumOuShu=sumOuShu+parseInt(arrOuShu[n]);
+        }
+        
+        for(var p=0;p<jishu_child1.length;p++){
+            sumJiShuChild1=sumJiShuChild1+parseInt(jishu_child1[p]);
+            sumJiShuChild2=sumJiShuChild2+parseInt(jishu_child2[p]);
+        }      
+        //计算总和
+        sumTotal=parseInt(sumJiShu)+parseInt(sumOuShu)+parseInt(sumJiShuChild1)+parseInt(sumJiShuChild2);
+        
+        //计算Luhm值
+        var k= parseInt(sumTotal)%10==0?10:parseInt(sumTotal)%10;        
+        var luhm= 10-k;
+        
+        if(lastNum==luhm){
+        return true;
+        }else{
+        top.layer.msg('验证失败',{icon: 2,time: 1000});
+        return false;
+        }
+    }
+</script>

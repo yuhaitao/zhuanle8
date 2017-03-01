@@ -1,0 +1,475 @@
+<include file="Public/head"/>
+<!-- 头部 -->
+<include file="Public/header"/>
+<!-- /头部 -->
+
+<!---------------赚乐扒首页banner开始------------------>
+<div class="jflsy_banner">
+    <div class="jflsy_banner_fy">
+        <volist name="bannerList" id="vo">
+        <a href="#"></a>
+        </volist>
+    </div>
+    <div class="unslider">
+        <ul>
+            <volist name="bannerList" id="vo">
+            <li style="background: url(__ROOT__{$vo.banner_img}) no-repeat center; float: left;"><a href="{$vo.banner_jump}"></a></li>
+            </volist>
+        </ul>
+    </div>
+</div>
+
+<!---------------赚乐扒首页banner结束------------------>
+
+<!---------------赚乐扒首页公告开始------------------>
+<div class="web_notice clearfix">
+	<ul class="notice_box clearfix">
+		<foreach name="notice_list" item="vo">
+			<li>
+				<i class="icon"></i>
+				<a href="__APP__/aboutus/sitenotice/{$vo.announ_id}.html" title="{$vo.announ_title}">{$vo.announ_title|getSubstr = 0,20}</a>
+			</li>
+		</foreach>
+		<a class="notice_more" href="__APP__/aboutus/sitenotice.html">更多 <i class="icon-angle-right fz16"></i></a>
+	</ul>
+</div>
+<!-- <div class="jflsy_gg">
+    <div class="jflsy_gg_bk">
+        <div class="jflsy_gg_bk_right">
+            <div class="jflsy_gg_bk_right_top">
+                <span class="gg_bt">本站公告：</span>
+                <span class="gg_tb"><img src="__PUBLIC__/images/newimages/gg_tb.png" width="40" height="40"> </span>
+                <span class="gg_gd"><a href="__APP__/aboutus/sitenotice.html">更多</a> </span>
+                <div class="clear"></div>
+            </div>
+            <div class="jflsy_gg_bk_right_bottom">
+                <ul>
+                <foreach name="notice_list" item="vo">
+                    <li>
+                        <span class="ggys_left"><a href="__APP__/aboutus/sitenotice/{$vo.announ_id}.html" title="{$vo.announ_title}">{$vo.announ_title|getSubstr = 0,20}</a> </span>
+                        <span class="ggys_right">{$vo.add_time|strtotime|date="Y-m-d",###}</span>
+                        <div class="clear"></div>
+                    </li>
+                </foreach>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div> -->
+<!---------------赚乐扒首页公告结束------------------>
+
+<!-- 平台数据统计开始 -->
+<div class="web_tags_nrTop clearfix">
+	<ul>
+		<li><span class="color2 fb"><font class="fz22">{$totalInvest}</font>万元</span><span>累计总投资金额</span></li>
+		<li><span class="color2 fb"><font class="fz22">{$totalUserEarn}</font>元</span><span>为投资人多赚</span></li>
+		<li><span class="color2 fb"><font class="fz22">{$userCount}</font>人</span><span>累计注册人数</span></li>
+		<li><span class="color2 fb"><font class="fz22">{$totalDays}</font>天</span><span>安全运营</span></li>
+	</ul>
+</div>
+<!-- 平台数据统计结束 -->
+<!---------------赚乐扒首页稳健型产品开始------------------>
+<a name="product" id="product"></a>
+<div class="jflsy_wjxcp bkys">
+	<div class="jflsy_wjxcp_02 bjs">
+        <div class="jflsy_wjxcp_02_top">稳健型产品</div>
+        <div class="jflsy_wjxcp_02_fbt">稳定投资必须   优质大平台</div>
+        <div class="jflsy_wjxcp_02_bq"></div>
+        <div class="jflsy_wjxcp_02_gd"><a href="__APP__/day.html">查看更多</a> </div>
+    </div>
+    <div class="jflsy_wjxcp_01 ysleft">
+      <volist name="wdList" id="vk" empty="暂时没有数据" key="k">
+      <if condition="$k elt 2">
+        <div class="jflsy_wjxcp_01_top">
+            <div class="jflsy_wjxcp_01_top_bt">
+                <span class="tzxm_left"><img src="__ROOT__{$vk.plat_logo}" width="100%" height="56"></span>
+                <span class="tzxm_right">{$vk.target_name|getSubstr = 0,15}</span>
+            </div>
+            <div class="jflsy_wjxcp_01_top_nr">
+                <div class="jflsy_wjxcp_01_top_nr_left">
+                    <div class="nzhl_01">
+                        <p class="p3">年化收益</p>
+                        <p class="p3 nzhl_01_ys01">{$vk.annual_income_rate}%</p>
+                    </div>
+                    <div class="nzhl_01">
+                        <p class="p3">平台加息</p>
+                        <p class="p3 nzhl_01_ys01">{$vk.cq_rate}%</p>
+                    </div>
+                    <div class="nzhl_01">
+                        <p class="p3">起投金额</p>
+                        <p class="p3 nzhl_01_ys01">{$vk.start_invest_amount|intval}元</p>
+                    </div>
+                    <div class="nzhl_01">
+                        <p class="p3">投资期限</p>
+                        <p class="p3 nzhl_01_ys01">{$vk.invest_month}</p>
+                    </div>
+                </div>
+                <div class="jflsy_wjxcp_01_top_nr_right">
+                    <div class="qwxbq_top">
+                        <div class="qwxbq_top_01">{$vk.plat_type}</div>
+                        <div class="qwxbq_top_02">评级{$vk.plat_level}</div>
+                    </div>
+                    <div class="qwxbq_bottom">
+                        <a href="__APP__/product/{$vk.product_id}.html">立即投标</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </if>
+        </volist>
+    </div>
+    <div class="jflsy_wjxcp_01 ysright">
+       <volist name="wdList" id="vk" empty="暂时没有数据" key="k">
+      <if condition="$k egt 3">
+        <div class="jflsy_wjxcp_01_top">
+            <div class="jflsy_wjxcp_01_top_bt">
+                <span class="tzxm_left"><img src="__ROOT__{$vk.plat_logo}" width="100%" height="56"></span>
+                <span class="tzxm_right">{$vk.target_name|getSubstr = 0,15}</span>
+            </div>
+            <div class="jflsy_wjxcp_01_top_nr">
+                <div class="jflsy_wjxcp_01_top_nr_left">
+                    <div class="nzhl_01">
+                        <p class="p3">年化收益</p>
+                        <p class="p3 nzhl_01_ys01">{$vk.annual_income_rate}%</p>
+                    </div>
+                    <div class="nzhl_01">
+                        <p class="p3">平台加息</p>
+                        <p class="p3 nzhl_01_ys01">{$vk.cq_rate}%</p>
+                    </div>
+                    <div class="nzhl_01">
+                        <p class="p3">起投金额</p>
+                        <p class="p3 nzhl_01_ys01">{$vk.start_invest_amount|intval}元</p>
+                    </div>
+                    <div class="nzhl_01">
+                        <p class="p3">投资期限</p>
+                        <p class="p3 nzhl_01_ys01">{$vk.invest_month}</p>
+                    </div>
+                </div>
+                <div class="jflsy_wjxcp_01_top_nr_right">
+                    <div class="qwxbq_top">
+                        <div class="qwxbq_top_01">{$vk.plat_type}</div>
+                        <div class="qwxbq_top_02">评级{$vk.plat_level}</div>
+                    </div>
+                    <div class="qwxbq_bottom">
+                        <a href="__APP__/product/{$vk.product_id}.html">立即投标</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </if>
+        </volist>
+    </div>
+</div>
+<!---------------赚乐扒首页稳健型产品结束------------------>
+<!---------------赚乐扒首页精选产品开始------------------>
+<div class="jflsy_wjxcp bkys01">
+	<div class="jflsy_wjxcp_02 bjs01">
+        <div class="jflsy_wjxcp_02_top">精选产品</div>
+        <div class="jflsy_wjxcp_02_fbt">量身定制，安全收益同行</div>
+        <div class="jflsy_wjxcp_02_bq"></div>
+        <div class="jflsy_wjxcp_02_gd"><a href="__APP__/super.html">查看更多</a> </div>
+    </div>
+    <div class="jflsy_wjxcp_01 ysleft">
+    <volist name= "ttList" id="super" empty="暂时没有数据" key="ks">
+    <if condition="$ks elt 2">
+        <div class="jflsy_wjxcp_01_top">
+            <div class="jflsy_wjxcp_01_top_bt">
+                <span class="tzxm_left"><img src="__ROOT__{$super.plat_logo}" width="100%" height="56"></span>
+                <span class="tzxm_right">{$super.target_name|getSubstr = 0,15}</span>
+            </div>
+            <div class="jflsy_wjxcp_01_top_nr">
+                <div class="jflsy_wjxcp_01_top_nr_left">
+                    <div class="nzhl_01">
+                        <p class="p3">年化收益</p>
+                        <p class="p3 nzhl_01_ys01">{$super.annual_income_rate}%</p>
+                    </div>
+                    <div class="nzhl_01">
+                        <p class="p3">平台加息</p>
+                        <p class="p3 nzhl_01_ys01">{$super.cq_rate}%</p>
+                    </div>
+                    <div class="nzhl_01">
+                        <p class="p3">起投金额</p>
+                        <p class="p3 nzhl_01_ys01">{$super.start_invest_amount|intval}元</p>
+                    </div>
+                    <div class="nzhl_01">
+                        <p class="p3">投资期限</p>
+                        <p class="p3 nzhl_01_ys01">{$super.invest_month}</p>
+                    </div>
+                </div>
+                <div class="jflsy_wjxcp_01_top_nr_right">
+                    <div class="qwxbq_top">
+                        <div class="qwxbq_top_01">{$super.plat_type}</div>
+                        <div class="qwxbq_top_02">评级{$super.plat_level}</div>
+                    </div>
+                    <div class="qwxbq_bottom">
+                        <a href="__APP__/product/{$super.product_id}.html">立即投标</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </if>
+        </volist>
+    </div>
+    <div class="jflsy_wjxcp_01 ysright">
+     <volist name= "ttList" id="super" empty="暂时没有数据" key="ks">
+      <if condition="$ks egt 3">
+        <div class="jflsy_wjxcp_01_top">
+            <div class="jflsy_wjxcp_01_top_bt">
+                <span class="tzxm_left"><img src="__ROOT__{$super.plat_logo}" width="100%" height="56"></span>
+                <span class="tzxm_right">{$super.target_name|getSubstr = 0,15}</span>
+            </div>
+            <div class="jflsy_wjxcp_01_top_nr">
+                <div class="jflsy_wjxcp_01_top_nr_left">
+                    <div class="nzhl_01">
+                        <p class="p3">年化收益</p>
+                        <p class="p3 nzhl_01_ys01">{$super.annual_income_rate}%</p>
+                    </div>
+                    <div class="nzhl_01">
+                        <p class="p3">平台加息</p>
+                        <p class="p3 nzhl_01_ys01">{$super.cq_rate}%</p>
+                    </div>
+                    <div class="nzhl_01">
+                        <p class="p3">起投金额</p>
+                        <p class="p3 nzhl_01_ys01">{$super.start_invest_amount|intval}元</p>
+                    </div>
+                    <div class="nzhl_01">
+                        <p class="p3">投资期限</p>
+                        <p class="p3 nzhl_01_ys01">{$super.invest_month}</p>
+                    </div>
+                </div>
+                <div class="jflsy_wjxcp_01_top_nr_right">
+                    <div class="qwxbq_top">
+                        <div class="qwxbq_top_01">{$super.plat_type}</div>
+                        <div class="qwxbq_top_02">评级{$super.plat_level}</div>
+                    </div>
+                    <div class="qwxbq_bottom">
+                        <a href="__APP__/product/{$super.product_id}.html">立即投标</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </if>
+        </volist>
+    </div>
+</div>
+<!---------------赚乐扒首页精选产品结束------------------>
+<!---------------赚乐扒首页高收益产品开始------------------>
+<div class="jflsy_wjxcp bkys02">
+	<div class="jflsy_wjxcp_02 bjs02">
+        <div class="jflsy_wjxcp_02_top">高收益产品</div>
+        <div class="jflsy_wjxcp_02_fbt">多年经验，必须争取高收益</div>
+        <div class="jflsy_wjxcp_02_bq"></div>
+        <div class="jflsy_wjxcp_02_gd"><a href="__APP__/high.html">查看更多</a> </div>
+    </div>
+    <div class="jflsy_wjxcp_01 ysleft">
+    <volist name= "SuperList" id="hl" empty="暂时没有数据" key="h">
+    <if condition="$h elt 2">
+        <div class="jflsy_wjxcp_01_top">
+            <div class="jflsy_wjxcp_01_top_bt">
+                 <span class="tzxm_left"><img src="__ROOT__{$hl.plat_logo}" width="100%" height="56"></span>
+                <span class="tzxm_right">{$hl.target_name|getSubstr = 0,15}</span>
+            </div>
+            <div class="jflsy_wjxcp_01_top_nr">
+                <div class="jflsy_wjxcp_01_top_nr_left">
+                   <div class="nzhl_01">
+                        <p class="p3">年化收益</p>
+                        <p class="p3 nzhl_01_ys01">{$hl.annual_income_rate}%</p>
+                    </div>
+                    <div class="nzhl_01">
+                        <p class="p3">平台加息</p>
+                        <p class="p3 nzhl_01_ys01">{$hl.cq_rate}%</p>
+                    </div>
+                    <div class="nzhl_01">
+                        <p class="p3">起投金额</p>
+                        <p class="p3 nzhl_01_ys01">{$hl.start_invest_amount|intval}元</p>
+                    </div>
+                    <div class="nzhl_01">
+                        <p class="p3">投资期限</p>
+                        <p class="p3 nzhl_01_ys01">{$hl.invest_month}</p>
+                    </div>
+                </div>
+                <div class="jflsy_wjxcp_01_top_nr_right">
+                    <div class="qwxbq_top">
+                        <div class="qwxbq_top_01">{$hl.plat_type}</div>
+                        <div class="qwxbq_top_02">评级{$hl.plat_level}</div>
+                    </div>
+                    <div class="qwxbq_bottom">
+                        <a href="__APP__/product/{$hl.product_id}.html">立即投标</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </if>
+        </volist>
+    </div>
+    <div class="jflsy_wjxcp_01 ysright">
+        <volist name= "SuperList" id="hl" empty="暂时没有数据" key="h">
+        <if condition="$h egt 3">
+        <div class="jflsy_wjxcp_01_top">
+            <div class="jflsy_wjxcp_01_top_bt">
+                 <span class="tzxm_left"><img src="__ROOT__{$hl.plat_logo}" width="100%" height="56"></span>
+                <span class="tzxm_right">{$hl.target_name|getSubstr = 0,15}</span>
+            </div>
+            <div class="jflsy_wjxcp_01_top_nr">
+                <div class="jflsy_wjxcp_01_top_nr_left">
+                   <div class="nzhl_01">
+                        <p class="p3">年化收益</p>
+                        <p class="p3 nzhl_01_ys01">{$hl.annual_income_rate}%</p>
+                    </div>
+                    <div class="nzhl_01">
+                        <p class="p3">平台加息</p>
+                        <p class="p3 nzhl_01_ys01">{$hl.cq_rate}%</p>
+                    </div>
+                    <div class="nzhl_01">
+                        <p class="p3">起投金额</p>
+                        <p class="p3 nzhl_01_ys01">{$hl.start_invest_amount|intval}元</p>
+                    </div>
+                    <div class="nzhl_01">
+                        <p class="p3">投资期限</p>
+                        <p class="p3 nzhl_01_ys01">{$hl.invest_month}</p>
+                    </div>
+                </div>
+                <div class="jflsy_wjxcp_01_top_nr_right">
+                    <div class="qwxbq_top">
+                        <div class="qwxbq_top_01">{$hl.plat_type}</div>
+                        <div class="qwxbq_top_02">评级{$hl.plat_level}</div>
+                    </div>
+                    <div class="qwxbq_bottom">
+                        <a href="__APP__/product/{$hl.product_id}.html">立即投标</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </if>
+        </volist>
+    </div>
+</div>
+<!---------------赚乐扒首页高收益产品结束------------------>
+
+<!---------------赚乐扒首页通栏广告开始------------------>
+<div class="tlgg_banner">{$home_ad}</div>
+<!---------------赚乐扒首页通栏广告结束------------------>
+<!---------------赚乐扒首页新闻中心开始------------------>
+<div class="jflsy_news">
+    <div class="jflsy_news_left">
+        <div class="news_bt">
+            <div class="news_bt_left">新闻资讯</div>
+            <div class="news_bt_right"><a href="__APP__/news.html">查看更多</a> </div>
+        </div>
+        <div class="news_bottom">
+            <volist name="news_toutiao" id="ttiao">
+            <div class="news_bottom_left">
+                <div class="news_bottom_left_img"><a href="__APP__/newsview/{$ttiao.news_id}.html"><img src="{$ttiao.picture_link}" width="100%" height="178"> </a> </div>
+                <div class="news_bottom_left_wz">
+                    <p class="p3 wzysys"><a href="__APP__/newsview/{$ttiao.news_id}.html">{$ttiao.news_name}</a></p>
+                    <p class="p1 wzysys01">{$ttiao.news_description|getSubstr = 0,70}</p>
+                </div>
+            </div>
+            </volist>
+            <div class="news_bottom_right">
+                <volist name="news_zhiding" id="zd">
+                <div class="news_bottom_right_top">
+                    <p class="p3 wzysys02"><a href="__APP__/newsview/{$zd.news_id}.html"><nobr>{$zd.news_name}</nobr></a></p>
+                    <p class="p1 wzysys03">{$zd.news_description|getSubstr = 0,140}
+                    </p>
+                </div>
+                </volist>
+                <div class="news_bottom_right_bottom">
+                    <ul>
+                       <volist name="news_yaowen" id="yw">
+                        <li>
+                            <span class="xwnr_left"><a href="__APP__/newsview/{$yw.news_id}.html">{$yw.news_name}</a></span>
+                            <span class="xwnr_right">{$yw.add_time|strtotime|date="Y-m-d",###}</span>
+                        </li>
+                       </volist>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="jflsy_news_right">
+        <div class="jflsy_news_right_top">
+            <div class="news_bt_left_s">理财专栏</div>
+            <div class="news_bt_right_s"><a href="__APP__/finance.html">查看更多</a> </div>
+        </div>
+        <div class="jflsy_news_right_bottom">
+           <volist name="slideShow" id="slshow" key="vs">
+            <if condition="$vs eq 1 ">
+            <div class="jflsy_news_right_bottom_top"><img src="{$slshow.slide_image}" width="100%" height="153"> </div>
+            </if>
+            </volist>
+            <div class="jflsy_news_right_bottom_bottom">
+              <volist name="slideShow" id="slshow">
+                <a href="__APP__/financeview/{$slshow.slide_id}.html"><nobr>{$slshow.slide_title}</nobr></a>
+              </volist>
+            </div>
+        </div>
+    </div>
+</div>
+<!---------------赚乐扒首页新闻中心结束------------------>
+<!---------------赚乐扒首页合作伙伴开始------------------>
+<div class="jflsy_hzhb">
+    <div class="jflsy_hzhb_bt">
+        <div class="news_bt_left">合作伙伴</div>
+    </div>
+            <div class="hezuo_nr">
+				<div class="_leftbtn icon"></div>
+				<div class="_rightbtn icon"></div>
+				<div class="hezuo_list">
+					<ul style="margin-left: 0px;">
+                    <volist name="hezuo" id="hezuo">
+					 <li>
+                     <a target="view_window" title="{$hezuo.fl_name}">
+                     <img src="__ROOT__{$hezuo.fl_pic}" style="width:119px;height:56px;border:0px">
+                     </a>
+                     </li>
+                     </volist>
+                   </ul>
+				</div>
+			</div>
+            <!--图片滚动-->
+	<script type="text/javascript">
+		var flag = "left";
+		function DY_scroll(wraper,prev,next,img,speed,or){
+		var wraper = $(wraper);
+		var prev = $(prev);
+		var next = $(next);
+		var img = $(img).find('ul');
+		var w = img.find('li').outerWidth(true);
+		var s = speed;
+		next.click(function(){
+		img.animate({'margin-left':-w},function(){
+		img.find('li').eq(0).appendTo(img);
+		img.css({'margin-left':0});
+		});
+		flag = "left";
+		});
+		prev.click(function(){
+		img.find('li:last').prependTo(img);
+		img.css({'margin-left':-w});
+		img.animate({'margin-left':0});
+		flag = "right";
+		});
+		if (or == true){
+		ad = setInterval(function() { flag == "left" ? next.click() : prev.click()},s*1000);
+		wraper.hover(function(){clearInterval(ad);},function(){ad = setInterval(function() {flag == "left" ? next.click() : prev.click()},s*1000);});
+			}
+		}
+		DY_scroll('.hezuo_nr','._leftbtn','._rightbtn','.hezuo_list',3,true);// true为自动播放，不加此参数或false就默认不自动 
+	</script>
+</div>
+<!---------------赚乐扒首页合作伙伴结束------------------>
+<!--友情链接-->
+	<div class="friendLink mt30 mb30">
+		<div class="friendLink_main clearfix">
+			<ul>
+				<li class="links_first">友情链接：</li>
+				<volist name="friends" id="friends">
+					<li><a href="{$friends.friendly_link}" title="{$friends.fl_name}" target="_blank" >{$friends.fl_name}</a></li>
+				</volist>
+                <div class="clear"></div>
+			</ul>
+		</div>
+	</div>
+<!--友情链接结束-->
+<include file = "Public/footer" />

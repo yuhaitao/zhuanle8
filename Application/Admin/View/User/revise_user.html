@@ -1,0 +1,126 @@
+
+<div class="fanbox_revise">
+    <h3>修改用户</h3>
+    <form id="revise_form" action="{:U('Admin/User/save_user')}" method="post">
+        <table width="100%" cellpadding="0" cellspacing="0" class="post_table">
+            <tr>
+                <td width="30%" align="right">用户姓名：</td>
+                <td>
+                    <input type="hidden" name="revise_id" value="{$revise_list.user_id}" />
+                    <input type="text" id="username" class="input2" name="username" maxlength="30" value="{$revise_list.user_name}" />
+                </td>
+            </tr>
+            <tr>
+                <td align="right">用户昵称：</td>
+                <td><input type="text" class="input2" id="nickname" name="nickname"  maxlength="10" value="{$revise_list.nick_name}" /></td>
+            </tr>
+            <tr>
+                <td align="right">出生日期：</td>
+                <td style="position:relative;">
+                    <input id="birth_date" name="birth_date" type="text" value="{$revise_list.birth_date}">
+                    <span  class="add-on"><i class="icon-calendar"></i></span>
+                </td>
+            </tr>
+            <tr>
+                <td align="right">身份证号码：</td>
+                <td><input type="text" class="input2" id="per_num" name="per_num" value="{$revise_list.identity}" /></td>
+            </tr>
+            <tr>
+                <td align="right">手机号码：</td>
+                <td><input type="text" class="input2" id="phone" name="phone"  onblur="check_phone()" value="{$revise_list.mobile}" />&nbsp;&nbsp;<font color="#F4521B">(必填！)</font><div class="sub_error"></div></td>
+            </tr>
+            <tr>
+                <td align="right">座机号码：</td>
+                <td><input type="text" class="input2" id="telephonr" name="telephonr" value="{$revise_list.telephonr}" /></td>
+            </tr>
+            <tr>
+                <td align="right">Email：</td>
+                <td><input type="text" class="input2" id="email" name="email" value="{$revise_list.email}" /></td>
+            </tr>
+            <tr>
+                <td align="right">用户类型：</td>
+                <td>
+                <select name="os">
+                   <option value="{$revise_list.user_type}">{$options}</option>
+                </select>
+                </td>
+            </tr>
+            <tr>
+                <td height="60">&nbsp;</td>
+                <td style="text-align: right;">
+                <input type="submit" style="float:none;" class="btn" value="提交"/> 
+                <input type="button" style="float:none;" class="btn" value="取消" onclick="$.fancybox.close();" /></td>
+            </tr>
+        </table>
+    </form>
+</div>
+<script type="text/javascript" src="__PUBLIC__/static/jquery.form.js"></script>
+<script type="text/javascript">
+    laydate({
+            istime:true,
+            format: 'YYYY-MM-DD hh:mm:ss',
+            elem: '#birth_date'
+        });
+</script>
+
+
+<script type="text/javascript">
+$(function(){
+    $('#revise_form').ajaxForm({
+        beforeSubmit: validate,
+        success: function(msg){
+            if(msg == 1){
+                layer.alert('修改成功！',function(){
+                    $.fancybox.close(); 
+                    layer.closeAll();
+                    rightContent.window.reload_staff_show();
+                });
+            }else{
+                layer.alert('修改失败', {
+                    closeBtn: 0 ,
+                  },function(){
+                    
+                });
+            }
+        }
+    }); 
+});
+function validate(formData, jqForm, options) {  
+   
+   
+}
+function check_phone(){
+    var cur_phone = $('#phone').val();
+    var myreg = /^1[3458]\d{9}$/;
+    if(cur_phone == ''){
+        $('.sub_error').show();
+        $('.sub_error').html("<i class='glyphicon glyphicon-remove'></i>"+"请出入手机号码！");
+        return false;
+    }
+    if(!myreg.test(cur_phone)){
+        $('.sub_error').show();
+        $('.sub_error').html("<i class='glyphicon glyphicon-remove'></i>"+"手机格式错误！");
+        return false;
+        }
+
+    $.ajax({
+        type:'post',
+        url:'{:U(Admin/User/checkphone)}',
+        dataType:'json',
+        async:true,
+        data:{cur_phone:cur_phone},
+        success:function(data){
+            if(data == 1){
+                $('.sub_error').show();
+                $('.sub_error').html();
+                $('.sub_error').html("<i class='glyphicon glyphicon-ok'></i>"+"手机号码可用！");
+
+            }else{
+                $('.sub_error').show();
+                $('.sub_error').html("<i class='glyphicon glyphicon-remove'></i>"+"手机号码重复！");
+            }
+        }
+
+    });
+}
+</script>

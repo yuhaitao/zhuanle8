@@ -1,0 +1,51 @@
+<div class="fanbox_add">
+	<h3>查询</h3>
+	<form id="thaw_search" action="" method="post">
+	<table width="100%" cellpadding="0" cellspacing="0" class="search_table">
+		<tr>
+			<td>&nbsp;&nbsp;产品编号：</td>
+			<td><input type="text" id='product_id'></td>
+		</tr>
+		<tr>
+			<td>&nbsp;&nbsp;产品名称：</td>
+			<td><input type="text" id='target_name'></td>
+		</tr>
+		<tr>
+			<td>&nbsp;&nbsp;产品类型：</td>
+			<td><select id="release_status" name="release_status">
+				<option value="-1"></option>
+				<option value="1">待发布</option>
+				<option value="4">待提交</option>
+				<option value="5">提交失败</option>
+				<option value="6">发布撤回</option>
+				<option value="7">产品审核</option>
+				<option value="8">审核失败</option>
+			</select></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td>
+				<input type="button" class="btn" onclick="query_product()" value="查询">
+				<input type="reset" class="btn" value="清除">
+				<input type="button" class="btn" onclick="javascript:$.fancybox.close();" value="关闭">
+			</td>
+		</tr>
+	</table>
+	</form>
+</div>
+<script type="text/javascript">
+function query_product(){
+	var product_id=$("#product_id").val();
+	var target_name=$("#target_name").val();
+	var release_status=$("#release_status").val();
+	if(release_status < 0){
+		release_status = 1;
+	}
+	$("#product_full_show").jqGrid('setGridParam',{ 
+        url:"{:U('Product/product_list')}", 
+        postData:{'product_id':product_id,'target_name':target_name,'release_status':release_status}, //发送数据 
+        page:1 
+    }).trigger("reloadGrid"); //重新载入 
+	
+}
+</script>

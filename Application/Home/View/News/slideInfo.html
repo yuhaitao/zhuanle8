@@ -1,0 +1,67 @@
+<include file="Public/head"/>
+<!-- 头部 -->
+<include file="Public/header"/>
+
+<!--理财学院-->
+
+<div class="news_list clearfix">
+		<!--位置导航-->
+		<div class="content_menu" style="border-top: none;">
+			<div class="content_menu_cen text_shisan">
+				您的位置： <a href="__APP__/">首页</a><i class="icon-angle-right fz16 m4"></i>幻灯新闻<i class="icon-angle-right fz16 m4"></i>{$articleInfo.slide_title}</div>
+		</div>
+		<!--位置导航结束-->
+		<!---->
+		<div class="news_listleft">
+		  <div class="news_listleft_top">
+			<div class="news_bt"><h3>{$articleInfo.slide_title}</h3></div>
+			<div class="show_tag"><span>{$articleInfo.add_time} </span> <span><i class="eyes"></i>&nbsp;{$articleInfo.read_time}</span></div>
+
+			<div class="new_info">
+			   {$newscontent}
+			</div>
+			<div class="share clearfix">
+				<span class="mt3">分享到：</span>
+				<span class="ml20">
+					<ul>
+                    <li><a href="javaScript:void(0);" onclick="weixin();"><img src="__ROOT__/Public/images/home/icon/weixin.png"></a></li>
+                    <li><a href="javaScript:void(0);" onclick="qq();"><img src="__ROOT__/Public/images/home/icon/qqzone.png"></a></li>
+                    <li><a href="javaScript:void(0);" onclick="xinlang();"><img src="__ROOT__/Public/images/home/icon/sina.png"></a></li>
+                	</ul>
+                </span>
+                <span style="float: right;" class="shoucang"><a href="javascript:;" onclick="addBookmark()"><img src="__ROOT__/Public/images/home/icon/shoucang.png" style="margin-right: 10px; float: left;"><i>收藏</i></a></span>
+			</div>
+		 </div>
+		  <!--畅言-->
+		 	<div id="SOHUCS" sid="{$articleInfo.slide_id}"></div>
+			<script charset="utf-8" type="text/javascript" src="http://changyan.sohu.com/upload/changyan.js" ></script>
+			<script type="text/javascript">
+			window.changyan.api.config({
+			appid: 'cysz4XUXg',
+			conf: 'prod_405a4e8da0563e8fd3f87fbc2facf270'
+			});
+			</script>
+		 <!--畅言结束-->
+		 <div class="aboutRead mt20 clearfix">
+			<h3>相关阅读</h3>
+			<ul>
+				<volist name="slideArr" id="vk">
+    				<li>
+    					<div class="news_leftimg"><img src="__ROOT__{$vk.slide_image}" /></div>
+    					<div class="news_rignr">
+		            		<h2><a href="__APP__/news/slide/{$vk.slide_id}.html">{$vk.slide_title}</a></h2>
+		            		<span class="news_shows">{$vk.slide_description}<em><i class="glyphicon glyphicon-time"></i>{$vk.add_time}</em></span>
+		            	</div>
+    				</li>
+    			</volist>		            
+	        </ul>
+		 </div>
+		
+		</div>
+		<!---->
+		<include file="public_right" />
+
+</div>
+<!--理财学院结束-->
+
+<include file="Public/footer" />

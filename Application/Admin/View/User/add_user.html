@@ -1,0 +1,130 @@
+
+<div class="fanbox_add">
+    <h3>添加用户</h3>
+    <form id="add_form" action="insert_user" method="post">
+        <table width="100%" cellpadding="0" cellspacing="0" class="post_table">
+            <tr>
+                <td width="30%" align="right">用户姓名：</td>
+                <td>
+                    <input type="text" id="username" class="input2" name="username"/>
+                    
+                </td>
+            </tr>
+            <tr>
+                <td align="right">用户昵称：</td>
+                <td><input type="text" class="input2" id="nickname" name="nickname"/></td>
+            </tr>
+            <tr>
+                <td align="right">出生日期：</td>
+                <td style="position:relative;">
+                    <input id="birth_date" name="birth_date" type="text" >
+                    <span  class="add-on"><i class="icon-calendar"></i></span>
+                </td>
+            </tr>
+            <tr>
+                <td align="right">身份证号码：</td>
+                <td><input type="text" class="input2" id="per_num" name="per_num" /></td>
+            </tr>
+            <tr>
+                <td align="right">手机号码：</td>
+                <td><input type="text" class="input2" id="phone" name="phone" onblur="check_phone()" />&nbsp;&nbsp;<font color="#F4521B">(必填！)</font><div class="sub_error"></div></td>
+            </tr>
+            <tr>
+                <td align="right">座机号码：</td>
+                <td><input type="text" class="input2" id="telephonr" name="telephonr" /></td>
+            </tr>
+            <tr>
+                <td align="right">Email：</td>
+                <td><input type="text" class="input2" id="email" name="email" /></td>
+            </tr>
+            <tr>
+                <td align="right">用户类型：</td>
+                <td>
+                <select name="os">
+                   <option value="1">一般用户</option>
+                </select>
+                </td>
+            </tr>
+            <tr>
+                <td height="60">&nbsp;</td>
+                <td style="text-align: right;">
+                <input type="submit" style="float:none;" class="btn" value="提交"/> 
+                <input type="button" style="float:none;" class="btn" value="取消" onclick="$.fancybox.close();" /></td>
+            </tr>
+        </table>
+    </form>
+</div>
+
+<script type="text/javascript">
+    laydate({
+            istime:true,
+            format: 'YYYY-MM-DD hh:mm:ss',
+            elem: '#birth_date'
+        });
+</script>
+<script type="text/javascript" src="__PUBLIC__/static/jquery.form.js"></script>
+
+<script type="text/javascript">
+$(function(){
+    $('#add_form').ajaxForm({
+        beforeSubmit: validate,
+        success: function(msg){
+            if(msg > 0){
+                layer.alert('添加成功！', {
+                    closeBtn: 0 ,
+                  },function(){
+                    $.fancybox.close();
+                    window.location.reload();
+                });
+            }else{
+                layer.alert(msg, {
+                    closeBtn: 0 ,
+                  },function(){
+                    $.fancybox.close();
+                    window.location.reload();
+                });
+            }
+        }
+    }); 
+});
+function validate() {  
+   var phone = $('#phone').val();
+   var myreg = /^1[3458]\d{9}$/;
+   if(phone ==''){
+    $('.sub_error').show();
+    $('.sub_error').html("<i class='glyphicon glyphicon-remove'></i>"+"请出入手机号码！");
+    return false;
+   }else{
+        if(!myreg.test(phone)){
+        $('.sub_error').show();
+        $('.sub_error').html("<i class='glyphicon glyphicon-remove'></i>"+"手机格式错误！");
+          return false;
+        }
+   }
+   
+}
+function check_phone(){
+    var cur_phone = $('#phone').val();
+    if(cur_phone == ''){
+        $('.sub_error').show();
+        $('.sub_error').html("<i class='glyphicon glyphicon-remove'></i>"+"请出入手机号码！");
+        return false;
+    }
+    $.ajax({
+        type:'post',
+        url:'checkphone',
+        dataType:'json',
+        async:true,
+        data:{cur_phone:cur_phone},
+        success:function(data){
+            if(data == 1){
+                $('.sub_error').show();
+                $('.sub_error').html("<i class='glyphicon glyphicon-ok'></i>"+"手机号码可用！");
+            }else{
+                 $('.sub_error').show();
+                $('.sub_error').html("<i class='glyphicon glyphicon-remove'></i>"+"手机号码重复！");
+            }
+        }
+    });
+}
+</script>

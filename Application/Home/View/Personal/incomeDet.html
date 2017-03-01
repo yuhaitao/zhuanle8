@@ -1,0 +1,210 @@
+<include file="Public/head"/>
+<!-- 头部 -->
+<include file="Public/header"/>
+<!-- /头部 -->
+<script type="text/javascript">
+	$(function(){
+		//账户信息
+		$("#nickNameli").hide();
+		$("#userpasswordli").hide();
+		$("#tradePasli").hide();
+		$("#userAddressli").hide();
+		$("#editImageDiv").hide();
+
+	});
+	//显示隐藏DIV
+	function accoutHideDiv(id){
+		if(!(id=="nickNameli")){
+			$("#nickNameli").fadeOut();
+		}
+		if(!(id=="userpasswordli")){
+			$("#userpasswordli").fadeOut();
+		}
+		if(!(id=="userEmailli")){
+			$("#userEmailli").fadeOut();
+		}
+		if(!(id=="userRenzhengli")){
+			$("#userRenzhengli").fadeOut();
+		}
+		if(!(id=="tradePasli")){
+			$("#tradePasli").fadeOut();
+		}
+		if(!(id=="userAddressli")){
+			$("#userAddressli").fadeOut();
+		}
+	  	$("#"+id).fadeToggle();
+	}
+	//隐藏DIV
+	function accoutShowDiv(id){
+	   $("#"+id).fadeOut();
+	}
+</script>
+<!---------------赚乐扒内容页面位置开始------------------>
+<div class="jflnr_wz">
+    <div class="jflnr_wz_tb"><img src="__PUBLIC__/images/newimages/wztb.png" width="45" height="45"> </div>
+    <div class="jflnr_wz_nr">位置：<a href="__ROOT__/">首页</a> > 收益明细 </div>
+</div>
+<!---------------赚乐扒内容页面位置结束------------------>
+
+<!---------------赚乐扒个人中心投资记录开始------------------>
+<div class="jflgrzx_zhzy">
+    <div class="jflgrzx_zhzy_left">
+        <include file="Public/person_left"/>
+    </div>
+    <div class="jflgrzx_zhzy_right">
+        <div class="right_top">
+					<ul class="right_top_ul">
+                        <li class="right_top_li text_nineteen">收益明细</li>
+                    </ul>
+		</div>
+                    <div class="xuankuang_div">
+					<span class="xiaoxi_type">起止日期</span>
+					<div class="_type_xiala">
+						  <input class="laydate-icon " id="start" readonly="" style="width:180px; height:30px; line-height:30px; color: #666; padding-left:10px;">
+                    &nbsp;&nbsp;&nbsp;&nbsp;至&nbsp;&nbsp;&nbsp;&nbsp;<input class="laydate-icon " id="end" readonly="" style="width:180px; height:30px; line-height:30px; color: #666; padding-left:10px;">
+					</div>
+					<div class="state_xiala">
+						<span class="xiaoxi_state">收益类型</span> 
+                        <select class="_state_top" id="examineStatus_id" onchange="getData(1)">
+                            <option value="0">全部</option>
+                            <option value="1">产品红包</option>
+                            <option value="2">投资返利</option>
+                            <option value="3">系统红包</option>
+                            <option value="5">平台红包</option>
+                            <option value="6">好友人数返利</option>
+                            <option value="7">月排名返利</option>
+                            <option value="8">好友金额返利</option>
+                        </select>
+					</div>
+				</div>
+				<div class="right_main_bot5">
+                    <div class="platform_list" id="cashid">
+                        <table id="ul_lists" cellspadding="0" cellspacing="0" class="table-hover" style="border-collapse:collapse " width="870px;">
+                        </table>
+                    </div>
+                    <div class="page" id="page"></div>
+                </div>
+				
+				
+    </div>
+    <div class="line"></div>
+</div>
+<!---------------赚乐扒个人中心投资记录结束------------------>
+
+	<script type="text/javascript">
+	$(function(){
+		changeClss();
+	});
+	function changeClss(){
+		var jspname = 'incomeDet';
+		if(jspname!=null&&jspname!=''){
+			$("#"+jspname).attr("class","text_twenty");
+		}
+	}
+	function changeDivContext(obj,name,url){
+		openwin_self(url);
+	}
+	</script>
+	<script type="text/javascript">
+            var page_cur = 1; //当前页
+            var total_num, page_size, page_total_num;//总记录数,每页条数,总页数
+            var toptr = "<tr class='platformtr3 text_one'><td width='10px' class='platformtd1 td_bor2'></td> <td class='platformtd1 td_bor2' width='270px'>收益时间</td><td class='platformtd1 td_bor2' width='200px'>收益类型</td><td class='platformtd1 td_bor2' width='190px'>金额</td><td class='platformtd1 td_bor2' width='190px'>收益来源</td><td width='10px' class='platformtd1 td_bor2'></td></tr>";
+
+            function getData(page) { //获取当前页数据
+                var st=$("#start").val();
+                var et=$("#end").val();
+                var ta=$("#examineStatus_id").val();
+                $.ajax({
+                    type: 'GET',
+                    url: 'incomedet_list.html',
+                    data: {'page': page - 1,'start_time':st,'end_time':et,'status':ta},
+                    dataType: 'json',
+                    success: function(json) {
+ 
+                        $("#ul_lists").empty();
+                        total_num = json.total_num;//总记录数
+                        page_size = json.page_size;//每页数量
+	                    page_cur = page;//当前页
+	                    page_total_num = json.page_total_num;//总页数
+
+                        $("#ul_lists").append(toptr);
+
+                        if (total_num > 0) {
+	                        var tr = "";
+	                        var list = json.list;
+	                        $.each(list, function(index, array) { //遍历返回json
+	                        tr += "<tr class='platformtr2 text_ththree'><td class='platformtd1 td_bor2'></td><td class='platformtd1 td_bor2'>"+array['operate_time']+"</td><td class='platformtd1 td_bor2'>"+array['type']+"</td><td class='platformtd1 td_bor2'>"+array['cash_money']+"元</td><td class='platformtd1 td_bor2'>"+array['remarks']+"</td><td class='platformtd1 td_bor2'></td></tr>";
+	                        });
+	                        $("#ul_lists").append(tr);
+                        }else{
+                        	$("#ul_lists").append("<tr><td class='platformtd1 td_bor2' colspan='6'>没有数据</td></tr>");
+                        }
+                        
+                    },
+                    complete: function() {
+                        getPageBar();//js生成分页，可用程序代替
+                    },
+                    error: function() {
+                        alert("数据异常,请检查是否json格式");
+                    }
+                });
+            }
+
+            function getPageBar() { //js生成分页
+                if (page_cur > page_total_num)
+                    page_cur = page_total_num;//当前页大于最大页数
+                if (page_cur < 1){
+                	page_cur = 1;//当前页小于1
+                }
+                page_str = "<span>共" + total_num + "条</span><span>" + page_cur + "/" + page_total_num + "</span>";
+                
+                //若是第一页
+                if (page_cur == 1) {
+                	page_str += "<span class='pageall'>首页</span><span class='pageall'>上一页</span>";
+                } else {
+                    page_str += "<span class='pageall'><a href='javascript:void(0)' data-page='1'>首页</a></span><span class='pageall'><a href='javascript:void(0)' data-page='" + (page_cur - 1) + "'>上一页</a></span>";
+                }
+                //若是最后页
+                if (page_cur >= page_total_num) {
+                    page_str += "<span class='pageall'>下一页</span><span class='pageall'>尾页</span>";
+                } else {
+                    page_str += "<span class='pageall'><a href='javascript:void(0)' data-page='" + (parseInt(page_cur) + 1) + "'>下一页</a></span><span class='pageall'><a href='javascript:void(0)' data-page='" + page_total_num + "'>尾页</a></span>";
+                }
+                $("#page").html(page_str);
+            }
+
+            $(function() {
+                getData(1);//默认第一页
+                $("#page").on('click','a',function() { 
+                    var page = $(this).attr("data-page");//获取当前页
+                    getData(page);
+                });
+            });
+            //提示弹出DIV
+            function display(examineRemark,id){
+
+                layer.tips(examineRemark, '#'+id, {
+                    tips: [3,'#eb9c52'],
+                    offset : ['1000px' , '50%']
+                })
+            }
+          
+            laydate({
+                istime:true,
+                format: 'YYYY-MM-DD hh:mm:ss',
+                elem: '#start',
+                choose:function () {
+                    getData(1);
+                }
+            });
+            laydate({
+                istime:true,
+                format: 'YYYY-MM-DD hh:mm:ss',
+                elem: '#end',
+                choose:function () {
+                    getData(1);
+                }
+            });
+        </script>
+<!-- /底部 -->
+<include file = "Public/footer" />

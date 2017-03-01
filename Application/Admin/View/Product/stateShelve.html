@@ -1,0 +1,53 @@
+<div class="fanbox_shelve">
+    <h3>下架编辑</h3>
+    <form id="shelve_form" action="{:U('Admin/Product/saveShelve')}" method="post">
+        <table width="100%" cellpadding="0" cellspacing="0" class="post_table">
+            <tr>
+                <input type="hidden" name="shelve_id" value="{$shelveId}">
+                <td width="40%" align="left">状态&nbsp;&nbsp;</td>
+                <td width="60%">&nbsp;&nbsp; 
+                    <input name="releaseStatus" value="2" type="radio">&nbsp;&nbsp;下架 &nbsp;&nbsp; 
+                    <input name="releaseStatus" value="3" type="radio">&nbsp;&nbsp;满标&nbsp;&nbsp;
+                    <input name="releaseStatus" value="6" type="radio">&nbsp;&nbsp;发布撤回&nbsp;&nbsp;
+                    <input name="releaseStatus" value="9" type="radio">&nbsp;&nbsp;流标
+                </td>
+            </tr>
+            <tr>
+                <td align="left">备注&nbsp;&nbsp;</td>
+                <td><textarea name="shelvesRemarks" id="shelvesRemarks_id" cols="50" rows="3" style="border:solid 1px #4682B4;"></textarea></td>
+            </tr>
+            <tr>
+                <td height="60">&nbsp;</td>
+                <td style="text-align: right;">
+                <input type="submit" style="float:none;" class="btn" value="提交"/> 
+                <input type="button" style="float:none;" class="btn" value="取消" onclick="$.fancybox.close();" /></td>
+            </tr>
+        </table>
+    </form>
+</div>
+<script type="text/javascript" src="__PUBLIC__/static/jquery.form.js"></script>
+<script type="text/javascript">
+$(function(){
+    $('#shelve_form').ajaxForm({
+        beforeSubmit: validate,
+        success: function(msg){
+            if(msg == 1){
+                layer.alert('修改成功！', function(){
+                    $.fancybox.close();
+                    top.rightContent.window.reload_product_full_show();
+                    layer.closeAll();
+                  });
+            }else{
+                layer.alert('修改失败!');
+            }
+        }
+    }); 
+});
+function validate(){
+    var state = $("#shelvesRemarks_id").val();
+    if(state == '' || state == null){
+        layer.msg('请补全数据',{icon:11});
+        return false;
+    }
+}
+</script>

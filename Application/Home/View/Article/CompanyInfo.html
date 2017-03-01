@@ -1,0 +1,77 @@
+<include file="Public/head"/>
+<!-- 头部 -->
+<include file="Public/header"/>
+<!-- /头部 -->
+<!---------------赚乐扒内容页面位置开始------------------>
+<div class="jflnr_wz">
+    <div class="jflnr_wz_tb"><img src="__PUBLIC__/images/newimages/wztb.png" width="45" height="45"> </div>
+    <div class="jflnr_wz_nr">位置：<a href="__ROOT__/">首页</a> > 关于我们
+            </div>
+</div>
+<!---------------赚乐扒内容页面位置结束------------------>
+<!--文章主体内容-->
+<div class="jflnews">
+<div class="middle clearfix">
+	<div class="middle_cen">
+		<include file="Public/articleLeft" />
+
+		<script type="text/javascript">
+		$(function(){
+			changeClass(null);
+		});
+		function changeClass(php){
+			var typeJsp= "CompanyInfo";
+			if(php!=null){
+				typeJsp=php;
+			}
+			if(typeJsp!=''&&typeJsp!=null){
+				if(typeJsp=='CompanyInfo'){
+				   changeDiv('about_id1',typeJsp);
+				}
+				if(typeJsp=='SeeList'){
+				   changeDiv('about_id2',typeJsp);
+				}
+				if(typeJsp=='JoinUs'){
+				   changeDiv('about_id3',typeJsp);
+				}
+				if(typeJsp=='ContactUs'){
+				   changeDiv('about_id4',typeJsp);
+				}
+				if(typeJsp=='View'){
+				   changeDiv('about_id5',typeJsp);
+				}
+				if(typeJsp=='BusinessNews'){
+				   changeDiv('about_id6',typeJsp);
+				}
+			}else{
+			changeDiv('about_id1','CompanyInfo');
+			}
+		}
+		   
+		function changeDivContext(obj,name,url){
+		    $('.middle_cen_left tr td').attr('class', '_left_td _td_text1');
+		    $(obj).find("td").attr("class",'_left_td _td_text2');
+		    changeClass(name)
+			openwin_self(url);
+		}
+
+		function changeDiv(id,name){
+			$('.middle_cen_left tr td').attr('class', '_left_td _td_text1');
+			$("#"+id).parent().attr("class","_left_td _td_text2");
+		}
+
+		</script>
+		<div id="middle_cen_right_id" class="middle_cen_right">
+			<div class="right_top_article">
+				<span class="r_top_span">公司介绍</span>
+			</div>
+			<div class="right_bottom">
+				{$tanInfo}
+			</div> 
+		</div>
+        <div class="clear"></div>
+	</div>
+</div>
+</div>
+<!--文章主体内容结束-->
+<include file="Public/footer" />

@@ -1,0 +1,157 @@
+<include file="Public/head"/>
+<!-- 头部 -->
+<include file="Public/header"/>
+<!-- /头部 -->
+<!---------------赚乐扒内容页面位置开始------------------>
+<div class="jflnr_wz">
+    <div class="jflnr_wz_tb"><img src="__PUBLIC__/images/newimages/wztb.png" width="45" height="45"> </div>
+    <div class="jflnr_wz_nr">位置：<a href="__ROOT__/">首页</a> > 邀请记录 </div>
+</div>
+<!---------------赚乐扒内容页面位置结束------------------>
+
+<!---------------赚乐扒个人中心投资记录开始------------------>
+<div class="jflgrzx_zhzy">
+    <div class="jflgrzx_zhzy_left">
+        <include file="Public/person_left"/>
+    </div>
+    <div class="jflgrzx_zhzy_right">
+        <div class="right_top">
+					<ul class="right_top_ul">
+                        <li class="right_top_li2"><a class="text_twenty" href="javascript:void(0);">邀请记录</a></li>
+                    </ul>
+		</div>
+        <div class="tzpt001">
+            <div class="grzxleft_05_nr_top_03 rcst_01">
+                <p class="p1 zhzy_ys03">好友本月投资总额</p>
+                <p class="p8 zhzy_ys04">¥{$personal.thisMonth_buy}</p>
+            </div>
+            <div class="grzxleft_05_nr_top_03 rcst_01">
+                <p class="p1 zhzy_ys03">总邀请已投资</p>
+                <p class="p8 zhzy_ys04">{$personal.buyMan}人</p>
+            </div>
+            <div class="grzxleft_05_nr_top_03">
+                <p class="p1 zhzy_ys03">总邀请注册</p>
+                <p class="p8 zhzy_ys04"><span id="totalMan" class="text_six"></span>人</p>
+            </div>
+        </div>
+        <div class="bott_div">
+                        <div class="platform_list" id="cashid">
+                        <table id="ul_lists" cellspadding="0" cellspacing="0" class="table-hover" style="border-collapse:collapse " width="870px;">
+                        </table>
+                        </div>
+                        <div class="page" id="page"></div>
+        </div>
+        
+        
+        
+        
+                   
+    </div>
+    <div class="line"></div>
+</div>
+<!---------------赚乐扒个人中心投资记录结束------------------>
+
+
+
+
+
+
+
+    </script>
+    <script type="text/javascript">
+    $(function(){
+        changeClss();
+    });
+    function changeClss(){
+        var jspname = 'inviteRecode';
+        if(jspname!=null&&jspname!=''){
+            $("#"+jspname).attr("class","text_twenty");
+        }
+    }
+    function changeDivContext(obj,name,url){
+        openwin_self(url);
+    }
+    </script>
+    <script type="text/javascript">
+            var page_cur = 1; //当前页
+            var total_num, page_size, page_total_num;//总记录数,每页条数,总页数
+            var toptr = "<tr class='platformtr3 text_one'><td width='10px' class='platformtd1 td_bor2'></td> <td class='platformtd1 td_bor2' width=''>好友注册时间</td><td class='platformtd1 td_bor2' width=''>已绑定手机</td><td class='platformtd1 td_bor2' width=''>是否投标</td><td class='platformtd1 td_bor2' width=''>本月投资额</td><td width='10px' class='platformtd1 td_bor2'></td></tr>";
+
+            function getData(page) { //获取当前页数据
+                $.ajax({
+                    type: 'GET',
+                    url: 'inviterecode_list.html',
+                    data: {'page': page - 1},
+                    dataType: 'json',
+                    success: function(json) {
+                  
+                        $("#ul_lists").empty();
+                        total_num = json.total_num;//总记录数
+                        $("#totalMan").html(total_num);
+                        page_size = json.page_size;//每页数量
+                        page_cur = page;//当前页
+                        page_total_num = json.page_total_num;//总页数
+                        $("#ul_lists").append(toptr);
+                        if (total_num > 0) {
+                            var tr = "";
+                            var list = json.list;
+                            $.each(list, function(index, array) { //遍历返回json
+                            tr += "<tr class='platformtr6 text_ththree'><td class='platformtd1 td_bor2'></td><td class='platformtd1 td_bor2'>" + array['add_time'] + "</td><td class='platformtd1 td_bor2'>"+array['mobile']+"</td><td class='platformtd1 td_bor2'>"+array['tag']+"</td><td class='platformtd1 td_bor2'>"+array['sum_money']+"元</td><td class='platformtd1 td_bor2'></td></tr>";
+                            });
+                            $("#ul_lists").append(tr);
+                        }else{
+                            $("#ul_lists").append("<tr><td colspan=8 class='platformtd1 td_bor2'>没有数据</td></tr>");
+                        }
+                        
+                    },
+                    complete: function() {
+                        getPageBar();//js生成分页，可用程序代替
+                    },
+                    error: function() {
+                        alert("数据异常,请检查是否json格式");
+                    }
+                });
+            }
+
+            function getPageBar() { //js生成分页
+                if (page_cur > page_total_num)
+                    page_cur = page_total_num;//当前页大于最大页数
+                if (page_cur < 1){
+                    page_cur = 1;//当前页小于1
+                }
+                page_str = "<span>共" + total_num + "条</span><span>" + page_cur + "/" + page_total_num + "</span>";
+                
+                //若是第一页
+                if (page_cur == 1) {
+                    page_str += "<span class='pageall'>首页</span><span class='pageall'>上一页</span>";
+                } else {
+                    page_str += "<span class='pageall'><a href='javascript:void(0)' data-page='1'>首页</a></span><span class='pageall'><a href='javascript:void(0)' data-page='" + (page_cur - 1) + "'>上一页</a></span>";
+                }
+                //若是最后页
+                if (page_cur >= page_total_num) {
+                    page_str += "<span class='pageall'>下一页</span><span class='pageall'>尾页</span>";
+                } else {
+                    page_str += "<span class='pageall'><a href='javascript:void(0)' data-page='" + (parseInt(page_cur) + 1) + "'>下一页</a></span><span class='pageall'><a href='javascript:void(0)' data-page='" + page_total_num + "'>尾页</a></span>";
+                }
+                $("#page").html(page_str);
+            }
+
+            $(function() {
+                getData(1);//默认第一页
+                $("#page").on('click','a',function() { 
+                    var page = $(this).attr("data-page");//获取当前页
+                    getData(page);
+                });
+                // $('#start,#end').bind('input propertychange',function(){
+                //     getData(1);
+                // });
+            });
+
+            function gotoProductList (num) {
+                $("#platIdStatusSelect").val(num);
+                $("#product_a").click();
+                getData_oth(1);
+            }
+</script>
+<!-- /底部 -->
+<include file = "Public/footer" />

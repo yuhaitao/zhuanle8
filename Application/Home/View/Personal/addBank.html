@@ -1,0 +1,280 @@
+<include file="Public/head"/>
+<div class="shade_mian">
+		<input name="userId" id="userId_id" type="hidden" value="{$user_data.user_id}">
+		<table style="margin-top:20px;">
+			<tbody><tr>
+				<td class="h1 text_tf" width="145px;"><span class="text_tx">*</span>&nbsp;银行账户类型
+
+				</td>
+				<td width="450px" class="text_nineteen">借记卡&nbsp;&nbsp;&nbsp;&nbsp;<span class="text_tf">不支持提现至信用卡账户</span></td>
+			</tr>
+			<tr>
+				<td class="h1 text_tf" width="145px;"><span class="text_tx">*</span>&nbsp;开户人姓名</td>
+				<td width="450px" class="text_nineteen">{$user_data.user_name}</td>
+			</tr>
+			<tr>
+				<td class="h2 text_tf" width="145px;"><span class="text_tx">*</span>&nbsp;银行卡号</td>
+				<td width="450px" class="text_nineteen"><input class="in_shade" onblur="luhmCheck(this.value);" name="bankNumber" id="bankNumber_id"></td>
+			</tr>
+			<tr>
+				<td class="h3 text_tf" width="145px;"></td>
+				<td width="450px" class="text_nine">该银行卡开户姓名必须为<span class="text_seventeen">{$user_data.user_name}</span>，否则会提现失败！
+				</td>
+			</tr>
+			<tr>
+				<td class="h4 text_tf" width="145px;"><span class="text_tx">*</span>&nbsp;选择银行</td>
+				<td width="450px" class="text_nine">
+					<select class="in_shade_sel" name="bankType" id="bankType_id">
+						<option value="0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-------请选择银行------</option>
+						<foreach name="bank_data" item="vo">
+							<option value="{$vo.dicsmall_no}">{$vo.dicsmall_name}</option>
+						</foreach>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td class="h4 text_tf" width="145px;"><span class="text_tx">*</span>&nbsp;开户行所在地</td>
+				<td width="450px" class="text_nine">
+					<select class="in_shade_sel2" name="bankProvince" id="bankProvince" onchange="getDistrict();">
+						<option value="0">---请选择省份---</option>				
+						<foreach name="area_data" item="vo">
+							<option value="{$vo.area_id}">{$vo.area_name}</option>
+						</foreach>
+					</select>
+					<select style="margin-left: 7px;" class="in_shade_sel2" name="bankCity" id="bankCity">
+						<option>---请选择市区---</option>				
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td class="h2 text_tf" width="145px;"><span class="text_tx">*</span>&nbsp;开户行</td>
+				<td width="450px" class="text_nineteen"><input class="in_shade" name="bankAddress" id="bankAddress_id"></td>
+			</tr>
+			<tr>
+				<td class="h3 text_tf" width="145px;"></td>
+				<td width="450px" class="text_nine">如果您不确定开户行,可以打电话向银行咨询或上网查询。</td>
+			</tr>
+			<tr>
+				<td class="h4 text_tf" width="145px;"><span class="text_tx">*</span>&nbsp;手机号码</td>
+				<td width="450px" class="text_nine">
+				<input class="in_shade" id="newMobile" name="mobile" onblur="isEqualMobile(this.value);">&nbsp;&nbsp;&nbsp;&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="h4 text_tf" width="145px;"><span class="text_tx">*</span>&nbsp;手机验证码</td>
+				<td width="450px" class="text_nine"><input class="in_shade3" id="newMobileCode"  />&nbsp;&nbsp;
+					<a id="validateNewMobile" onclick="getMobileCode();" href="javaScript:void(0);" class="shade_yanzhengma2 a12">获取验证码</a></td>
+			</tr>
+			<tr>
+				<td class="h4 text_tf" width="145px;"></td>
+				<td width="450px" class="text_nine"><a href="javaScript:void(0);" onclick="saveBank();" class="shade_yanzhengma3 shade_yanzhengma_bor a12">添加</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<a href="javaScript:void(0);" onclick="cancel()" class="shade_yanzhengma3 shade_yanzhengma_bor a13">取消</a></td>
+			</tr>
+		</tbody></table>
+	</div>
+<script type="text/javascript">
+//保存银行卡
+function saveBank () {
+	var bank_number=$("#bankNumber_id").val();
+	if (bank_number.length < 16) {
+		top.layer.msg('请填写正确的银行卡号',{icon: 2,time: 2000});
+		return false;
+	}
+	var bank_type=$("#bankType_id").val();
+	if (bank_type==0) {
+		top.layer.msg('请选择银行',{icon: 2,time: 2000});
+		return false;
+	}
+	var bankProvince=$("#bankProvince").val();
+	if (bankProvince==0) {
+		top.layer.msg('请选择开户行所在地',{icon: 2,time: 2000});
+		return false;
+	}
+	var bankCity=$("#bankCity").val();
+	var bankAddress=$("#bankAddress_id").val();
+	if (bankAddress=="") {
+		top.layer.msg('请填写开户行',{icon: 2,time: 2000});
+		return false;
+	}
+	var msgCode=$("#newMobileCode").val();
+	if (msgCode=="") {
+		top.layer.msg('请填写短信验证码',{icon: 2,time: 2000});
+		return false;
+	}
+	$.ajax({
+	  	type:'post',
+	  	url:App+'/saveBank',
+	  	dataType:'json',
+	  	async:true,
+	  	data:{bank_number:bank_number,bank_type:bank_type,bankProvince:bankProvince,bankCity:bankCity,bankAddress:bankAddress,msgCode:msgCode},
+	  	success:function(data){
+	  		if (data=="1") {
+	  			top.layer.msg("添加成功",{icon: 1,time: 2000});
+	  			top.location.reload();
+	  		}else{
+	  			layer.msg(data,{icon: 2,time: 2000});
+	  		}
+	  	}
+	});
+}
+//获取验证码
+function getMobileCode () {
+	var mobile=$("#newMobile").val();
+	if (mobile=="") {
+		top.layer.msg("手机号不可为空",{icon: 2,time: 2000});
+		return false;
+	}
+	settime();
+	$.ajax({
+	  	type:'post',
+	  	url:App+'/userinfo/sendCode',
+	  	dataType:'json',
+	  	async:true,
+	  	data:{mobile:mobile,action:'addBank'},
+	  	success:function(data){
+	  		if (data==1) {
+	  			top.layer.msg('发送成功',{icon: 1,time: 2000});
+	  		}else{
+	  			top.layer.msg(data,{icon: 2,time: 2000});
+	  		}
+	  	}
+	});
+}
+//验证码倒计时
+var countdown=60; 
+function settime() { 
+    if (countdown == 0) { 
+        countdown = 60; 
+        $('#validateNewMobile').removeAttr("disabled"); 
+        $('#validateNewMobile').attr('onclick','getMobileCode()');
+        $('#validateNewMobile').removeClass('bankcode_hover');
+        $('#validateNewMobile').addClass('a12');
+        $('#validateNewMobile').html('获取验证码');
+        return;
+    } else { 
+        $('#validateNewMobile').attr('disabled', true); 
+        $('#validateNewMobile').removeAttr('onclick');
+        $('#validateNewMobile').removeClass('a12');
+        $('#validateNewMobile').addClass('bankcode_hover');
+        // obj.value="重新发送(" + countdown + ")"; 
+        countdown--; 
+        $('#validateNewMobile').html("验证码("+countdown+")");
+    } 
+    setTimeout(function() { 
+        settime() },1000);
+}
+//验证手机号
+function isEqualMobile (str) {
+	if (!(/^1[3|4|5|7|8]\d{9}$/.test(str))){
+		top.layer.msg('手机号不正确',{icon: 2,time: 2000});
+		$("#newMobile").val("");
+	}
+}
+//获取开户地区
+function getDistrict () {
+	var province=$("#bankProvince").val();
+	if (province==0) {
+		$("#bankCity").html("<option>---请选择市区---</option>");
+		top.layer.msg('开户行所在地为必选',{icon: 2,time: 2000});
+		return false;
+	}
+	$.ajax({
+		  	type:'post',
+		  	url:App+'/getArea',
+		  	dataType:'json',
+		  	async:true,
+		  	data:{area_id:province},
+		  	success:function(data){
+		  		var html="";
+		  		var area=data;
+		  		for(var i=0;i<area.length;i++){
+		  			html+="<option value='"+area[i]['area_id']+"'>"+area[i]['area_name']+"</option>";
+		  		}
+		  		$("#bankCity").html(html);
+		  	}
+		});
+}
+//检测银行卡号
+function luhmCheck(str){
+		var bankno=str;
+		if (bankno.length < 16 || bankno.length > 19) {
+			$("#bankNumber_id").focus();
+			top.layer.msg('银行卡号长度必须在16到19之间',{icon: 2,time: 1000});
+			return false;
+		}
+		var num = /^\d*$/;  //全数字
+		if (!num.exec(bankno)) {
+			$("#bankNumber_id").focus();
+			top.layer.msg('银行卡号必须全为数字',{icon: 2,time: 1000});
+			return false;
+		}
+		//开头6位
+		var strBin="10,18,30,35,37,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,58,60,62,65,68,69,84,87,88,94,95,98,99";    
+		if (strBin.indexOf(bankno.substring(0, 2))== -1) {
+			$("#bankNumber_id").focus();
+			top.layer.msg('银行卡号开头6位不符合规范',{icon: 2,time: 1000});
+			return false;
+		}
+        var lastNum=bankno.substr(bankno.length-1,1);//取出最后一位（与luhm进行比较）
+    
+        var first15Num=bankno.substr(0,bankno.length-1);//前15或18位
+        var newArr=new Array();
+        for(var i=first15Num.length-1;i>-1;i--){    //前15或18位倒序存进数组
+            newArr.push(first15Num.substr(i,1));
+        }
+        var arrJiShu=new Array();  //奇数位*2的积 <9
+        var arrJiShu2=new Array(); //奇数位*2的积 >9
+        
+        var arrOuShu=new Array();  //偶数位数组
+        for(var j=0;j<newArr.length;j++){
+            if((j+1)%2==1){
+                if(parseInt(newArr[j])*2<9){
+		        	arrJiShu.push(parseInt(newArr[j])*2);
+			    }else{
+			        arrJiShu2.push(parseInt(newArr[j])*2);
+			    }
+                
+            }else{
+                arrOuShu.push(newArr[j]);
+			}
+        }
+        
+        var jishu_child1=new Array();//奇数位*2 >9 的分割之后的数组个位数
+        var jishu_child2=new Array();//奇数位*2 >9 的分割之后的数组十位数
+        for(var h=0;h<arrJiShu2.length;h++){
+            jishu_child1.push(parseInt(arrJiShu2[h])%10);
+            jishu_child2.push(parseInt(arrJiShu2[h])/10);
+        }        
+        
+        var sumJiShu=0; //奇数位*2 < 9 的数组之和
+        var sumOuShu=0; //偶数位数组之和
+        var sumJiShuChild1=0; //奇数位*2 >9 的分割之后的数组个位数之和
+        var sumJiShuChild2=0; //奇数位*2 >9 的分割之后的数组十位数之和
+        var sumTotal=0;
+        for(var m=0;m<arrJiShu.length;m++){
+            sumJiShu=sumJiShu+parseInt(arrJiShu[m]);
+        }
+        
+        for(var n=0;n<arrOuShu.length;n++){
+            sumOuShu=sumOuShu+parseInt(arrOuShu[n]);
+        }
+        
+        for(var p=0;p<jishu_child1.length;p++){
+            sumJiShuChild1=sumJiShuChild1+parseInt(jishu_child1[p]);
+            sumJiShuChild2=sumJiShuChild2+parseInt(jishu_child2[p]);
+        }      
+        //计算总和
+        sumTotal=parseInt(sumJiShu)+parseInt(sumOuShu)+parseInt(sumJiShuChild1)+parseInt(sumJiShuChild2);
+        
+        //计算Luhm值
+        var k= parseInt(sumTotal)%10==0?10:parseInt(sumTotal)%10;        
+        var luhm= 10-k;
+        
+        if(lastNum==luhm){
+        	return true;
+        }else{
+			$("#bankNumber_id").focus();
+        	top.layer.msg('银行卡号不正确',{icon: 2,time: 1500});
+        return false;
+        }
+    }
+</script>

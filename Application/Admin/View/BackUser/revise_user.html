@@ -1,0 +1,42 @@
+<div class="fanbox_revise">
+    <h3>修改用户</h3>
+    <form id="revise_back_user" action="{:U('Admin/BackUser/save_user')}" method="post">
+        <table width="100%" cellpadding="0" cellspacing="0" class="post_table">
+            <tr>
+                <td width="30%" align="right">用户密码：</td>
+                <td>
+                    <input type="hidden" name="revise_id" value="{$revise_id}" />
+                    <input type="password" id="pwd" class="input2" name="pwd"  maxlength="24" />
+                </td>
+            </tr>
+            <tr>
+                <td height="60">&nbsp;</td>
+                <td style="text-align: right;">
+                <input type="submit" style="float:none;" class="btn" value="提交"/> 
+                <input type="button" style="float:none;" class="btn" value="取消" onclick="$.fancybox.close();" /></td>
+            </tr>
+        </table>
+    </form>
+</div>
+<script type="text/javascript" src="__PUBLIC__/static/jquery.form.js"></script>
+<script type="text/javascript">
+$(function(){
+    $('#revise_back_user').ajaxForm({
+        beforeSubmit: validate,
+        success: function(msg){
+            if(msg == 1){
+                layer.alert('修改成功！');
+            }else{
+                layer.alert('修改失败！');
+            }
+        }
+    }); 
+});
+function validate(){
+    var str=$("#pwd").val();
+    if(str.length < 8){
+        layer.msg('最短为8位',{icon: 11,time: 1500});
+        return false;
+    }
+}
+</script>

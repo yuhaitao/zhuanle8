@@ -1,0 +1,177 @@
+<include file="Public/head" />
+<div class="lbs_nav"><include file="Public/breadcrumbs"/></div>
+<div class="main_type clearfix">
+    <!--left-->
+    <div class="main_type_left">
+        <div class="panel-default" style="margin-bottom: 20px; border: 1px solid #95B8E7;">
+          <div class="panel-heading">帮助中心<i id="arrow_left" class="icon-angle-left fz18 icon_r fr"></i></div>
+          <!-- List group -->
+          <ul class="list-group type_left">
+            <volist name="type_list" id="vo" empty="暂时没有数据" key="k">
+                <li class="list-group-item">
+                <label> 
+                <input type="radio" name="optionsRadios" id="optionsRadios"  value="" onclick="getChoose('{$vo.dicsmall_no}')">{$vo.dicsmall_name}
+                </label>
+                </li>
+            </volist>
+          </ul>
+        </div>
+    </div>
+    <div class="small_type_left">
+        <div class="panel-tool">
+            <a href="javascript:void(0)" id="arrow_rig" class="glyphicon glyphicon-list"></a></div>
+        <div title="" class="panel-body" style="width: 26px;"></div>
+    </div>
+    <!--end-->
+    <!--right-->
+    <div class="main_type_rig">
+        <div class="panel-default" style="margin-bottom: 20px; border: 1px solid #95B8E7;">
+          <div class="panel-heading">帮助中心列表<i class="glyphicon glyphicon-list icon_r fr"></i></div>
+          <div class="panel-body">
+              <!-- jqGrid table -->
+                <table id="type_show"></table>
+                <!-- jqGrid 分页 -->
+                <div id="gridPager_type"></div>
+
+                <script type="text/javascript">
+                    function getChoose($choose_id){
+                       $("#type_show").jqGrid('setGridParam',{ 
+                            datatype:'json', 
+                            postData:{choose_id:$choose_id}, //发送数据 
+                            url:"{:U('Admin/HelpCore/feedback_show')}",
+                        }).trigger("reloadGrid"); //重新载入 
+                    }
+                     jQuery(function($) {
+                        var grid_selector = "#type_show";
+                        var pager_selector = "#gridPager_type";
+                        var lheight = document.body.clientHeight-258;
+                        jQuery(grid_selector).jqGrid({
+                            url:"",
+                            datatype:"json", //数据来源，json
+                            mtype:"POST",
+                            height:lheight,
+                            colNames:['id','问题描述', '修改人','修改时间','修改回复','删除'],
+                            colModel:[
+                                {name:'feedback_id',index:'feedback_id', width:'130%',align:'center',hidden:true},
+                                {name:'description',index:'description', width:'300%',align:'left'},
+                                {name:'back_user_name',index:'back_user_name', width:'130%',align:'left'},
+                                {name:'up_time',index:'up_time', width:'130%',align:'left'},
+                                {name:'huifu',index:'huifu', width:'50%',align:'center'},
+                                {name:'delete',index:'delete', width:'30%',align:'center'}
+                            ], 
+                            viewrecords : true,
+                            rowNum:20,
+                            rowList:[20,50,100],
+                            pager : pager_selector,
+                            altRows: true,
+                            sortorder:'desc',
+                            rownumbers:true,
+                            multiboxonly: true,
+                            toolbar : [ true, "top" ],
+                            forceFit : true,
+                            autowidth: true,
+                            loadComplete : function(data) {
+                                var table = this;
+                                setTimeout(function(){
+                                    styleCheckbox(table);
+                                    updateActionIcons(table);
+                                    updatePagerIcons(table);
+                                }, 0);
+                            },
+                            autowidth: true
+                        });
+                        
+                        //navButtons
+                        jQuery(grid_selector).jqGrid('navGrid',pager_selector,
+                            {   //navbar options
+                                edit: false,
+                                editicon : 'icon-pencil blue',
+                                add: false,
+                                addicon : 'icon-plus-sign purple',
+                                del: false,
+                                delicon : 'icon-trash red',
+                                search: false,
+                                searchicon : 'icon-search orange',
+                                refresh: true,
+                                refreshicon : 'icon-refresh blue',
+                                view: false,
+                                viewicon : 'icon-zoom-in grey',
+                            }
+                        )
+                        $("#t_type_show").append("<a href='javascript:void(0)' class='add_new'><i class='glyphicon glyphicon-leaf'></i>添加</a>");
+                        $(".add_new","#t_type_show").click(function(){
+                            $.fancybox({
+                                'type':'ajax',
+                                'href':'add_feedback.html',
+                                'autoScale':true
+                            });
+                        });
+                        function style_edit_form(form) {
+                            //enable datepicker on "sdate" field and switches for "stock" field
+                            form.find('input[name=sdate]').datepicker({format:'yyyy-mm-dd' , autoclose:true})
+                                .end().find('input[name=stock]')
+                                      .addClass('ace ace-switch ace-switch-5').wrap('<label class="inline" />').after('<span class="lbl"></span>');
+                    
+                            //update buttons classes
+                            var buttons = form.next().find('.EditButton .fm-button');
+                            buttons.addClass('btn btn-sm').find('[class*="-icon"]').remove();//ui-icon, s-icon
+                            buttons.eq(0).addClass('btn-primary').prepend('<i class="icon-ok"></i>');
+                            buttons.eq(1).prepend('<i class="icon-remove"></i>')
+                            
+                            buttons = form.next().find('.navButton a');
+                            buttons.find('.ui-icon').remove();
+                            buttons.eq(0).append('<i class="icon-chevron-left"></i>');
+                            buttons.eq(1).append('<i class="icon-chevron-right"></i>');     
+                        }
+                        function styleCheckbox(table) {
+                        /**
+                            $(table).find('input:checkbox').addClass('ace')
+                            .wrap('<label />')
+                            .after('<span class="lbl align-top" />')
+                    
+                    
+                            $('.ui-jqgrid-labels th[id*="_cb"]:first-child')
+                            .find('input.cbox[type=checkbox]').addClass('ace')
+                            .wrap('<label />').after('<span class="lbl align-top" />');
+                        */
+                        }
+                        function updateActionIcons(table) {
+                            /**
+                            var replacement = 
+                            {
+                                'ui-icon-pencil' : 'icon-pencil blue',
+                                'ui-icon-trash' : 'icon-trash red',
+                                'ui-icon-disk' : 'icon-ok green',
+                                'ui-icon-cancel' : 'icon-remove red'
+                            };
+                            $(table).find('.ui-pg-div span.ui-icon').each(function(){
+                                var icon = $(this);
+                                var $class = $.trim(icon.attr('class').replace('ui-icon', ''));
+                                if($class in replacement) icon.attr('class', 'ui-icon '+replacement[$class]);
+                            })
+                            */
+                        }
+                        function updatePagerIcons(table) {
+                            var replacement = 
+                            {
+                                'ui-icon-seek-first' : 'icon-double-angle-left bigger-140',
+                                'ui-icon-seek-prev' : 'icon-angle-left bigger-140',
+                                'ui-icon-seek-next' : 'icon-angle-right bigger-140',
+                                'ui-icon-seek-end' : 'icon-double-angle-right bigger-140'
+                            };
+                            $('.ui-pg-table:not(.navtable) > tbody > tr > .ui-pg-button > .ui-icon').each(function(){
+                                var icon = $(this);
+                                var $class = $.trim(icon.attr('class').replace('ui-icon', ''));
+                                if($class in replacement) icon.attr('class', 'ui-icon '+replacement[$class]);
+                            })
+                        }
+                    }); 
+                    function reload_type_show(){
+                        $("#type_show").trigger("reloadGrid");
+                    }
+                </script>
+          </div>
+        </div>
+    </div>
+    <!--end-->
+</div>

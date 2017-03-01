@@ -1,0 +1,48 @@
+<include file="Public/head" />
+<div class="fanbox_revise">
+    <form id="editDicBig_form" action="{:U('Admin/System/save_editDicBig')}" method="post">
+        <table width="100%" cellpadding="0" cellspacing="0" class="post_table">
+            <tr>
+                <td align="right">大类名称：</td>
+                <td>
+                    <input type="hidden" name="dicbig_id" value="{$dicbig_id}" />
+                    <input type="text" id="dicbig_name" class="input2" name="dicbig_name" value="{$dicbig_name}" required/>
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: right;" colspan=4>
+                <input type="submit" style="float:none;" class="btn" value="提交"/> 
+                <!-- <input type="button" id="undo" style="float:none;" class="btn" value="取消" /> -->
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<script type="text/javascript" src="__PUBLIC__/static/jquery.form.js"></script>
+<script type="text/javascript">
+$(function(){
+    $('#editDicBig_form').ajaxForm({
+        beforeSubmit: validate,
+        success: function(msg){
+            if(msg == 1){
+                layer.alert('修改成功！',function(){
+                	$.fancybox.close();
+                    top.rightContent.window.reload_dicbig_show();
+                    top.layer.closeAll();
+                });
+            }else{
+                layer.alert('修改失败', {
+                    closeBtn: 0 ,
+                  });
+            }
+        }
+    }); 
+});
+function validate() {
+   var dicbig_name=$("#dicbig_name").val();
+   if (!dicbig_name) {
+   		top.layer.msg('大类名称不可为空',{icon: 2,time: 1500});
+   	  	return false;
+   }
+}
+</script>

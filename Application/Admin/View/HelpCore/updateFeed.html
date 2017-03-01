@@ -1,0 +1,53 @@
+<div class="fanbox_reply">
+    <h3>修改</h3>
+    <form id="savefeed_form" action="{:U('Admin/HelpCore/save_feed')}" method="post">
+        <table width="100%" cellpadding="0" cellspacing="0" class="post_table">
+            <tr>
+                <td width="30%" align="right">问题类型&nbsp;&nbsp;</td>
+                <td>
+                    <input type="hidden" name="update_id" value="{$updatelist.feedback_id}" />
+                     <select id="question_type" name="question_type">
+                        {$options}
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td align="right">问题描述&nbsp;&nbsp;</td>
+                <td><textarea id="describeId" name="description" class="form-control" rows="6" readonly="true" >{$updatelist.description}</textarea></td>
+            </tr>
+           
+            <tr>
+                <td align="right">回答回复&nbsp;&nbsp;</td>
+                <td><textarea id="replyId" name="reply" class="form-control" rows="6" >{$updatelist.reply}</textarea></td>
+            </tr>
+            <tr>
+                <td height="60">&nbsp;</td>
+                <td style="text-align: right;">
+                <input type="submit" style="float:none;" class="btn" value="提交"/> 
+                <input type="button" style="float:none;" class="btn" value="取消" onclick="$.fancybox.close();" /></td>
+            </tr>
+        </table>
+    </form>
+</div>
+<script type="text/javascript" src="__PUBLIC__/static/jquery.form.js"></script>
+<script type="text/javascript">
+$(function(){
+    $('#savefeed_form').ajaxForm({
+        beforeSubmit: validate,
+        success: function(msg){
+            if(msg == 1){
+                layer.alert('修改成功！',function(){
+                   $.fancybox.close(); 
+                   layer.closeAll();
+                   rightContent.window.reload_feedback();
+                });
+            }else{
+                layer.alert('修改失败!');
+            }
+        }
+    }); 
+});
+function validate(){
+    
+}
+</script>

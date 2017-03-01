@@ -1,0 +1,73 @@
+<include file="Public/head" />
+<div class="lbs_nav"><include file="Public/breadcrumbs"/></div>
+<div id="topics"></div>
+<script type="text/javascript">
+$('<table id="area_list"></table>').appendTo('#topics');
+grid = jQuery("#area_list");
+var lastsel;
+grid.jqGrid({
+    height: "550px",
+    scroll:true,
+    url:"{:U('System/areaList')}",
+    datatype:"json", //数据来源，json
+    mtype:"post",
+    loadui: "disable",
+    colNames: ["id","区域名称","区域编号","修改","删除"],
+    //
+    colModel: [
+        {name: "id",width:100,hidden:true},
+        {name: "area_name", width:250, resizable: false},
+        {name: "area_id",width:100},
+        {name: "edit",width:50},
+        {name: "delete",width:50}
+    ],
+    treeGrid: true,
+    treeGridModel: "adjacency",
+    //caption: "页面元素",
+    ExpandColumn: "area_name",
+    autowidth: true,
+    rowNum: 10000,
+    ExpandColClick: true,
+    toolbar : [ true, "top" ],
+    treeIcons: {leaf:'ui-icon-document-b'},
+    // loadComplete:function  (data) {
+    //     console.log(data);
+    // },
+    jsonReader: {
+        repeatitems: false,
+        root: "response"
+    },
+    onSelectRow: function(id){ 
+        if(id && id!==lastsel){ 
+            grid.jqGrid('restoreRow',lastsel); 
+            grid.jqGrid('editRow',id,true); 
+            lastsel=id; 
+        } 
+    }
+});
+$("#t_area_list").append("<a href='javascript:void(0)' class='add_new'><i class='glyphicon glyphicon-plus'></i>添加</a>");
+$(".add_new", "#t_area_list").click(function() {
+    if (!lastsel) {
+        layer.alert('未选择节点');
+        return false;
+    }
+    var rowid=lastsel.split("_");
+    
+    var area_id=rowid[rowid.length-1];
+    top.$.fancybox({
+        'type':'ajax',
+        'href':App+"/Admin/System/add_area.html?area_id="+area_id,
+        'autoScale' :true,
+    });
+});
+function editArea (aid) {
+    top.$.fancybox({
+        'type':'ajax',
+        'href':App+"/Admin/System/edit_area.html?area_id="+aid,
+        'autoScale' :true,
+    });
+}
+function reload_area_list(){
+    $("#area_list").trigger("reloadGrid");
+}
+</script>

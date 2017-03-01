@@ -1,0 +1,100 @@
+<include file="Public/head"/>
+<!-- 头部 -->
+<include file="Public/header"/>
+<!-- /头部 -->
+
+<content>
+	<div  class="actpft">
+		<a id="actp0" href="javascript:;" class="actpfta" onclick="updateList(0)">全部活动</a>
+		<a id="actp1" href="javascript:;" class="actpfta" onclick="updateList(1)">进行中</a>
+		<a id="actp2" href="javascript:;" class="actpfta" onclick="updateList(2)">已结束</a>
+	</div>
+	<ul class="actpftul mt20" id="actpftul_id">
+
+	</ul>
+	
+	<div id="more_id">
+	<a class="actpftmore" href="javascript:void(0);" onclick="getMore();">查看更多</a>
+	</div>
+	
+</content>
+<script type="text/javascript">
+	$(function() {
+		getDate();
+	});
+	var more=0;//查看更多
+	function getDate(){
+		
+		var url = "activeList.html";
+		var param ={more:more};
+		$.ajax({
+			type:'post',
+		  	url:url,
+		  	dataType:'json',
+		  	async:true,
+		  	data:param,
+		  	success:function(data){
+				
+		  		successfn(data);
+		  	}
+		});
+	}
+	//筛选
+	function updateList(upId){
+
+		$($(".actpft").find("a")).attr("class","actpfta");
+		$("#actp"+upId).attr("class","actpfta2");
+
+		var url = "activeList.html";
+
+		$.ajax({
+			type:'post',
+			url:url,
+		  	dataType:'json',
+		  	async:true,
+		  	data:{upId:upId},
+		  	success:function(data){
+		  		successfn(data);
+		  	}
+		});
+	}
+	//
+	function successfn(rows){
+		$("#actpftul_id").html('');
+		rows=eval(rows.rows);
+		var id="lili"+i;
+ 	if(rows.length>0){
+	 	 var str = '';
+		 for(var i=0;i<rows.length;i++){ 
+		 		var e = rows[i];
+				str+='<li class="actpftuli actpftuliflo1"><div class="actpftuili_nr clearfix"><div class="actleft">'
+					+'	<img class="actleftImg" src="'+e.active_pic+'">'
+					+'</div>'
+					+'<div class="actrightDet">'
+					+'	<p class="actdetTitle">'+e.active_name+'</p>'
+					+'	<p class="actdetDate">活动时间：'+e.start_date+'~'+e.end_date+'  </p>'
+					+e.active_jump
+					+'<div class="active_tag">'+e.active_enabled+'</div>'
+					str+='</div></div>';
+					str+='</li>';
+					$("#actpftul_id").append(str);	
+					$("#"+id).fadeIn();
+					$("#"+id).fadeIn("slow");	
+		}
+			console.log(str);
+			$("#actpftul_id").html(str); 
+		}else{
+			$("#actpftul_id").html('<div style="text-align:center;margin-top:10px;height:100%">暂无数据</div>');
+		}
+	}
+	//加1
+	function getMore() {
+		more++;
+		getDate();
+	}
+	
+</script>
+
+
+<!--footer-->
+<include file = "Public/footer" />

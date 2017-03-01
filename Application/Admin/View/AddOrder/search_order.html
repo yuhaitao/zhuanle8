@@ -1,0 +1,39 @@
+<div class="fanbox_add">
+	<h3>查询</h3>
+	<form id="product_search" action="" method="post">
+	<table width="100%" cellpadding="0" cellspacing="0" class="search_table">
+		<tr>
+			<td>&nbsp;&nbsp;手机号：</td>
+			<td><input type="text" id='mobile'></td>
+		</tr>
+		<tr>
+			<td>&nbsp;&nbsp;用户名：</td>
+			<td><input type="text" id='user_name'></td>
+		</tr>
+		<tr>
+			<td>&nbsp;&nbsp;产品名称：</td>
+			<td><input type="text" id='target_name'></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td>
+				<input type="button" class="btn" onclick="query_product()" value="查询">
+				<input type="reset" class="btn" value="清除">
+				<input type="button" class="btn" onclick="javascript:$.fancybox.close();" value="关闭">
+			</td>
+		</tr>
+	</table>
+	</form>
+</div>
+<script type="text/javascript">
+function query_product(){
+	var mobile=$("#mobile").val();
+	var user_name=$("#user_name").val();
+	var target_name=$("#target_name").val();
+	$("#orderReview_list").jqGrid('setGridParam',{ 
+            url:"{:U('AddOrder/new_order_list')}", 
+            postData:{'mobile':mobile,'user_name':user_name,'target_name':target_name}, //发送数据 
+            page:1 
+        }).trigger("reloadGrid"); //重新载入 
+}
+</script>

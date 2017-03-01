@@ -1,0 +1,69 @@
+<include file="Public/head"/>
+<!-- 头部 -->
+<include file="Public/header"/>
+<!-- /头部 -->
+<!---------------赚乐扒内容页面位置开始------------------>
+<div class="jflnr_wz">
+    <div class="jflnr_wz_tb"><img src="__PUBLIC__/images/newimages/wztb.png" width="45" height="45"> </div>
+    <div class="jflnr_wz_nr">位置：<a href="__ROOT__/">首页</a> > <a href="__ROOT__/finance.html">理财专栏</a> > {$slidenews.slide_title}</div>
+</div>
+<!---------------赚乐扒内容页面位置结束------------------>
+<!---------------赚乐扒新闻页面banner开始------------------>
+<div class="jflnews_banner"><img src="__PUBLIC__/images/newimages/jflnews_banner.jpg" width="1190" height="173"> </div>
+<!---------------赚乐扒新闻页面banner结束------------------>
+<!---------------赚乐扒新闻页面内容开始------------------>
+
+    <div class="jflnews">
+    <div class="jflxwsjym_left">
+        <div class="jflxwsjym_left_top">
+            <p class="p8 xwsjym_01">{$slidenews.slide_title}</p>
+            <p class="p1 xwsjym_02">{$slidenews.add_time}</p>
+        </div>
+        <div class="jflxwsjym_left_zhong">{$flcontent}
+        </div>
+        <div class="jflxwsjym_left_bottom">
+            <span class="xwsjym_03 jl">上一篇：{$front_info}</span>
+            <span class="xwsjym_03 jr">下一篇：{$next_info}</span>
+        </div>
+    </div>
+    <div class="jflxwsjym_right">
+        <div class="jflxwsjym_right_top"><img src="__PUBLIC__/images/newimages/jflxwsjym_right_top.jpg" > </div>
+        <div class="jflxwsjym_right_bottom">
+            <div class="jflxwsjym_right_bottom_top">
+                <a href="javascript:showhot(1);">热门文章</a>
+                <a href="javascript:showhot(2);">推荐阅读</a>
+            </div>
+            <div class="jflxwsjym_right_bottom_bottom">
+                <ul id="view1">
+                    <volist name="artview_a" id="slshow" key="vs">
+                    <li>
+                        <span class="<if condition="$vs elt 3">tjwzys01<else/>tjwzys03</if>">{$vs}</span>
+                        <span class="tjwzys02"><a href="__APP__/newsview/{$slshow.news_id}.html" title="{$slshow.news_name}">{$slshow.news_name|getSubstr = 0,30}</a></span>
+                    </li>
+                    </volist>
+                </ul>
+                <ul id="view2" style="display:none;">
+                    <volist name="artview_b" id="slshow" key="ws">
+                    <li>
+                        <span class="<if condition="$ws elt 3">tjwzys01<else/>tjwzys03</if>">{$ws}</span>
+                        <span class="tjwzys02"><a href="__APP__/newsview/{$slshow.news_id}.html" title="{$slshow.news_name}">{$slshow.news_name|getSubstr = 0,30}</a></span>
+                    </li>
+                    </volist>
+                </ul>
+                
+            </div>
+        </div>
+        <div class="line"></div>
+    </div>
+    <div class="line"></div>
+    <script>
+	function showhot(str)
+	{
+	    	$(".jflxwsjym_right_bottom_bottom ul").css("display","none");
+			$("#view"+str).css("display","block");
+	}
+	</script>
+</div>
+<!---------------赚乐扒新闻页面内容结束------------------>
+
+<include file="Public/footer" />

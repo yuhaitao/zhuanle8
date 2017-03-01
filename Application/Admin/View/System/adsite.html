@@ -1,0 +1,37 @@
+<include file="Public/head" />
+<script type="text/javascript" src="__ROOT__/ueditor/ueditor.config.js"></script>
+<script type="text/javascript" src="__ROOT__/ueditor/ueditor.all.js"></script>
+<div class="lbs_nav"><include file="Public/breadcrumbs"/></div>
+
+<div class="fanbox_website">
+    <form id="ad_form" action="{:U('Admin/System/saveAd')}" method="post">
+        <table width="100%" cellpadding="0" cellspacing="0" class="weisite_table">
+           <volist name="adlist" id="vo">
+            <tr>
+                <td align="left" width="11%">{$vo.ad_title}：</td>
+                <td width="89%">
+                    <div name="adsite" form="ad_form" cols="100" rows="20" class="adimasev">{$vo.ad_content}</div> 
+					<a href="javascript:;" class="companyEdit btn" onclick="editAdimage({$vo.ad_id})" style="margin-left: 6px; margin-top: 18px;">编辑</a>
+                </td>
+            </tr>
+            </volist>
+        </table>
+    </form>
+</div>
+<style>
+.adimasev img{ max-width:100%;}
+.fanbox_website{overflow-y: auto;
+    overflow-x: hidden;}
+</style>
+<script type="text/javascript">
+var rheight = $(document).height()-350;
+			$('.fanbox_website').css('height',rheight+'px');
+			
+function editAdimage(adid){
+	$.fancybox({
+		'type':'ajax',
+		'href':App+'/Admin/System/adEditInfo.html?adid='+adid,
+		'autoScale' :true
+	});
+}
+</script>

@@ -1,0 +1,423 @@
+<include file="Public/head" />
+<include file="Public/header" />
+
+<content>
+	<!--位置导航-->
+	<div class="content_menu">
+		<div class="content_menu_cen text_shisan">
+			您的位置： <a href="__ROOT__/">首页</a><i class="icon-angle-right fz16 m4"></i>
+			<if condition="$product_type eq 1">
+				网贷返利
+			<elseif condition="$product_type eq 3" />
+				超级返利
+			</if>
+		</div>
+	</div>
+	<!--位置导航结束-->
+	<!--筛选类别-->
+	<div class="content_search">
+		<div class="content_search_cen">
+			<ul>
+				<li class="text_two">
+					<div class="_div_w1">年化收益：</div>
+					<div class="_div_w2">
+						<ul class="annualIncomeRateClass">
+							<li><a id="allAnnualIncomeRateA" href="javascript:void(0);" onclick="allAnnualIncomeRate();" class="a12">不限</a></li>
+							
+								<li>
+									<a id="annualIncomeRateA0" href="javascript:void(0);" onclick="selectAnnualIncomeRate(0,this);" class="a11">10%以下</a>
+									<input type="hidden" id="startAnnualIncomeRate0" value="">
+									<input type="hidden" id="endAnnualIncomeRate0" value="10">
+								</li>
+							
+								<li>
+									<a id="annualIncomeRateA1" href="javascript:void(0);" onclick="selectAnnualIncomeRate(1,this);" class="a11">11%-15%</a>
+									<input type="hidden" id="startAnnualIncomeRate1" value="11">
+									<input type="hidden" id="endAnnualIncomeRate1" value="15">
+								</li>
+							
+								<li>
+									<a id="annualIncomeRateA2" href="javascript:void(0);" onclick="selectAnnualIncomeRate(2,this);" class="a11">16%-20%</a>
+									<input type="hidden" id="startAnnualIncomeRate2" value="16">
+									<input type="hidden" id="endAnnualIncomeRate2" value="20">
+								</li>
+							
+								<li>
+									<a id="annualIncomeRateA3" href="javascript:void(0);" onclick="selectAnnualIncomeRate(3,this);" class="a11">21%-25%</a>
+									<input type="hidden" id="startAnnualIncomeRate3" value="21">
+									<input type="hidden" id="endAnnualIncomeRate3" value="25">
+								</li>
+							
+								<li>
+									<a id="annualIncomeRateA4" href="javascript:void(0);" onclick="selectAnnualIncomeRate(4,this);" class="a11">26%</a>
+									<input type="hidden" id="startAnnualIncomeRate4" value="26">
+									<input type="hidden" id="endAnnualIncomeRate4" value="">
+								</li>
+							
+						</ul>
+					</div>
+				</li><br>
+				<li class="text_two">
+					<div class="_div_w1">投资期限：</div>
+					<div class="_div_w2">
+						<ul class="investLimitClass">
+							<li><a id="aLLInvestLimitA" href="javascript:void(0);" onclick="allInvestLimit();" class="a12">不限</a></li>
+							
+								<li>
+									<a id="investLimitA0" href="javascript:void(0);" onclick="selectInvestLimit(0);" class="a11">30天以内</a>
+									<input type="hidden" id="startInvestLimit0" value="">
+									<input type="hidden" id="endInvestLimit0" value="30">
+									<input type="hidden" id="limitType0" value="1">
+								</li>
+							
+								<li>
+									<a id="investLimitA1" href="javascript:void(0);" onclick="selectInvestLimit(1);" class="a11">1-3个月</a>
+									<input type="hidden" id="startInvestLimit1" value="1">
+									<input type="hidden" id="endInvestLimit1" value="3">
+									<input type="hidden" id="limitType1" value="2">
+								</li>
+							
+								<li>
+									<a id="investLimitA2" href="javascript:void(0);" onclick="selectInvestLimit(2);" class="a11">3-6个月</a>
+									<input type="hidden" id="startInvestLimit2" value="3">
+									<input type="hidden" id="endInvestLimit2" value="6">
+									<input type="hidden" id="limitType2" value="2">
+								</li>
+							
+								<li>
+									<a id="investLimitA3" href="javascript:void(0);" onclick="selectInvestLimit(3);" class="a11">6-12个月</a>
+									<input type="hidden" id="startInvestLimit3" value="6">
+									<input type="hidden" id="endInvestLimit3" value="12">
+									<input type="hidden" id="limitType3" value="2">
+								</li>
+							
+								<li>
+									<a id="investLimitA4" href="javascript:void(0);" onclick="selectInvestLimit(4);" class="a11">12个月以上</a>
+									<input type="hidden" id="startInvestLimit4" value="12">
+									<input type="hidden" id="endInvestLimit4" value="">
+									<input type="hidden" id="limitType4" value="2">
+								</li>
+							
+						</ul>
+					</div>
+				</li><br>
+
+				<li class="text_two">
+					<div class="_div_w1">标的来源：</div>
+					<div class="_div_w2">
+						<ul class="platClass">
+							<li><a id="aLLPlatA" href="javascript:void(0);" onclick="allPlat();" class="a12">不限</a></li>
+							<foreach name="platList" item="vo" key="k">
+							<li><a id="platA{$k}" href="javascript:void(0);" onclick="searchProduct({$vo.plat_id},{$k});" class="a11">{$vo.plat_shortname}</a></li>
+							</foreach>
+						</ul>
+					</div>
+					<div id="switchShowDiv" class="_div_w4 icon">
+						<a id="switchShow" href="javascript:void(0);"  class="a13">收缩</a>
+					</div>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<!--收缩展开-->
+	<script type="text/javascript">
+
+		var len = $('._div_w2 > .platClass').children('li').length;
+		function int(){
+			for(i = 12; i< len;i++){
+			$(".platClass > li").eq(i).addClass("hid");   
+			$(".platClass > li").eq(i).slideUp();
+			}
+		}
+		$("#switchShow").click(function(){
+			int();//初始化隐藏多余标签
+			var t = $(this).text();
+			if(t == "展开"){
+				$(".platClass .hid").slideDown();
+				$("._div_w4").css({'background-position-x':'-41px','background-position-y':'-661px'});
+				$(this).text("收缩");
+			}else{
+				$(".platClass .hid").slideUp();
+				$("._div_w4").css({'background-position-x':'30px','background-position-y':'-661px'});
+				$(this).text("展开");
+			}  
+		});
+		
+	</script>
+	<!--筛选类别结束-->
+	<!--产品列表-->
+	<div class="list">
+		<div class="list_search orderClass clearfix">
+			<ul>
+				<li class="text_two">排序：</li>
+				<li><a class="a4 " id="orderId0" href="javascript:void(0);" onclick="orderDayList(0);">默认</a></li>
+				<li><a class="a4 " id="orderId1" href="javascript:void(0);" onclick="orderDayList(1);">最新加入</a></li>
+				<li><a class="a4 " id="orderId2" href="javascript:void(0);" onclick="orderDayList(2);">年化收益</a></li>
+				<li><a class="a4 " id="orderId3" href="javascript:void(0);" onclick="orderDayList(3);">投资期限</a></li>
+			</ul>
+		</div>
+		<!---->
+		<div class="sb_top">
+		
+			<div class="sb_top_list">      
+				<div class="sb_top_left">
+				<img class="sb_top_leftImg" src="/upload/image/5/5ec4e5081458268848727.png">
+				
+				</div>
+				<div class="sb_top_right">
+					<div class="list3_top1">
+						<span class="list3_top_span1">T付宝 NO.1608240311</span>
+					</div>
+					<div class="list3_zhong1">
+						<ul>
+							<li class="li_w"><span class="list3_zhong_span1">平台年化</span><br>
+								<span class="list3_zhong_span2">6.8</span>%</li>
+							<li class="li_w"><span class="list3_zhong_span1">赚乐扒加息</span><br>
+								<span class="list3_zhong_span2">15.0</span>%</li>
+							<li class="li_w"><span class="list3_zhong_span1">综合年化</span><br>
+								<span class="list3_zhong_span2">21.8</span>%</li>
+							<li class="li_w"><span class="list3_zhong_span1">起投金额</span><br>
+								<div class="data-top"><span class="list3_zhong_span3">2000元</span></div></li>
+							<li class="li_w">
+								<span class="list3_zhong_span1">投资期限</span><br>
+								<div class="data-top"><span class="list3_zhong_span3">25天</span></div>
+							</li>
+						</ul>
+							<a target="_blank" class="_right btn_a2 btn_bg" href="/product/1556.html">立即抢购</a>
+					</div>
+				</div>
+			</div>
+	</div>
+		<!---->
+		<div class="list_list clearfix">
+			<ul id="SuperProductListDiv" class="clearfix">
+				
+			</ul>
+		</div>
+	</div>
+	<div class="look_mor"><a href="javascript:void(0);" onclick="getMore()">查看更多</a></div>
+	<!--产品列表结束-->
+</content>
+<script language="javascript">
+$(function() {
+	getDate();
+});
+
+var startAnnualIncomeRate="";//年化收益开始范围
+var endAnnualIncomeRate="";
+var startInvestLimit="";//投资期限开始范围
+var endInvestLimit="";
+var limitType="";
+var ReCast="";
+var platId="";//平台ID
+var order="";//排序
+var more=0;//查看更多
+//年化收益
+function selectAnnualIncomeRate(index){
+	$($(".annualIncomeRateClass").find("a")).attr("class","a11");
+	$("#annualIncomeRateA"+index).attr("class","a12");
+	startAnnualIncomeRate=$("#startAnnualIncomeRate"+index).val();
+	endAnnualIncomeRate=$("#endAnnualIncomeRate"+index).val();
+	order="2";
+	more=0;
+	getDate();
+}
+//投资期限
+function selectInvestLimit(index){
+	$($(".investLimitClass").find("a")).attr("class","a11");
+	$("#investLimitA"+index).attr("class","a12");
+	startInvestLimit=$("#startInvestLimit"+index).val();
+	endInvestLimit=$("#endInvestLimit"+index).val();
+	limitType=$("#limitType"+index).val();
+	order="3";
+	more=0;
+	getDate();
+}
+//投资分类
+function selectReCast(index){
+	$($(".investAmountClass").find("a")).attr("class","a11");
+	$("#ReCastA"+index).attr("class","a12");
+	ReCast=$("#ReCast"+index).val();
+	order="1";
+	more=0;
+	getDate();
+}
+//平台
+function searchProduct(id,index){
+	$($(".platClass").find("a")).each(function(){
+		var className=$(this).prop("class");
+		//if(className=='a12'){
+			$(this).attr("class","a11");
+		//}
+	});
+	if($("#platA"+index).prop("class")=='a11'){
+		$("#platA"+index).attr("class","a12");
+	}else if($("#platA"+index).prop("class")=='a11 canHide'){
+		$("#platA"+index).attr("class","a12 canHide");
+	}
+	order="1";
+	platId=id;
+	more=0;
+	getDate();
+}
+//年化收益不限
+function allAnnualIncomeRate(){
+	$($(".annualIncomeRateClass").find("a")).attr("class","a11");
+	$("#allAnnualIncomeRateA").attr("class","a12");
+	startAnnualIncomeRate="";
+	endAnnualIncomeRate="";
+	order="1";
+	more=0;
+	getDate();
+}
+//投资期限不限
+function allInvestLimit(){
+	$($(".investLimitClass").find("a")).attr("class","a11");
+	$("#aLLInvestLimitA").attr("class","a12");
+	startInvestLimit="";
+	endInvestLimit="";
+	limitType="";
+	order="1";
+	more=0;
+	getDate();
+}
+
+function allReCast(){
+	$($(".investAmountClass").find("a")).attr("class","a11");
+	$("#aLLInvestAmountA").attr("class","a12");
+	ReCast="";
+	order="1";
+	more=0;
+	getDate();
+}
+
+function allPlat(){
+	$($(".platClass").find("a")).each(function(){
+		var className=$(this).prop("class");
+		if(className=='a12'){
+			$(this).attr("class","a11");
+		}
+		if(className=='a12 canHide'){
+			$(this).attr("class","a11 canHide");
+		}
+	});
+	if($("#aLLPlatA").prop("class")=='a11'){
+		$("#aLLPlatA").attr("class","a12");
+	}else if($("#aLLPlatA").prop("class")=='a11 canHide'){
+		$("#aLLPlatA").attr("class","a12 canHide");
+	}
+	order="1";
+	more=0;
+	platId="";
+	getDate();
+}
+
+function orderDayList(type){
+	$($(".orderClass").find("a")).attr("class","a4");
+	$("#orderId"+type).attr("class","a5");
+	order=type;
+	more=0;
+	getDate();
+}
+
+function getDate(){
+	var url = "prod_list";
+	var param ={
+	 	startAnnualIncomeRate:startAnnualIncomeRate,
+	 	endAnnualIncomeRate:endAnnualIncomeRate,
+	 	startInvestLimit:startInvestLimit,
+	 	endInvestLimit:endInvestLimit,
+	 	limitType:limitType,
+	 	ReCast:ReCast,
+	 	platId:platId,
+	 	order:order,
+	 	more:more,
+	 	product_type:{$product_type}
+	};
+	$.ajax({
+		type:'post',
+	  	url:url,
+	  	dataType:'json',
+	  	async:true,
+	  	data:param,
+	  	success:function(data){
+	  		
+	  		successfn(data);
+	  	}
+	});
+}
+
+function successfn(rows){
+	rows=eval(rows.rows);
+ 	if(rows.length>0){
+	 	 var str = '';
+		 for(var i=0;i<rows.length;i++){ 
+			var e = rows[i];
+		 		if(((i+1)%4==0) && i!=0){
+		 			str+='<li class = "l2_li4 li_h4" > ';
+		 		}else{
+		 			str+='<li class = "l2_li4 li_h4 l2_li4_marright" > ';
+		 		}
+				str+='<div class = "list1_text3"> '
+					+'	<div class = "list1_text2_top"> ' 
+					+'		<img class = "list1_text2_topimg" src = "'+e.platLogo+'"> '
+					+'	</div> '
+					+'	<div class = "list1_text2_div1"><a href = "javascript:void(0);" class = "a3">'+e.targetName+'</a></div> '
+					+'	<div class = "list1_text2_div2"> '
+					+'		<div class = "_left"> '
+					+'			<span class = "list1_text2_div2_left_s1">'+formatNum1(e.annualIncomeRate)+'</span>%<br/> '
+					+'			<span class = "list1_text2_div2_left_s2">平台年化</span> '
+					+'		</div> '
+					+'		<div class = "_right"> '
+					+'			<span class = "list1_text2_div2_left_s1">'+formatNum1(e.cqRate)+'</span>%<br/> '
+					+'			<span class = "list1_text2_div2_left_s2">赚乐扒加息</span> '
+					+'		</div> '
+					+'	</div> '
+					+'	<div class= "list1_circle"> '
+					+'		<div class= "list1_circle_cen"></div> '
+					+'		<div class = "list1_text2_cricle"> '
+					+'			<span class = "list1_text2_cricle_s1">'+formatNum1(e.unitRate)+'</span>%<br/> '
+					+'			<span class = "list1_text2_cricle_s2">综合年化</span> '
+					+'		</div> '
+					+'	</div> '
+					+'	<div class = "list1_text2_div3"> '
+					+'		<div class = "_left"> '
+					+'			<span class = "list1_text2_div3_left_s1">'+e.startInvestAmount+'</span>元<br/> '
+					+'			<span class = "list1_text2_div2_left_s2">起投金额</span> '
+					+'		</div> '
+					+'		<div class = "_right"> ';
+					if(e.investMonth!=null && e.investMonth!=""){
+						str+='<span class = "list1_text2_div3_left_s1">'+e.investMonth+'</span>个月<br/> ';
+					}
+					if(e.investDay!=null && e.investDay!=""){
+						str+='<span class = "list1_text2_div3_left_s1">'+e.investDay+'</span>天<br/> ';
+					}
+					str+='<span class = "list1_text2_div2_left_s2">投资期限</span> '
+					+'		</div> '
+					+'	</div> ';
+					if(e.releaseStatus==0){ //发布
+						str+='<a target="_blank" class = "btn_a1 btn_bg" href = "/product/'+e.productId+'.html">立即投资</a> ';
+					}else if(e.releaseStatus==3){ //标满
+						str+='<a target="_blank" class = "btn_a1 btn_bg3" href = "/product/'+e.productId+'.html">已结束，查看详情</a> ';
+					}else if(e.releaseStatus==1000){ //只能首投
+						str+='<a target="_blank" class = "btn_a1 btn_bg3" href = "/product/'+e.productId+'.html">已完成首投</a> ';
+					}
+					str+='</div> '
+				+'</li> ';
+				
+		}
+		$("#SuperProductListDiv").html(str); 
+	}else{
+		$("#SuperProductListDiv").html('<div style="text-align:center;margin-top:10px;height:100%">暂无数据</div>');
+	}
+}
+function getMore () {
+	more++;
+	getDate();
+}
+function formatNum1(num) {
+	return parseFloat(num).toFixed(1);
+}
+</script>
+
+<include file = "Public/footer" />

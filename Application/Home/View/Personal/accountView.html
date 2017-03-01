@@ -1,0 +1,122 @@
+<include file="Public/head"/>
+<!-- 头部 -->
+<include file="Public/header"/>
+<!-- /头部 -->
+<!---------------赚乐扒内容页面位置开始------------------>
+<div class="jflnr_wz">
+    <div class="jflnr_wz_tb"><img src="__PUBLIC__/images/newimages/wztb.png" width="45" height="45"> </div>
+    <div class="jflnr_wz_nr">位置：<a href="__ROOT__/">首页</a> > 账户总览 </div>
+</div>
+<!---------------赚乐扒内容页面位置结束------------------>
+
+<!---------------赚乐扒个人中心账户总阅开始------------------>
+<div class="jflgrzx_zhzy">
+    <div class="jflgrzx_zhzy_left">
+      <include file="Public/person_left"/>
+    </div>
+    <div class="jflgrzx_zhzy_right">
+        <div class="grzxleft_05">
+            <div class="grzxleft_05_bt">账户总览</div>
+            <div class="grzxleft_05_nr">
+                <div class="grzxleft_05_nr_top">
+                    <div class="grzxleft_05_nr_top_01 rcst_01">
+                        <p class="p1 zhzy_ys01">总资产</p>
+                        <p class="p8 zhzy_ys02">¥{$personal.assert}</p>
+                    </div>
+                    <div class="grzxleft_05_nr_top_01 rcst_01">
+                        <p class="p1 zhzy_ys01">返利累计收益</p>
+                        <p class="p8 zhzy_ys02">¥{$personal.finance_sum}</p>
+                    </div>
+                    <div class="grzxleft_05_nr_top_01 rcst_01">
+                        <p class="p1 zhzy_ys01">可用余额</p>
+                        <p class="p8 zhzy_ys02">¥{$personal.balance}</p>
+                    </div>
+                    <div class="grzxleft_05_nr_top_02">
+                        <a href="wdApply.html">提现</a>
+                    </div>
+                </div>
+                <div class="grzxleft_05_nr_top">
+                    <div class="grzxleft_05_nr_top_01 rcst_01">
+                        <p class="p1 zhzy_ys01">已返利标的</p>
+                        <p class="p8 zhzy_ys02">{$personal.finance_num}笔</p>
+                    </div>
+                    <div class="grzxleft_05_nr_top_01 rcst_01">
+                        <p class="p1 zhzy_ys01">冻结中标的</p>
+                        <p class="p8 zhzy_ys02">{$personal.freeze_num}笔</p>
+                    </div>
+                    <div class="grzxleft_05_nr_top_01 rcst_01">
+                        <p class="p1 zhzy_ys01">冻结金额</p>
+                        <p class="p8 zhzy_ys02">¥{$personal.freeze_sum}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="grzxleft_06">
+            <div class="grzxleft_05_bt">本月投资总额排行榜</div>
+            <div class="grzxleft_06_bottom">
+                <div class="grzxleft_06_bottom_top">
+                    <div class="grzxleft_06_bottom_top_01">您的本月投资排名： {$personal.mysort}</div>
+                    <div class="grzxleft_06_bottom_top_01">本月投资总额：{$personal.buycount}元</div>
+                    <div class="grzxleft_06_bottom_top_01">本月赚乐扒返利：{$personal.financeCount}元</div>
+                </div>
+                <div class="grzxleft_06_bottom_bottom">
+                    <div class="grzxleft_06_bottom_bottom_bk zephb_left">
+                        <div class="bytzzephb_01">
+                            <span class="bytzzephb_01_left">排名</span>
+                            <span class="bytzzephb_01_zhong">手机号</span>
+                            <span class="bytzzephb_01_right">投资总额</span>
+                        </div>
+                        <volist name="rankArr" id="vo" key="k" offset="0" length='5' >
+                        <div class="bytzzephb_01">
+                            <span class="bytzzephb_01_left">{$k}</span>
+                            <span class="bytzzephb_01_zhong">{$vo.mobile|replaceStr}</span>
+                            <span class="bytzzephb_01_right">{$vo.invest_amount}</span>
+                        </div>
+                       </volist>
+                    </div>
+                    <div class="grzxleft_06_bottom_bottom_bk zephb_right">
+                        <div class="bytzzephb_01">
+                            <span class="bytzzephb_01_left">排名</span>
+                            <span class="bytzzephb_01_zhong">手机号</span>
+                            <span class="bytzzephb_01_right">投资总额</span>
+                        </div>
+                     <volist name="rankArr" id="vo" key="k" offset="5" length='10'>
+                        <div class="bytzzephb_01">
+                            <span class="bytzzephb_01_left">{$k+5}</span>
+                            <span class="bytzzephb_01_zhong">{$vo.mobile|replaceStr}</span>
+                            <span class="bytzzephb_01_right">{$vo.invest_amount}</span>
+                        </div>
+                       </volist>
+                    </div>
+                    <div class="line"></div>
+                    <div class="grzxleft_06_bottom_gz">
+                        <p>用户本月投资总额排名奖励规则</p>
+                        按每月投资总额计算，月度累计投资额前3名用户，奖励金额为月度投资总额的0.25%；第4到第6名用户，奖励金额为月度投资总额的0.15%；
+                        第7到第10名用户，奖励金额为月度投资总额的0.075%。每月最后一日24：00计算投资总额，下个月重新计算，每月前3个工作日内发放奖励，
+                        在活动期间内，月月有奖励。 本次活动自2016年3月10日起执行，具体结束时间以赚乐扒官方公告为准。
+                    </div>
+                </div>
+                <div class="line"></div>
+            </div>
+        </div>
+    </div>
+    <div class="line"></div>
+</div>
+<!---------------赚乐扒个人中心账户总阅结束------------------>
+
+	<script type="text/javascript">
+	$(function(){
+		changeClss();
+	});
+	function changeClss(){
+		var jspname = 'accountView';
+		if(jspname!=null&&jspname!=''){
+			$("#"+jspname).attr("class","text_twenty");
+		}
+	}
+	function changeDivContext(obj,name,url){
+		openwin_self(url);
+	}
+	</script>
+<!-- /底部 -->
+<include file = "Public/footer" />

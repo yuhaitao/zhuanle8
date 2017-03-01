@@ -1,0 +1,117 @@
+<include file="Public/head"/>
+<!-- 头部 -->
+<include file="Public/header"/>
+<!-- /头部 -->
+<!---------------赚乐扒内容页面位置开始------------------>
+<div class="jflnr_wz">
+    <div class="jflnr_wz_tb"><img src="__PUBLIC__/images/newimages/wztb.png" width="45" height="45"> </div>
+    <div class="jflnr_wz_nr">位置：<a href="__ROOT__/">首页</a> > 加入我们
+            </div>
+</div>
+<!---------------赚乐扒内容页面位置结束------------------>
+<div class="jflnews">
+<!--文章主体内容-->
+<div class="middle clearfix">
+	<div class="middle_cen">
+		<include file="Public/articleLeft" />
+
+		<script type="text/javascript">
+		$(function(){
+			changeClass(null);
+		});
+		function changeClass(php){
+			var typeJsp= "JoinUs";
+			if(php!=null){
+				typeJsp=php;
+			}
+			if(typeJsp!=''&&typeJsp!=null){
+				if(typeJsp=='CompanyInfo'){
+				   changeDiv('about_id1',typeJsp);
+				}
+				if(typeJsp=='SeeList'){
+				   changeDiv('about_id2',typeJsp);
+				}
+				if(typeJsp=='JoinUs'){
+				   changeDiv('about_id3',typeJsp);
+				}
+				if(typeJsp=='ContactUs'){
+				   changeDiv('about_id4',typeJsp);
+				}
+				if(typeJsp=='View'){
+				   changeDiv('about_id5',typeJsp);
+				}
+				if(typeJsp=='BusinessNews'){
+				   changeDiv('about_id6',typeJsp);
+				}
+			
+			}else{
+			changeDiv('about_id3','JoinUs');
+			}
+		}
+		function changeDivContext(obj,name,url){
+		    $('.middle_cen_left tr td').attr('class', '_left_td _td_text1');
+		    $(obj).find("td").attr("class",'_left_td _td_text2');
+		    changeClass(name)
+			openwin_self(url);
+		}
+
+		function changeDiv(id,name){
+			$('.middle_cen_left tr td').attr('class', '_left_td _td_text1');
+			$("#"+id).parent().attr("class","_left_td _td_text2");
+		}
+		</script>
+		<div id="middle_cen_right_id" class="middle_cen_right">
+				<div class="right_top_article">
+					<span class="r_top_span">加入我们</span>
+				</div>
+				<div class="right_bottom">
+					<p class="bot_p">
+						赚乐扒作为一家互联网金融导购返利平台，秉承普惠金融的理想，身负为互联网金融行业提供动力的使命，凝聚了一批充满战斗力、进取力、阳光的精英团队。
+						我们致力于服务互联网金融行业，为投资人与理财平台提供多样化的、全流程的服务，我们的愿景是成为互联网金融行业最受尊敬的企业。<br>
+						<br> 如果你也踌躇满志，如果你也想在互联网金融领域展翅翱翔，欢迎你成为我们团队中的一员。<br>
+						以下是各个空缺岗位具体职责与要求，有意者请详阅，并发简历、相应作品及个人阐述至：543964366@qq.com<br> <br>
+					</p>
+					<ul class="_bot_ul">
+						<volist name="joblist" id="vo">
+						<li class="_bot_li" onclick="joinusHideDiv({$vo.joinus_id});">
+							<a href="javascript:void(0);" class="_bot_li_span  text_thtwo">
+							<div class="add_left">{$vo.joinus_title}</div>
+							<div class="address" id="div_id{$vo.joinus_id}">{$vo.joinus_place} <i class="glyphicon glyphicon-chevron-down"></i></div>
+							</a>
+							<!-- <div class="job_nr">
+								{$vo.joinus_content}
+							</div> -->
+						</li>
+						<li class="_bot_li_xia" id="li_id{$vo.joinus_id}" style="display: none;">
+								<ul class="_bot_li_ul" style="float: left;">
+									<li class="_bot_li_li text_two">{$vo.joinus_content}</li>
+								</ul>
+							</li>
+						</volist>
+						
+					</ul>
+				</div>
+			</div>
+            <div class="clear"></div>
+	</div>
+</div>
+</div>
+<script type="text/javascript">
+	/*
+	 * 加入我们
+	 */
+	function joinusHideDiv(id){
+	var id1 = "li_id"+id;
+	var id2 = "div_id"+id;
+		if(document.getElementById(id1).style.display=='none'){
+			document.getElementById(id1).style.display='';
+			$("#"+id2).find('i').attr("class","glyphicon glyphicon-chevron-up");
+		}else{
+			document.getElementById(id1).style.display='none';
+			$("#"+id2).find('i').attr("class","glyphicon glyphicon-chevron-down");
+		}
+	}
+
+</script>
+<!--文章主体内容结束-->
+<include file="Public/footer" />
