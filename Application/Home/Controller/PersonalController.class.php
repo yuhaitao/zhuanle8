@@ -1843,67 +1843,132 @@ class PersonalController extends BaseController
             ->where($cond)
             ->find();
         // 计算
-        $map = array();
-        $where_b = array();
-        $map['a.INVITATION_CODE'] = $code['invitation_code'];
-        $map['a.IS_DEL'] = 0;
-        $map['b.BUY_MONEY'] = array(
-            "gt",
-            0
-        );
-        $User = M('cq_invitation_friends a')->where($map)
-            ->join("left join cq_product_buy b on a.USER_ID=b.USER_ID")
-            ->group('a.USER_ID')
-            ->select();
-        $personal['buyMan'] = count($User); // 邀请人投资人数
-        $time = time();
-        $cur_time = date('Y-m', $time); // 时间
-        $end_time = date('Y', $time) . '-0' . (date('m', $time) + 1); // 结束时间
-        $where_b['b.BUY_TIME'] = array(
-            'between',
-            $cur_time,
-            $end_time
-        );
-        $where_b['a.IS_DEL'] = 0;
-        $userMoney = M('cq_invitation_friends a')->where($where_b)
-            ->join("left join cq_product_buy b on a.USER_ID=b.USER_ID")
-            ->sum("BUY_MONEY");
-        $personal['thisMonth_buy'] = number_format($userMoney, 2);
+        // begin
+        $params = array();
+        
+        $params['INVITATION_CODE'] = $code['invitation_code'];
+        $params['IS_DEL'] = 0;
+        
+        // 好友本月投资总额
+        $monthTotalMoney = 0;
+        
+        // 总邀请已投资人
+        $buyCnt = 0;
+        
+        // 总邀请注册人
+        $regCnt = 0;
+        
+        // 本月提成
+        $monthExtMoney = 0;
+        
+        // 1 看自己有多少邀请的人
+        $listFriends = M('cq_invitation_friends')->where($params)->select();
+        foreach ($listFriends as $key => $value) {
+            
+            // 总邀请注册人加1
+            $regCnt ++;
+            
+            $map = array();
+            $map['IS_DEL'] = 0;
+            $map['USER_ID'] = $value['user_id'];
+            $map['BUY_TIME'] = array(
+                "gt",
+                date('Y-m', time())
+            );
+            $UserBuyTotal = M('cq_product_buy')->where($map)->sum("BUY_MONEY");
+            
+            if ($UserBuyTotal) {
+                // 本月提成汇总
+                $monthTotalMoney += $UserBuyTotal;
+                // 总邀请已投资人加1
+                $buyCnt ++;
+            }
+            
+            $map = array();
+            $map['ADD_TIME'] = array(
+                "gt",
+                date('Y-m', time())
+            );
+            $map['IS_DEL'] = 0;
+            $map['USER_ID'] = $value['user_id'];
+            $map['FREEZE_STATUS'] = 2;
+            $userExtMoney = M('cq_user_finance_record')->where($map)->sum('CASH_MONEY');
+            if ($userExtMoney) {
+                $monthExtMoney += $userExtMoney;
+            }
+            
+            // 看此人有多少邀请的人
+            // 查一级推广人的邀请码
+            $cond = array();
+            $cond['USER_ID'] = $value['user_id'];
+            $cond['IS_DEL'] = 0;
+            $code = M('cq_invitation_code')->field('INVITATION_CODE')
+                ->where($cond)
+                ->find();
+            
+            $params['INVITATION_CODE'] = $code['invitation_code'];
+            $listSecFriends = M('cq_invitation_friends')->where($params)->select();
+            foreach ($listSecFriends as $key1 => $value1) {
+                $regCnt ++;
+                
+                $map = array();
+                $map['IS_DEL'] = 0;
+                $map['USER_ID'] = $value1['user_id'];
+                $map['BUY_TIME'] = array(
+                    "gt",
+                    date('Y-m', time())
+                );
+                $UserBuyTotal1 = M('cq_product_buy')->where($map)->sum("BUY_MONEY");
+                if ($UserBuyTotal1) {
+                    // 本月提成汇总
+                    $monthTotalMoney += $UserBuyTotal1;
+                    // 总邀请已投资人加1
+                    $buyCnt ++;
+                }
+                
+                $map = array();
+                $map['ADD_TIME'] = array(
+                    "gt",
+                    date('Y-m', time())
+                );
+                $map['IS_DEL'] = 0;
+                $map['USER_ID'] = $value1['user_id'];
+                $map['FREEZE_STATUS'] = 2;
+                $userExtMoney1 = M('cq_user_finance_record')->where($map)->sum('CASH_MONEY');
+                if ($userExtMoney1) {
+                    $monthExtMoney += $userExtMoney1;
+                }
+            }
+        }
+        
+        // end
+        
+        // 总邀请已投资人
+        $personal['buyMan'] = $buyCnt;
+        // 总邀请注册人
+        $personal['regCnt'] = $regCnt;
+        // 本月提成
+        $personal['thisMonth_ext'] = $monthExtMoney == 0 ? "0.00" : $monthExtMoney;
+        // 好友本月投资总额
+        $personal['thisMonth_buy'] = number_format($monthTotalMoney == 0 ? "0.00" : $monthTotalMoney, 2);
+        
         $this->assign('personal', $personal);
+        
         $this->display();
     }
+    
     // 邀请好友记录列表
     public function inviterecode_list()
     {
         $user_info = session("user_info");
         $user_id = $user_info['user_id'];
         $page = intval($_GET['page']); // 当前页
-        $start_time = $_GET['start_time'];
-        $end_time = $_GET['end_time'];
-        if ($start_time && $end_time) {
-            $map['JUMP_TIME'] = array(
-                "between",
-                array(
-                    $start_time,
-                    $end_time
-                )
-            );
-        } else {
-            if ($start_time) {
-                $map['JUMP_TIME'] = array(
-                    "gt",
-                    $start_time
-                );
-            }
-            if ($end_time) {
-                $map['JUMP_TIME'] = array(
-                    "lt",
-                    $end_time
-                );
-            }
-        }
         
-        // 查找一级推广人列表
+        $user_info = session("user_info");
+        $user_id = $user_info['user_id'];
+        $page = intval($_GET['page']); // 当前页
+                                       
+        // begin
         $model = M('cq_invitation_code');
         $where = array();
         $where['USER_ID'] = $user_id;
@@ -1911,58 +1976,108 @@ class PersonalController extends BaseController
         $code = $model->field('INVITATION_CODE')
             ->where($where)
             ->find();
-        $map['a.INVITATION_CODE'] = $code['invitation_code'];
-        $map['a.IS_DEL'] = 0;
-        $User = M('cq_invitation_friends a'); // 实例化User对象
-        $total_num = $User->where($map)->count(); // 总记录数
-        $page_size = 10; // 每页数量
-        $page_total = ceil($total_num / $page_size); // 总页数
-        $page_start = $page * $page_size;
-        $response->total_num = $total_num; // 也是总邀请人
-        $response->page_size = $page_size;
-        $response->page_total_num = $page_total;
-        // 查询满足要求的总记录数
-        $list = $User->join('left join lc_user b ON a.USER_ID = b.USER_ID')
-            ->join('left join cq_product_buy c ON b.USER_ID = c.USER_ID')
-            ->field("a.USER_ID,b.ADD_TIME,b.MOBILE,c.BUY_MONEY,c.BUY_TIME")
-            ->where($map)
-            ->order('b.ADD_TIME desc')
-            ->group('a.USER_ID')
-            ->limit($page_start . ',' . $page_size)
-            ->select();
+        // begin
+        $params = array();
         
-        foreach ($list as $key => $value) {
-            $response->list[$key]['user_id'] = $value['USER_ID']; // 用户id
-            $response->list[$key]['add_time'] = $value['add_time']; // 注册时间
-            $shortnum = substr_replace($value['mobile'], '****', 3, 4);
-            $response->list[$key]['mobile'] = $shortnum; // 手机号
-            $tag = '';
-            $sum_money = "0.00";
-            if ($value['buy_money'] > 0) {
-                $tag = '是';
-                $time = time();
-                $cur_time = date('Y-m', $time); // 时间
-                $end_time = date('Y', $time) . '-0' . (date('m', $time) + 1); // 结束时间
-                
-                $m = M('cq_product_buy');
-                $where_b = array();
-                $where_b['BUY_TIME'] = array(
-                    'between',
-                    $cur_time,
-                    $end_time
-                );
-                $where_b['USER_ID'] = $value['user_id'];
-                $where_b['IS_DEL'] = 0;
-                $sum_m = $m->where($where_b)->sum("BUY_MONEY");
-                if ($sum_m) {
-                    $sum_money = $sum_m;
-                }
+        $params['INVITATION_CODE'] = $code['invitation_code'];
+        $params['IS_DEL'] = 0;
+        
+        $ind = 0;
+        // 1 看自己有多少邀请的人
+        $listFriends = M('cq_invitation_friends')->where($params)->select();
+        foreach ($listFriends as $key => $value) {
+            
+            $user = M("lc_user")->where("IS_DEL = 0 and user_id = '" . $value['user_id'] . "'")->find();
+            $response->list[$ind]['add_time'] = $user['add_time']; // 注册时间
+            $response->list[$ind]['mobile'] = substr_replace($user['mobile'], '****', 3, 4); // 手机号
+            $response->list[$ind]['level'] = '一级'; // 推广等级
+            
+            $map = array();
+            $map['IS_DEL'] = 0;
+            $map['USER_ID'] = $value['user_id'];
+            $map['BUY_TIME'] = array(
+                "gt",
+                date('Y-m', time())
+            );
+            $UserBuyTotal = M('cq_product_buy')->where($map)->sum("BUY_MONEY");
+            
+            if ($UserBuyTotal) {
+                $response->list[$ind]['tag'] = '是'; // 是否投资
+                $response->list[$ind]['sum_money'] = $UserBuyTotal; // 本月投资额
             } else {
-                $tag = '否';
+                $response->list[$ind]['tag'] = '否'; // 是否投资
+                $response->list[$ind]['sum_money'] = '0.00'; // 本月投资额
             }
-            $response->list[$key]['tag'] = $tag; // 是否投资
-            $response->list[$key]['sum_money'] = $sum_money; // 本月投资额
+            
+            $map = array();
+            $map['ADD_TIME'] = array(
+                "gt",
+                date('Y-m', time())
+            );
+            $map['IS_DEL'] = 0;
+            $map['USER_ID'] = $value['user_id'];
+            $map['FREEZE_STATUS'] = 2;
+            $userExtMoney = M('cq_user_finance_record')->where($map)->sum('CASH_MONEY');
+            if ($userExtMoney) {
+                $response->list[$ind]['sum_ext_money'] = $userExtMoney; // 本月提成
+            } else {
+                $response->list[$ind]['sum_ext_money'] = '0.00'; // 本月提成
+            }
+            $ind ++;
+            // 看此人有多少邀请的人
+            // 查一级推广人的邀请码
+            $cond = array();
+            $cond['USER_ID'] = $value['user_id'];
+            $cond['IS_DEL'] = 0;
+            $code = M('cq_invitation_code')->field('INVITATION_CODE')
+                ->where($cond)
+                ->find();
+            
+            $params['INVITATION_CODE'] = $code['invitation_code'];
+            $listSecFriends = M('cq_invitation_friends')->where($params)->select();
+            foreach ($listSecFriends as $key1 => $value1) {
+                
+                $user1 = M("lc_user")->where("IS_DEL = 0 and user_id = '" . $value1['user_id'] . "'")->find();
+                $response->list[$ind]['add_time'] = $user1['add_time']; // 注册时间
+                $response->list[$ind]['mobile'] = substr_replace($user1['mobile'], '****', 3, 4); // 手机号
+                $response->list[$ind]['level'] = '二级'; // 推广等级
+                
+                $map = array();
+                $map['IS_DEL'] = 0;
+                $map['USER_ID'] = $value1['user_id'];
+                $map['BUY_TIME'] = array(
+                    "gt",
+                    date('Y-m', time())
+                );
+                $UserBuyTotal1 = M('cq_product_buy')->where($map)->sum("BUY_MONEY");
+                if ($UserBuyTotal1) {
+                    $response->list[$ind]['tag'] = '是'; // 是否投资
+                    $response->list[$ind]['sum_money'] = $UserBuyTotal1; // 本月投资额
+                } else {
+                    $response->list[$ind]['tag'] = '否'; // 是否投资
+                    $response->list[$ind]['sum_money'] = '0.00'; // 本月投资额
+                }
+                
+                $map = array();
+                $map['ADD_TIME'] = array(
+                    "gt",
+                    date('Y-m', time())
+                );
+                $map['IS_DEL'] = 0;
+                $map['USER_ID'] = $value1['user_id'];
+                $map['FREEZE_STATUS'] = 2;
+                $userExtMoney1 = M('cq_user_finance_record')->where($map)->sum('CASH_MONEY');
+                if ($userExtMoney1) {
+                    $response->list[$ind]['sum_ext_money'] = $userExtMoney1; // 本月提成
+                } else {
+                    $response->list[$ind]['sum_ext_money'] = '0.00'; // 本月提成
+                }
+                $ind ++;
+            }
         }
+        
+        // end
+        $response->total_num = $ind;
         $this->ajaxReturn($response, 'JSON');
     }
     

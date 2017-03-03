@@ -297,7 +297,7 @@ class CheckBillController extends BaseController
                     $whereFinance = array();
                     $whereFinance['USER_ID'] = $thisUser;
                     $whereFinance['IS_DEL'] = 0;
-                    $whereFinance['TYPE'] = 2;
+//                     $whereFinance['TYPE'] = 2;
                     $whereFinance['FREEZE_STATUS'] = 2;
                     $finance = M('cq_user_finance_record')->where($whereFinance)
                         ->field("sum(CASH_MONEY) as sum")
@@ -321,7 +321,7 @@ class CheckBillController extends BaseController
                     $option['OPERATE_TIME'] = $nowtime;
                     $option['FREEZE_STATUS'] = 2;
                     $option['UNFREEZE_TIME'] = $nowtime;
-                    $option['REMARKS'] = "依据平台：《邀请好友得返利》返利<一级提成>规则";
+                    $option['REMARKS'] = "依据平台：《邀请好友投资得返利》返利<一级提成>规则";
                     $option['ADD_USER'] = $thisUser;
                     $option['ADD_TIME'] = $nowtime;
                     $option['REBATE_LEVEL'] = 2;
@@ -366,7 +366,7 @@ class CheckBillController extends BaseController
                         $whereFinanceSec = array();
                         $whereFinanceSec['USER_ID'] = $thisSecUser;
                         $whereFinanceSec['IS_DEL'] = 0;
-                        $whereFinanceSec['TYPE'] = 2;
+//                         $whereFinanceSec['TYPE'] = 2;
                         $whereFinanceSec['FREEZE_STATUS'] = 2;
                         $financeSec = M('cq_user_finance_record')->where($whereFinanceSec)
                             ->field("sum(CASH_MONEY) as sum")
@@ -384,7 +384,7 @@ class CheckBillController extends BaseController
                         $cashMoneySec = number_format($result['buy_money'] * $secRate, 2);
                         $option = array();
                         $option['USER_ID'] = $thisSecUser;
-                        $option['TYPE'] = '08';
+                        $option['TYPE'] = '09';
                         $option['CASH_MONEY'] = $cashMoneySec;
                         $option['SERIAL_NO'] = $serial_no;
                         $option['OPERATE_TIME'] = $nowtime;
