@@ -748,7 +748,7 @@ class PersonalController extends BaseController
         $record['DRAW_TYPE'] = 2; // 提现类型
         $record['DRAW_NO'] = $bankData['bank_number']; // 卡号
         $record['DRAW_CODE'] = $bankData['bank_type']; // 银行
-                                                     // 设置操作的用户;
+                                                       // 设置操作的用户;
         $row['USER_ID'] = $row['ADD_USER'] = $record['USER_ID'] = $record['ADD_USER'] = $user_id;
         $nowTime = date("Y-m-d H:i:s", time());
         $record['EXAMINE_STATUS'] = 0;
@@ -857,7 +857,7 @@ class PersonalController extends BaseController
             'sn' => $sms_sn, // //替换成您自己的序列号
             'pwd' => strtoupper(md5($sms_sn . $sms_pwd)), // 此处密码需要加密 加密方式为 md5(sn+password) 32位大写
             'mobile' => $mobile, // 手机号 多个用英文的逗号隔开 post理论没有长度限制.推荐群发一次小于等于10000个手机号
-                               // 'content'=>iconv( "gb2312", "UTF-8//IGNORE" ,'测试短信[WJKJ]'),//短信内容
+                                 // 'content'=>iconv( "gb2312", "UTF-8//IGNORE" ,'测试短信[WJKJ]'),//短信内容
             'content' => $content,
             'ext' => '',
             'stime' => '', // 定时时间 格式为2011-6-29 11:09:21
@@ -1288,7 +1288,7 @@ class PersonalController extends BaseController
         // $this->ajaxReturn($User->getLastSql(),'JSON');
         foreach ($list as $key => $value) {
             $response->list[$key]['product_id'] = $value['product_id']; // 标的ID
-                                                                      // 投资金额
+                                                                        // 投资金额
             if ($value['buy_money']) {
                 $response->list[$key]['buy_money'] = intval($value['buy_money']) . "元"; // 返利金额
             } else {
@@ -1604,7 +1604,7 @@ class PersonalController extends BaseController
         foreach ($list as $key => $value) {
             $response->list[$key]['jump_time'] = $value['jump_time']; // 跳转时间
             $response->list[$key]['target_name'] = $value['target_name']; // 标的名称
-                                                                        // 期限
+                                                                          // 期限
             $time = '';
             if (! $value['invest_month'] == '') {
                 $time = $value['invest_month'] . '个月';
@@ -1903,6 +1903,7 @@ class PersonalController extends BaseController
             }
         }
         
+        // 查找一级推广人列表
         $model = M('cq_invitation_code');
         $where = array();
         $where['USER_ID'] = $user_id;
@@ -1931,6 +1932,7 @@ class PersonalController extends BaseController
             ->select();
         
         foreach ($list as $key => $value) {
+            $response->list[$key]['user_id'] = $value['USER_ID']; // 用户id
             $response->list[$key]['add_time'] = $value['add_time']; // 注册时间
             $shortnum = substr_replace($value['mobile'], '****', 3, 4);
             $response->list[$key]['mobile'] = $shortnum; // 手机号

@@ -29,9 +29,13 @@
                 <p class="p1 zhzy_ys03">总邀请已投资</p>
                 <p class="p8 zhzy_ys04">{$personal.buyMan}人</p>
             </div>
-            <div class="grzxleft_05_nr_top_03">
+            <div class="grzxleft_05_nr_top_03 rcst_01">
                 <p class="p1 zhzy_ys03">总邀请注册</p>
                 <p class="p8 zhzy_ys04"><span id="totalMan" class="text_six"></span>人</p>
+            </div>
+            <div class="grzxleft_05_nr_top_03">
+                <p class="p1 zhzy_ys03">本月提成</p>
+                <p class="p8 zhzy_ys04">¥<span id="totalRebate" class="text_six"></span></p>
             </div>
         </div>
         <div class="bott_div">
@@ -75,7 +79,7 @@
     <script type="text/javascript">
             var page_cur = 1; //当前页
             var total_num, page_size, page_total_num;//总记录数,每页条数,总页数
-            var toptr = "<tr class='platformtr3 text_one'><td width='10px' class='platformtd1 td_bor2'></td> <td class='platformtd1 td_bor2' width=''>好友注册时间</td><td class='platformtd1 td_bor2' width=''>已绑定手机</td><td class='platformtd1 td_bor2' width=''>是否投标</td><td class='platformtd1 td_bor2' width=''>本月投资额</td><td width='10px' class='platformtd1 td_bor2'></td></tr>";
+            var toptr = "<tr class='platformtr3 text_one'><td width='10px' class='platformtd1 td_bor2'></td> <td class='platformtd1 td_bor2' width=''>好友注册时间</td><td class='platformtd1 td_bor2' width=''>已绑定手机</td><td class='platformtd1 td_bor2' width=''>是否投标</td><td class='platformtd1 td_bor2' width=''>本月投资额</td><td class='platformtd1 td_bor2' width=''>本月提成金额</td><td width='10px' class='platformtd1 td_bor2'></td></tr>";
 
             function getData(page) { //获取当前页数据
                 $.ajax({
@@ -96,11 +100,11 @@
                             var tr = "";
                             var list = json.list;
                             $.each(list, function(index, array) { //遍历返回json
-                            tr += "<tr class='platformtr6 text_ththree'><td class='platformtd1 td_bor2'></td><td class='platformtd1 td_bor2'>" + array['add_time'] + "</td><td class='platformtd1 td_bor2'>"+array['mobile']+"</td><td class='platformtd1 td_bor2'>"+array['tag']+"</td><td class='platformtd1 td_bor2'>"+array['sum_money']+"元</td><td class='platformtd1 td_bor2'></td></tr>";
+                            tr += "<tr class='platformtr6 text_ththree'><td class='platformtd1 td_bor2'></td><td class='platformtd1 td_bor2'>" + array['add_time'] + "</td><td class='platformtd1 td_bor2'>"+array['mobile']+"</td><td class='platformtd1 td_bor2'>"+array['tag']+"</td><td class='platformtd1 td_bor2'>"+array['sum_money']+"元</td><td class='platformtd1 td_bor2'>"+array['sum_money']+"元</td><td class='platformtd1 td_bor2'></td></tr>";
                             });
                             $("#ul_lists").append(tr);
                         }else{
-                            $("#ul_lists").append("<tr><td colspan=8 class='platformtd1 td_bor2'>没有数据</td></tr>");
+                            $("#ul_lists").append("<tr><td colspan=9 class='platformtd1 td_bor2'>没有数据</td></tr>");
                         }
                         
                     },
