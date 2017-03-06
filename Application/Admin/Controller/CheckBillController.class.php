@@ -232,47 +232,6 @@ class CheckBillController extends BaseController
                 $thisUser = M('cq_invitation_code')->where("INVITATION_CODE='" . $inviteInfo['invitation_code'] . "' and IS_DEL=0")->getField("USER_ID");
                 // 一级邀请人存在
                 if ($thisUser) {
-                    if ($inviteInfo['IS_REWARD'] == 0) {
-                        //
-                        $rule = M('cq_serial_rule')->where("SERIAL_TYPE='06' and SERIAL_DAY='" . $useTime . "'")
-                            ->field("SERIAL_NUM")
-                            ->find();
-                        // 如果没有记录
-                        $number = "";
-                        if (! $rule['serial_num']) {
-                            $param = array();
-                            $param['SERIAL_TYPE'] = '06';
-                            $param['SERIAL_DAY'] = $useTime;
-                            $param['SERIAL_NUM'] = '1';
-                            M('cq_serial_rule')->add($param);
-                            $number = 1;
-                        } else {
-                            M('cq_serial_rule')->where("SERIAL_TYPE='06' and SERIAL_DAY='" . $useTime . "'")->setInc("SERIAL_NUM");
-                            $number = intval($rule['serial_num']) + 1;
-                        }
-                        $serial_no = "06" . date("ymd") . sprintf("%05d", $number);
-                        $option = array();
-                        $option['USER_ID'] = $thisUser;
-                        $option['TYPE'] = '06';
-                        $option['CASH_MONEY'] = 2;
-                        $option['SERIAL_NO'] = $serial_no;
-                        $option['OPERATE_TIME'] = $nowtime;
-                        $option['FREEZE_STATUS'] = 2;
-                        $option['UNFREEZE_TIME'] = $nowtime;
-                        $option['REMARKS'] = "依据平台：《邀请好友人数返利》返利规则";
-                        $option['ADD_USER'] = $thisUser;
-                        $option['ADD_TIME'] = $nowtime;
-                        $option['REBATE_LEVEL'] = 1;
-                        
-                        // 添加返利记录
-                        M("cq_user_finance_record")->add($option);
-                        // 修改资产信息
-                        $nowCash = M("cq_user_finance")->where("USER_ID=" . $thisUser . " and IS_DEL=0")->getField("CASH_AMOUNT");
-                        $newCash = bcadd($nowCash, 2, 2);
-                        M("cq_user_finance")->where("USER_ID=" . $thisUser . " and IS_DEL=0")->setField("CASH_AMOUNT", $newCash);
-                        // 修改状态 表示已返利
-                        M("cq_invitation_friends")->where("USER_ID=" . $u_id . " and IS_DEL=0")->setField("IS_REWARD", 1);
-                    }
                     // 好友投资返利 :: 开始
                     $rule = M('cq_serial_rule')->where("SERIAL_TYPE='06' and SERIAL_DAY='" . $useTime . "'")
                         ->field("SERIAL_NUM")
@@ -297,7 +256,7 @@ class CheckBillController extends BaseController
                     $whereFinance = array();
                     $whereFinance['USER_ID'] = $thisUser;
                     $whereFinance['IS_DEL'] = 0;
-//                     $whereFinance['TYPE'] = 2;
+                    // $whereFinance['TYPE'] = 2;
                     $whereFinance['FREEZE_STATUS'] = 2;
                     $finance = M('cq_user_finance_record')->where($whereFinance)
                         ->field("sum(CASH_MONEY) as sum")
@@ -306,17 +265,17 @@ class CheckBillController extends BaseController
                                                                         
                     // 2 如果累计收益超过3000元，则给$u_id的比例为15%，不超过则10%
                     $rate = 0;
-                    if ($firstTotal > 0 && $firstTotal < 3000) {
+                    if ($firstTotal < 3000) {
                         $rate = 0.1;
                     } elseif ($firstTotal >= 3000) {
                         $rate = 0.15;
                     }
                     // 计算返利金额
-                    $cashMoney = number_format($result['buy_money'] * $rate, 2);
+                    $cashMoneyext = number_format($cash_money * $rate, 2);
                     $option = array();
                     $option['USER_ID'] = $thisUser;
                     $option['TYPE'] = '08';
-                    $option['CASH_MONEY'] = $cashMoney;
+                    $option['CASH_MONEY'] = $cashMoneyext;
                     $option['SERIAL_NO'] = $serial_no;
                     $option['OPERATE_TIME'] = $nowtime;
                     $option['FREEZE_STATUS'] = 2;
@@ -324,84 +283,91 @@ class CheckBillController extends BaseController
                     $option['REMARKS'] = "依据平台：《邀请好友投资得返利》返利<一级提成>规则";
                     $option['ADD_USER'] = $thisUser;
                     $option['ADD_TIME'] = $nowtime;
-                    $option['REBATE_LEVEL'] = 2;
+                    $option['IS_DEL'] = 0;
+                    $option['REBATE_LEVEL'] = 1;
+                    $option['REDUNDANCY2'] = $u_id;
                     // 添加返利记录
                     M("cq_user_finance_record")->add($option);
                     // 更改账户金额
-                    $nowCash = M("cq_user_finance")->where("USER_ID=" . $thisUser . " and IS_DEL=0")->getField("CASH_AMOUNT");
-                    $newCash = bcadd($nowCash, $cashMoney, 2);
-                    M("cq_user_finance")->where("USER_ID=" . $thisUser . " and IS_DEL=0")->setField("CASH_AMOUNT", $newCash);
-                }
-                
-                // 计算二级推广人返利
-                $inviteSecond = M("cq_invitation_friends")->where("USER_ID=" . $thisUser . " and IS_DEL=0")
-                    ->field("INVITATION_CODE,IS_REWARD")
-                    ->find();
-                
-                if ($inviteSecond) {
-                    $thisSecUser = M('cq_invitation_code')->where("INVITATION_CODE='" . $inviteSecond['invitation_code'] . "' and IS_DEL=0")->getField("USER_ID");
-                    // 二级邀请人存在
-                    if ($thisSecUser) {
-                        // 好友投资返利 :: 开始
-                        $rule = M('cq_serial_rule')->where("SERIAL_TYPE='06' and SERIAL_DAY='" . $useTime . "'")
-                            ->field("SERIAL_NUM")
-                            ->find();
-                        // 如果没有记录
-                        $number = "";
-                        if (! $rule['serial_num']) {
-                            $param = array();
-                            $param['SERIAL_TYPE'] = '06';
-                            $param['SERIAL_DAY'] = $useTime;
-                            $param['SERIAL_NUM'] = '1';
-                            M('cq_serial_rule')->add($param);
-                            $number = 1;
-                        } else {
-                            M('cq_serial_rule')->where("SERIAL_TYPE='06' and SERIAL_DAY='" . $useTime . "'")->setInc("SERIAL_NUM");
-                            $number = intval($rule['serial_num']) + 1;
-                        }
-                        $serial_no = "06" . date("ymd") . sprintf("%05d", $number);
-                        // 判断返利率
-                        // 1 统计$thisUser一级推广人的返利累计收益
-                        
-                        $whereFinanceSec = array();
-                        $whereFinanceSec['USER_ID'] = $thisSecUser;
-                        $whereFinanceSec['IS_DEL'] = 0;
-//                         $whereFinanceSec['TYPE'] = 2;
-                        $whereFinanceSec['FREEZE_STATUS'] = 2;
-                        $financeSec = M('cq_user_finance_record')->where($whereFinanceSec)
-                            ->field("sum(CASH_MONEY) as sum")
-                            ->select();
-                        $secTotal = number_format($financeSec[0]['sum'], 2); // 返利累计收益
-                                                                             
-                        // 2 如果累计收益超过3000元，则比例为10%，不超过则5%
-                        $secRate = 0;
-                        if ($secTotal > 0 && $secTotal < 3000) {
-                            $secRate = 0.05;
-                        } elseif ($secTotal >= 3000) {
-                            $secRate = 0.1;
-                        }
-                        // 计算返利金额
-                        $cashMoneySec = number_format($result['buy_money'] * $secRate, 2);
-                        $option = array();
-                        $option['USER_ID'] = $thisSecUser;
-                        $option['TYPE'] = '09';
-                        $option['CASH_MONEY'] = $cashMoneySec;
-                        $option['SERIAL_NO'] = $serial_no;
-                        $option['OPERATE_TIME'] = $nowtime;
-                        $option['FREEZE_STATUS'] = 2;
-                        $option['UNFREEZE_TIME'] = $nowtime;
-                        $option['REMARKS'] = "依据平台：《邀请好友得返利》返利<二级提成>规则";
-                        $option['ADD_USER'] = $thisSecUser;
-                        $option['ADD_TIME'] = $nowtime;
-                        // 添加返利记录
-                        M("cq_user_finance_record")->add($option);
-                        // 更改账户金额
-                        $nowCashSec = M("cq_user_finance")->where("USER_ID=" . $thisSecUser . " and IS_DEL=0")->getField("CASH_AMOUNT");
-                        $newCashSec = bcadd($nowCashSec, $cashMoneySec, 2);
-                        M("cq_user_finance")->where("USER_ID=" . $thisSecUser . " and IS_DEL=0")->setField("CASH_AMOUNT", $newCashSec);
+                    $nowCash1 = M("cq_user_finance")->where("USER_ID=" . $thisUser . " and IS_DEL=0")->getField("CASH_AMOUNT");
+                    $newCash1 = bcadd($nowCash1, $cashMoneyext, 2);
+                    if ($newCash1 > 0) {
+                        M("cq_user_finance")->where("USER_ID=" . $thisUser . " and IS_DEL=0")->setField("CASH_AMOUNT", $newCash1);
                     }
+                    
+                    // 计算二级推广人返利
+                    $inviteSecond = M("cq_invitation_friends")->where("USER_ID=" . $thisUser . " and IS_DEL=0")
+                        ->field("INVITATION_CODE,IS_REWARD")
+                        ->find();
+                    
+                    if ($inviteSecond) {
+                        $thisSecUser = M('cq_invitation_code')->where("INVITATION_CODE='" . $inviteSecond['invitation_code'] . "' and IS_DEL=0")->getField("USER_ID");
+                        // 二级邀请人存在
+                        if ($thisSecUser) {
+                            // 好友投资返利 :: 开始
+                            $rule = M('cq_serial_rule')->where("SERIAL_TYPE='06' and SERIAL_DAY='" . $useTime . "'")
+                                ->field("SERIAL_NUM")
+                                ->find();
+                            // 如果没有记录
+                            $number = "";
+                            if (! $rule['serial_num']) {
+                                $param = array();
+                                $param['SERIAL_TYPE'] = '06';
+                                $param['SERIAL_DAY'] = $useTime;
+                                $param['SERIAL_NUM'] = '1';
+                                M('cq_serial_rule')->add($param);
+                                $number = 1;
+                            } else {
+                                M('cq_serial_rule')->where("SERIAL_TYPE='06' and SERIAL_DAY='" . $useTime . "'")->setInc("SERIAL_NUM");
+                                $number = intval($rule['serial_num']) + 1;
+                            }
+                            $serial_no = "06" . date("ymd") . sprintf("%05d", $number);
+                            // 判断返利率
+                            // 1 统计$thisUser一级推广人的返利累计收益
+                            
+                            $whereFinanceSec = array();
+                            $whereFinanceSec['USER_ID'] = $thisSecUser;
+                            $whereFinanceSec['IS_DEL'] = 0;
+                            // $whereFinanceSec['TYPE'] = 2;
+                            $whereFinanceSec['FREEZE_STATUS'] = 2;
+                            $financeSec = M('cq_user_finance_record')->where($whereFinanceSec)
+                                ->field("sum(CASH_MONEY) as sum")
+                                ->select();
+                            $secTotal = number_format($financeSec[0]['sum'], 2); // 返利累计收益
+                                                                                 
+                            // 2 如果累计收益超过3000元，则比例为10%，不超过则5%
+                            $secRate = 0;
+                            if ($secTotal < 3000) {
+                                $secRate = 0.05;
+                            } elseif ($secTotal >= 3000) {
+                                $secRate = 0.1;
+                            }
+                            // 计算返利金额
+                            $cashMoneySec = number_format($cash_money * $secRate, 2);
+                            $option = array();
+                            $option['USER_ID'] = $thisSecUser;
+                            $option['TYPE'] = '09';
+                            $option['CASH_MONEY'] = $cashMoneySec;
+                            $option['SERIAL_NO'] = $serial_no;
+                            $option['OPERATE_TIME'] = $nowtime;
+                            $option['FREEZE_STATUS'] = 2;
+                            $option['UNFREEZE_TIME'] = $nowtime;
+                            $option['REMARKS'] = "依据平台：《邀请好友得返利》返利<二级提成>规则";
+                            $option['ADD_USER'] = $thisSecUser;
+                            $option['ADD_TIME'] = $nowtime;
+                            $option['IS_DEL'] = 0;
+                            $option['REBATE_LEVEL'] = 2;
+                            $option['REDUNDANCY2'] = $u_id;
+                            // 添加返利记录
+                            M("cq_user_finance_record")->add($option);
+                            // 更改账户金额
+                            $nowCashSec = M("cq_user_finance")->where("USER_ID=" . $thisSecUser . " and IS_DEL=0")->getField("CASH_AMOUNT");
+                            $newCashSec = bcadd($nowCashSec, $cashMoneySec, 2);
+                            M("cq_user_finance")->where("USER_ID=" . $thisSecUser . " and IS_DEL=0")->setField("CASH_AMOUNT", $newCashSec);
+                        }
+                    }
+                    // 计算二级返利结束
                 }
-                // 计算二级返利结束
             }
             /* 首次投资并且金额超过两千 返利20元 */
         }

@@ -1861,6 +1861,13 @@ class PersonalController extends BaseController
         // 本月提成
         $monthExtMoney = 0;
         
+        
+        $map['IS_DEL'] = 0;
+        $map['USER_ID'] = $user_id;
+        $map['FREEZE_STATUS'] = 2;
+        $map['REBATE_LEVEL'] = array(array('eq',1),array('eq',2), 'or');
+        $monthExtMoney = M('cq_user_finance_record')->where($map)->sum('CASH_MONEY');
+        
         // 1 看自己有多少邀请的人
         $listFriends = M('cq_invitation_friends')->where($params)->select();
         foreach ($listFriends as $key => $value) {
@@ -1878,7 +1885,7 @@ class PersonalController extends BaseController
             $UserBuyTotal = M('cq_product_buy')->where($map)->sum("BUY_MONEY");
             
             if ($UserBuyTotal) {
-                // 本月提成汇总
+                // 本月投资汇总
                 $monthTotalMoney += $UserBuyTotal;
                 // 总邀请已投资人加1
                 $buyCnt ++;
@@ -1889,13 +1896,6 @@ class PersonalController extends BaseController
                 "gt",
                 date('Y-m', time())
             );
-            $map['IS_DEL'] = 0;
-            $map['USER_ID'] = $value['user_id'];
-            $map['FREEZE_STATUS'] = 2;
-            $userExtMoney = M('cq_user_finance_record')->where($map)->sum('CASH_MONEY');
-            if ($userExtMoney) {
-                $monthExtMoney += $userExtMoney;
-            }
             
             // 看此人有多少邀请的人
             // 查一级推广人的邀请码
@@ -1931,13 +1931,6 @@ class PersonalController extends BaseController
                     "gt",
                     date('Y-m', time())
                 );
-                $map['IS_DEL'] = 0;
-                $map['USER_ID'] = $value1['user_id'];
-                $map['FREEZE_STATUS'] = 2;
-                $userExtMoney1 = M('cq_user_finance_record')->where($map)->sum('CASH_MONEY');
-                if ($userExtMoney1) {
-                    $monthExtMoney += $userExtMoney1;
-                }
             }
         }
         
@@ -2015,8 +2008,10 @@ class PersonalController extends BaseController
                 date('Y-m', time())
             );
             $map['IS_DEL'] = 0;
-            $map['USER_ID'] = $value['user_id'];
+            $map['REDUNDANCY2'] = $value['user_id'];
             $map['FREEZE_STATUS'] = 2;
+            $map['USER_ID'] = $user_id;
+            $map['REBATE_LEVEL'] = array(array('eq',1),array('eq',2), 'or');
             $userExtMoney = M('cq_user_finance_record')->where($map)->sum('CASH_MONEY');
             if ($userExtMoney) {
                 $response->list[$ind]['sum_ext_money'] = $userExtMoney; // 本月提成
@@ -2064,8 +2059,10 @@ class PersonalController extends BaseController
                     date('Y-m', time())
                 );
                 $map['IS_DEL'] = 0;
-                $map['USER_ID'] = $value1['user_id'];
+                $map['REDUNDANCY2'] = $value1['user_id'];
+                $map['USER_ID'] = $user_id;
                 $map['FREEZE_STATUS'] = 2;
+                $map['REBATE_LEVEL'] = array(array('eq',1),array('eq',2), 'or');
                 $userExtMoney1 = M('cq_user_finance_record')->where($map)->sum('CASH_MONEY');
                 if ($userExtMoney1) {
                     $response->list[$ind]['sum_ext_money'] = $userExtMoney1; // 本月提成
