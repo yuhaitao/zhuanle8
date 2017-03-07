@@ -1473,6 +1473,7 @@ class PersonalController extends BaseController
             if ($value['type'] == 6) {
                 $value['type'] = "好友人数返利";
             }
+            
             if ($value['type'] == 7) {
                 $value['type'] = "月排名返利";
             }
