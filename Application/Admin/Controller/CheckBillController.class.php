@@ -258,18 +258,20 @@ class CheckBillController extends BaseController
                     $whereFinance['IS_DEL'] = 0;
                     // $whereFinance['TYPE'] = 2;
                     $whereFinance['FREEZE_STATUS'] = 2;
+                    
+                    // 返利累计收益
                     $finance = M('cq_user_finance_record')->where($whereFinance)
                         ->field("sum(CASH_MONEY) as sum")
                         ->select();
-                    $firstTotal = number_format($finance[0]['sum'], 2); // 返利累计收益
-                                                                        
+                    
                     // 2 如果累计收益超过3000元，则给$u_id的比例为15%，不超过则10%
                     $rate = 0;
-                    if ($firstTotal < 3000) {
+                    if ($finance[0]['sum'] < 3000) {
                         $rate = 0.1;
-                    } elseif ($firstTotal >= 3000) {
+                    } elseif ($finance[0]['sum'] >= 3000) {
                         $rate = 0.15;
                     }
+                    
                     // 计算返利金额
                     $cashMoneyext = number_format($cash_money * $rate, 2);
                     $option = array();
@@ -291,9 +293,8 @@ class CheckBillController extends BaseController
                     // 更改账户金额
                     $nowCash1 = M("cq_user_finance")->where("USER_ID=" . $thisUser . " and IS_DEL=0")->getField("CASH_AMOUNT");
                     $newCash1 = bcadd($nowCash1, $cashMoneyext, 2);
-                    if ($newCash1 > 0) {
-                        M("cq_user_finance")->where("USER_ID=" . $thisUser . " and IS_DEL=0")->setField("CASH_AMOUNT", $newCash1);
-                    }
+                    
+                    M("cq_user_finance")->where("USER_ID=" . $thisUser . " and IS_DEL=0")->setField("CASH_AMOUNT", $newCash1);
                     
                     // 计算二级推广人返利
                     $inviteSecond = M("cq_invitation_friends")->where("USER_ID=" . $thisUser . " and IS_DEL=0")
@@ -330,16 +331,17 @@ class CheckBillController extends BaseController
                             $whereFinanceSec['IS_DEL'] = 0;
                             // $whereFinanceSec['TYPE'] = 2;
                             $whereFinanceSec['FREEZE_STATUS'] = 2;
+                            
+                            // 返利累计收益
                             $financeSec = M('cq_user_finance_record')->where($whereFinanceSec)
                                 ->field("sum(CASH_MONEY) as sum")
                                 ->select();
-                            $secTotal = number_format($financeSec[0]['sum'], 2); // 返利累计收益
-                                                                                 
+                            
                             // 2 如果累计收益超过3000元，则比例为10%，不超过则5%
                             $secRate = 0;
-                            if ($secTotal < 3000) {
+                            if ($financeSec[0]['sum'] < 3000) {
                                 $secRate = 0.05;
-                            } elseif ($secTotal >= 3000) {
+                            } elseif ($financeSec[0]['sum'] >= 3000) {
                                 $secRate = 0.1;
                             }
                             // 计算返利金额
