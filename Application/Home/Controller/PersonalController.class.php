@@ -1477,7 +1477,10 @@ class PersonalController extends BaseController
                 $value['type'] = "月排名返利";
             }
             if ($value['type'] == 8) {
-                $value['type'] = "好友金额返利";
+                $value['type'] = "好友一级返利";
+            }
+            if ($value['type'] == 9) {
+                $value['type'] = "好友二级返利";
             }
             if ($value['remarks'] == '' || $value['remarks'] == NULL) {
                 $value['remarks'] = '无备注';
